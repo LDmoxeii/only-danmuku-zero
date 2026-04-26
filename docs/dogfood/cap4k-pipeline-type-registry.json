@@ -1,0 +1,34 @@
+{
+  "MultipartFile": {
+    "fqn": "org.springframework.web.multipart.MultipartFile",
+    "converter": false
+  },
+  "UserMessageExtend": {
+    "fqn": "edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend"
+  },
+  "AuditedFieldsEntity": {
+    "fqn": "edu.only4.danmuku.domain._share.audit.AuditedFieldsEntity",
+    "converter": false
+  },
+  "UserType": {
+    "fqn": "edu.only4.danmuku.domain.aggregates.user.enums.UserType"
+  },
+  "UserTypeTranslation": {
+    "fqn": "edu.only4.danmuku.adapter.domain.translation.user.UserTypeTranslation",
+    "converter": false
+  },
+  "PostType": {
+    "fqn": "edu.only4.danmuku.domain.aggregates.video_post.enums.PostType"
+  },
+  "PostTypeTranslation": {
+    "fqn": "edu.only4.danmuku.adapter.domain.translation.video_post.PostTypeTranslation",
+    "converter": false
+  },
+  "EncryptMethod": {
+    "fqn": "edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptMethod"
+  },
+  "EncryptMethodTranslation": {
+    "fqn": "edu.only4.danmuku.adapter.domain.translation.video_post.EncryptMethodTranslation",
+    "converter": false
+  }
+}
