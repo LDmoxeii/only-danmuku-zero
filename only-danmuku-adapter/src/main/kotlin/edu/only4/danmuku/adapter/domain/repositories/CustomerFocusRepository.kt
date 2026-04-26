@@ -1,0 +1,23 @@
+package edu.only4.danmuku.adapter.domain.repositories
+
+import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import com.only4.cap4k.ddd.domain.repo.AbstractJpaRepository
+import edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
+import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
+
+@Repository
+interface CustomerFocusRepository : JpaRepository<CustomerFocus, Long>, JpaSpecificationExecutor<CustomerFocus> {
+
+    @Component
+    @Aggregate(aggregate = "CustomerFocus", name = "CustomerFocusRepo", type = Aggregate.TYPE_REPOSITORY, description = "")
+    class CustomerFocusJpaRepositoryAdapter(
+        jpaSpecificationExecutor: JpaSpecificationExecutor<CustomerFocus>,
+        jpaRepository: JpaRepository<CustomerFocus, Long>
+    ) : AbstractJpaRepository<CustomerFocus, Long>(
+        jpaSpecificationExecutor,
+        jpaRepository
+    )
+}
