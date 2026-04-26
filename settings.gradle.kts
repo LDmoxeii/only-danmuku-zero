@@ -39,4 +39,9 @@ dependencyResolutionManagement {
 
 // [cap4k-bootstrap:managed-begin:root-host]
 rootProject.name = "only-danmuku-zero"
+
+include(":only-danmuku-domain")
+include(":only-danmuku-application")
+include(":only-danmuku-adapter")
+include(":only-danmuku-start")
 // [cap4k-bootstrap:managed-end:root-host]

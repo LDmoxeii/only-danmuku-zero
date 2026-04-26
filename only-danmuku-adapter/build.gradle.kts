@@ -1,0 +1,24 @@
+plugins {
+    kotlin("jvm") version "2.2.20"
+}
+
+group = "edu.only4.danmuku"
+version = "0.1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":only-danmuku-domain"))
+    implementation(project(":only-danmuku-application"))
+    implementation("com.only4:ddd-core:0.5.0-SNAPSHOT")
+    implementation("com.only4:ddd-domain-repo-jpa:0.5.0-SNAPSHOT")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework.data:spring-data-jpa")
+}
+
+kotlin {
+    jvmToolchain(17)
+}

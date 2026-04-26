@@ -1,0 +1,22 @@
+plugins {
+    kotlin("jvm") version "2.2.20"
+}
+
+group = "edu.only4.danmuku"
+version = "0.1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.only4:ddd-core:0.5.0-SNAPSHOT")
+    implementation("com.only4:ddd-domain-repo-jpa:0.5.0-SNAPSHOT")
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework.data:spring-data-jpa")
+    implementation("org.hibernate.orm:hibernate-core")
+}
+
+kotlin {
+    jvmToolchain(17)
+}
