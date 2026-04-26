@@ -1,5 +1,9 @@
 $ErrorActionPreference = "Stop"
 
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    throw "normalize-design-input.ps1 requires PowerShell 7+ (pwsh) for stable UTF-8 JSON formatting."
+}
+
 $projectRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $rawDesignFile = Join-Path $projectRoot "codegen\design\raw-drawing-board.json"
 $activeIterateFile = Join-Path $projectRoot "iterate\drawing_board.json"
@@ -245,8 +249,8 @@ function Entry-Key($entry) {
     return "$($entry.tag)|$($entry.package)|$($entry.name)"
 }
 
-$rawEntries = @(Get-Content -Raw -LiteralPath $rawDesignFile | ConvertFrom-Json)
-$activeEntries = @(Get-Content -Raw -LiteralPath $activeIterateFile | ConvertFrom-Json)
+$rawEntries = [object[]](Get-Content -Raw -Encoding utf8 -LiteralPath $rawDesignFile | ConvertFrom-Json)
+$activeEntries = [object[]](Get-Content -Raw -Encoding utf8 -LiteralPath $activeIterateFile | ConvertFrom-Json)
 
 $merged = [System.Collections.Generic.List[object]]::new()
 $skipped = [System.Collections.Generic.List[object]]::new()

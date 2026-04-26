@@ -11,7 +11,6 @@ val cap4kDogfoodH2Schema = layout.projectDirectory
     .replace("\\", "/")
 
 plugins {
-    kotlin("jvm") version "2.2.20" apply false
     id("com.only4.cap4k.plugin.pipeline") version "0.5.0-SNAPSHOT"
 }
 
@@ -23,6 +22,13 @@ allprojects {
         mavenCentral()
         maven {
             url = uri("https://maven.aliyun.com/repository/public")
+        }
+        maven {
+            credentials {
+                username = aliyunMavenUsername
+                password = aliyunMavenPassword
+            }
+            url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/code-gen")
         }
         maven {
             credentials {
@@ -58,6 +64,14 @@ cap4k {
         }
         templates {
             preset.set("ddd-default-bootstrap")
+            overrideDirs.from("codegen/bootstrap-templates")
+        }
+        slots {
+            root.from("codegen/bootstrap-slots/root")
+            modulePackage("domain").from("codegen/bootstrap-slots/domain-package")
+            modulePackage("application").from("codegen/bootstrap-slots/application-package")
+            modulePackage("adapter").from("codegen/bootstrap-slots/adapter-package")
+            moduleResources("start").from("codegen/bootstrap-slots/start-resources")
         }
     }
 }
@@ -103,10 +117,6 @@ cap4k {
         }
         aggregateUniqueQueryHandler {
             packageRoot.set("adapter.application.queries")
-            packageSuffix.set("")
-        }
-        aggregateUniqueValidator {
-            packageRoot.set("application.validator")
             packageSuffix.set("")
         }
         designDomainEventHandler {

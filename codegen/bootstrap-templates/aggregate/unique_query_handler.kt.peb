@@ -1,0 +1,31 @@
+package {{ packageName }}
+
+{{ use("com.only4.cap4k.ddd.core.application.query.Query") -}}
+{{ use("org.babyfish.jimmer.sql.kt.KSqlClient") -}}
+{{ use("org.babyfish.jimmer.sql.kt.ast.expression.eq") -}}
+{{ use("org.babyfish.jimmer.sql.kt.ast.expression.`ne?`") -}}
+{{ use("org.springframework.stereotype.Service") -}}
+{{ use(queryTypeFqn) -}}
+{{ use(entityTypeFqn) -}}
+{% for import in imports(imports) -%}
+import {{ import }}
+{% endfor %}
+
+@Service
+class {{ typeName }}(
+    private val sqlClient: KSqlClient,
+) : Query<{{ queryTypeName }}.Request, {{ queryTypeName }}.Response> {
+
+    override fun exec(request: {{ queryTypeName }}.Request): {{ queryTypeName }}.Response {
+        val exists = sqlClient.exists({{ entityTypeName }}::class) {
+{%- for prop in whereProps %}
+            where(table.{{ prop }} eq request.{{ prop }})
+{%- endfor %}
+            where(table.{{ idPropName }} `ne?` request.{{ excludeIdParamName }})
+        }
+
+        return {{ queryTypeName }}.Response(
+            exists = exists
+        )
+    }
+}

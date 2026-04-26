@@ -144,5 +144,47 @@
     "responseFields": [
       { "name": "result", "type": "Boolean", "desc": "处理成功返回 true" }
     ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "CategoryDeletionAllowed",
+    "desc": "校验分类可删除"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "CategoryMustExist",
+    "desc": "分类必须存在"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "CommentExists",
+    "desc": "评论必须存在"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "CommentNotClosed",
+    "desc": "评论区必须未关闭"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "DanmukuExists",
+    "desc": "弹幕必须存在"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "DanmukuInteractionAllowed",
+    "desc": "视频弹幕功能必须开启"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoExists",
+    "desc": "视频必须存在"
   }
 ]

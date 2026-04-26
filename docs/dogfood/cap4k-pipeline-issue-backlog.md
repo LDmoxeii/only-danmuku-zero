@@ -516,3 +516,108 @@ start 模块模板直接声明 Spring Boot starter，但没有 Spring Boot 插�
 判断：
 
 这些依赖不是 generator bug。生成代码引用的 `CaptchaChannel`、`MultipartFile`、translation annotation 等类型来自真实项目的外部库或框架 API，zero host 从零生成时必须显式提供。
+
+### [blocker] [dogfood-repository] zero host 缺少 `code-gen` Maven 仓库导致 KSP processor 无法解析
+
+状态：
+
+已在 zero host 的 `settings.gradle.kts` 和根 `build.gradle.kts` 补齐 AliYun `code-gen` 仓库。由于当前子模块仍声明 project-level repositories，仅配置 `dependencyResolutionManagement.repositories` 不够，根 `allprojects.repositories` 也需要包含该仓库。
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache compileKotlin
+```
+
+实际结果：
+
+```text
+Could not find com.only4:ksp-processor:0.2.0-SNAPSHOT.
+```
+
+判断：
+
+这是 dogfood host 仓库配置问题，不是生成器产物问题。真实 `only-danmuku` 项目已有该仓库，zero host 从零复现时需要显式带上。
+
+### [known-gap] [adapter-controller-contract] portal controller slot 已从旧 `Item` / `Converter` 契约降级为 `Response` TODO 骨架
+
+状态：
+
+已保留 controller 文件和 endpoint 方法签名，没有从 slot 或当前输出删除。所有历史 `*.Item`、`*.DanmukuItem`、`*.FileItem` 返回元素类型已替换为当前生成规范的 `*.Response`；历史 `*.Converter` 依赖已移除；无法由当前 generator 推导的业务编排统一改成显式 `TODO("Pending controller adapter contract implementation.")`。
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache :only-danmuku-adapter:compileKotlin
+```
+
+判断：
+
+这不是“controller 不应该存在”，而是旧手写 controller 绑定了旧插件的 API payload `Item`/MapStruct `Converter` 运行时契约。新 pipeline 当前生成的是 `Request`/`Response` 模型，不再生成 `Converter`。因此 slot 中保留 controller 是合理的，但旧实现不能原样作为规范实现。
+
+处理建议：
+
+短期保持 TODO 骨架，保证完整 dogfood 编译闭环。真实业务实现后续由人工基于新 `Payload.Response` 和 application request/response 契约重写，不能再依赖旧 `Converter`。如果未来希望自动生成 controller 适配层，需要单独设计 `designController` 或 payload mapping 能力，不能把旧 MapStruct 契约重新塞回默认模板。
+
+### [known-gap] [skipped-query-tree] `GetCategoryTreeQryHandler` 保留为递归树查询 TODO 骨架
+
+状态：
+
+已保留 `GetCategoryTreeQryHandler`，但移除对旧 Jimmer DTO `CategoryTreeNode` 的依赖，改为显式 TODO 骨架。对应 skipped API payload 的类别树模型也已从 `Item` 命名改为 `Response` 命名。
+
+判断：
+
+类别树属于当前 nested model / recursive tree 能力缺口。旧实现依赖旧 Jimmer DTO 和递归 `Item` contract，直接保留会让 zero dogfood 编译失败，也会继续暴露旧契约。
+
+处理建议：
+
+短期保留 TODO。后续如果要生成递归树响应，需要先扩展 nested model 能力和 query-list handler 能力，再恢复真实实现。
+
+### [known-gap] [design-validator] 复杂业务 validator 暂不能由 designValidator 表达
+
+状态：
+
+已将 7 个简单字段级 `Long` validator 迁入 `iterate/drawing_board.json`，由 `designValidator` 生成到默认 `application.validators` 包根：
+
+- `CategoryDeletionAllowed`
+- `CategoryMustExist`
+- `CommentExists`
+- `CommentNotClosed`
+- `DanmukuExists`
+- `DanmukuInteractionAllowed`
+- `VideoExists`
+
+以下复杂 validator 继续保留在 bootstrap slot 的 `codegen/bootstrap-slots/application-package/validators`，同时标记为能力缺口：
+
+- `CommentDeletePermission`
+- `DanmukuDeletePermission`
+- `DanmukuTextFormat`
+- `MaxVideoPCount`
+- `NicknameChangeAllowed`
+- `NotSelf`
+- `NotSelfCoin`
+- `ReplyCommentExists`
+- `SafeFilePath`
+- `SeriesBelongToUser`
+- `SeriesOwnership`
+- `SeriesVideoCountLimit`
+- `SufficientCoinBalance`
+- `UserExists`
+- `ValidateDeleteUploadSession`
+- `ValidateUploadChunk`
+- `ValidAuditStatus`
+- `VideoCommentOwner`
+- `VideoDeletePermission`
+- `VideoIdsBelongToUser`
+- `VideoInSeries`
+- `VideoPostEditableStatus`
+- `VideoPostExists`
+- `VideoPostStatusPending`
+
+判断：
+
+当前 `designValidator` 模板只能生成字段/参数级 `Long` validator 空骨架，无法表达 class-level target、自定义注解参数、`String`/`Int?`/`Any` 等特殊 valueType，也无法保留真实业务校验逻辑。这些 validator 如果直接从 slot 删除，会导致 dogfood 完整流程后的项目缺少类型，无法保证编译闭环。
+
+处理建议：
+
+短期保留复杂 validator slot，作为 dogfood 编译补齐层。后续如果要继续收敛 slot，需要先扩展 `ValidatorModel` 和 `design/validator.kt.peb`，至少支持 target、valueType、annotation params，并明确生成器 conflict policy 不能覆盖用户手写逻辑。

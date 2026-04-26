@@ -10,6 +10,15 @@ pluginManagement {
         maven {
             credentials {
                 username = providers.gradleProperty("aliyun.maven.username").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.username' for Codegen Maven repository.")
+                password = providers.gradleProperty("aliyun.maven.password").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.password' for Codegen Maven repository.")
+            }
+            url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/code-gen")
+        }
+        maven {
+            credentials {
+                username = providers.gradleProperty("aliyun.maven.username").orNull
                     ?: error("Missing required Gradle property 'aliyun.maven.username' for Cap4k Maven repository.")
                 password = providers.gradleProperty("aliyun.maven.password").orNull
                     ?: error("Missing required Gradle property 'aliyun.maven.password' for Cap4k Maven repository.")
@@ -33,6 +42,15 @@ dependencyResolutionManagement {
         mavenCentral()
         maven {
             url = uri("https://maven.aliyun.com/repository/public")
+        }
+        maven {
+            credentials {
+                username = providers.gradleProperty("aliyun.maven.username").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.username' for Codegen Maven repository.")
+                password = providers.gradleProperty("aliyun.maven.password").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.password' for Codegen Maven repository.")
+            }
+            url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/code-gen")
         }
         maven {
             credentials {
