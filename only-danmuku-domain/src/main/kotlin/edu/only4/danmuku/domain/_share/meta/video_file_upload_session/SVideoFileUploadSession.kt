@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_file_upload_session
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.AggVideoFileUploadSession
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -149,29 +151,68 @@ class SVideoFileUploadSession(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.byId(VideoFileUploadSession::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.byId(VideoFileUploadSession::class.java, id).toAggregatePredicate(AggVideoFileUploadSession::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoFileUploadSession> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoFileUploadSession::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoFileUploadSession::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoFileUploadSession::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.byIds(VideoFileUploadSession::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.byIds(VideoFileUploadSession::class.java, ids.toList()).toAggregatePredicate(AggVideoFileUploadSession::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoFileUploadSession>): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoFileUploadSession>): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoFileUploadSession, SVideoFileUploadSession>): JpaPredicate<VideoFileUploadSession> {
-            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoFileUploadSession>, distinct: Boolean): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFileUploadSession>,
+            orderBuilders: List<OrderBuilder<SVideoFileUploadSession>>,
+        ): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFileUploadSession>,
+            vararg orderBuilders: OrderBuilder<SVideoFileUploadSession>,
+        ): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFileUploadSession>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoFileUploadSession>>,
+        ): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoFileUploadSession>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoFileUploadSession>,
+        ): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoFileUploadSession, SVideoFileUploadSession>): AggregatePredicate<AggVideoFileUploadSession, VideoFileUploadSession> {
+            return JpaPredicate.bySpecification(VideoFileUploadSession::class.java, specify(specifier)).toAggregatePredicate(AggVideoFileUploadSession::class.java)
         }
     }
 

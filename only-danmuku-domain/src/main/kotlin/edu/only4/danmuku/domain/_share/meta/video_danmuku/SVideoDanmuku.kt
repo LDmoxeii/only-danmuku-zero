@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_danmuku
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_danmuku.AggVideoDanmuku
 import edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -147,29 +149,68 @@ class SVideoDanmuku(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoDanmuku> {
-            return JpaPredicate.byId(VideoDanmuku::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.byId(VideoDanmuku::class.java, id).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoDanmuku> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoDanmuku::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoDanmuku::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoDanmuku> {
-            return JpaPredicate.byIds(VideoDanmuku::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.byIds(VideoDanmuku::class.java, ids.toList()).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoDanmuku>): JpaPredicate<VideoDanmuku> {
-            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoDanmuku, SVideoDanmuku>): JpaPredicate<VideoDanmuku> {
-            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoDanmuku>, distinct: Boolean): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoDanmuku::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoDanmuku>,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
+        ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoDanmuku>,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
+        ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoDanmuku>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoDanmuku>>,
+        ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoDanmuku>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoDanmuku>,
+        ): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoDanmuku::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoDanmuku, SVideoDanmuku>): AggregatePredicate<AggVideoDanmuku, VideoDanmuku> {
+            return JpaPredicate.bySpecification(VideoDanmuku::class.java, specify(specifier)).toAggregatePredicate(AggVideoDanmuku::class.java)
         }
     }
 

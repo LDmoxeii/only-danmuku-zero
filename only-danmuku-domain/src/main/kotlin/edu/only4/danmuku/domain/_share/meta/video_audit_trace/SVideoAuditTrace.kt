@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_audit_trace
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_audit_trace.AggVideoAuditTrace
 import edu.only4.danmuku.domain.aggregates.video_audit_trace.VideoAuditTrace
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -143,29 +145,68 @@ class SVideoAuditTrace(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoAuditTrace> {
-            return JpaPredicate.byId(VideoAuditTrace::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.byId(VideoAuditTrace::class.java, id).toAggregatePredicate(AggVideoAuditTrace::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoAuditTrace> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoAuditTrace::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoAuditTrace> {
-            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.byIds(VideoAuditTrace::class.java, ids.toList()).toAggregatePredicate(AggVideoAuditTrace::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoAuditTrace>): JpaPredicate<VideoAuditTrace> {
-            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoAuditTrace>): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder)).toAggregatePredicate(AggVideoAuditTrace::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoAuditTrace, SVideoAuditTrace>): JpaPredicate<VideoAuditTrace> {
-            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoAuditTrace>, distinct: Boolean): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoAuditTrace::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoAuditTrace::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoAuditTrace::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoAuditTrace>>,
+        ): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoAuditTrace::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoAuditTrace>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoAuditTrace>,
+        ): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoAuditTrace::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoAuditTrace, SVideoAuditTrace>): AggregatePredicate<AggVideoAuditTrace, VideoAuditTrace> {
+            return JpaPredicate.bySpecification(VideoAuditTrace::class.java, specify(specifier)).toAggregatePredicate(AggVideoAuditTrace::class.java)
         }
     }
 

@@ -332,3 +332,34 @@ Constraint "uk_v_email" already exists
 处理建议：
 
 H2 转换脚本已把唯一约束名改成 `{table}_{constraint}`，仅用于 dogfood 测试材料。
+
+### [medium] [design-source-normalization] 完整 design 输入中 7 个旧 entry 超出当前 nested model 能力
+
+复现命令：
+
+```powershell
+.\docs\dogfood\normalize-design-input.ps1
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache cap4kPlan
+```
+
+实际结果：
+
+标准化脚本把以下 7 个 entry 写入 `codegen/design/skipped-design.json`，没有交给 pipeline 生成：
+
+```text
+api_payload admin_category.getCategoryTree
+api_payload category.getCategoryTree
+command video_post.SyncVideoPostProcessStatus
+query category.GetCategoryTree
+query message.GetNoReadMessageCountGroup
+query video_comment.VideoCommentPage
+api_payload account.batchSaveAccountList
+```
+
+判断：
+
+这些 entry 主要使用旧模板能力：多层嵌套字段、递归 tree response、`Item` 响应模型。当前 pipeline design renderer 只支持一层 nested field，并固定生成 Request/Response 模型，所以直接进入 plan 会失败。
+
+处理建议：
+
+短期 dogfood 先跳过并记录，避免阻塞其余 854 个可生成产物验证。后续如果要追平旧插件，需要单独设计 nested model 能力，而不是在当前标准化脚本里静默降级生成错误结构。

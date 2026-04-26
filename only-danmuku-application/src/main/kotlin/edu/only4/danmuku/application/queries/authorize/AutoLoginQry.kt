@@ -7,11 +7,11 @@ object AutoLoginQry {
     class Request : RequestParam<Response>
 
     data class Response(
-        val userId: Long,
-        val nickName: String,
-        val avatar: String,
-        val expireAt: Long,
-        val token: String
+        val userId: Long?,
+        val nickName: String?,
+        val avatar: String?,
+        val expireAt: Long?,
+        val token: String?
     )
 
 }

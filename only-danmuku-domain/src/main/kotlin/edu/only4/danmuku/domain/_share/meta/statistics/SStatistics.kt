@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.statistics
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.statistics.AggStatistics
 import edu.only4.danmuku.domain.aggregates.statistics.Statistics
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -139,29 +141,68 @@ class SStatistics(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<Statistics> {
-            return JpaPredicate.byId(Statistics::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.byId(Statistics::class.java, id).toAggregatePredicate(AggStatistics::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<Statistics> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggStatistics, Statistics> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(Statistics::class.java, ids as Iterable<Any>).toAggregatePredicate(AggStatistics::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<Statistics> {
-            return JpaPredicate.byIds(Statistics::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.byIds(Statistics::class.java, ids.toList()).toAggregatePredicate(AggStatistics::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SStatistics>): JpaPredicate<Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder)).toAggregatePredicate(AggStatistics::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<Statistics, SStatistics>): JpaPredicate<Statistics> {
-            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SStatistics>, distinct: Boolean): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct)).toAggregatePredicate(AggStatistics::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SStatistics>,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
+        ): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SStatistics>,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
+        ): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SStatistics>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SStatistics>>,
+        ): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SStatistics>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SStatistics>,
+        ): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggStatistics::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<Statistics, SStatistics>): AggregatePredicate<AggStatistics, Statistics> {
+            return JpaPredicate.bySpecification(Statistics::class.java, specify(specifier)).toAggregatePredicate(AggStatistics::class.java)
         }
     }
 

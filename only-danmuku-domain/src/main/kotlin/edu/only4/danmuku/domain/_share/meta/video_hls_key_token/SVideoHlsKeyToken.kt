@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_hls_key_token
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_hls_key_token.AggVideoHlsKeyToken
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.VideoHlsKeyToken
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -155,29 +157,68 @@ class SVideoHlsKeyToken(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoHlsKeyToken> {
-            return JpaPredicate.byId(VideoHlsKeyToken::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.byId(VideoHlsKeyToken::class.java, id).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoHlsKeyToken> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoHlsKeyToken::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoHlsKeyToken::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoHlsKeyToken> {
-            return JpaPredicate.byIds(VideoHlsKeyToken::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.byIds(VideoHlsKeyToken::class.java, ids.toList()).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoHlsKeyToken>): JpaPredicate<VideoHlsKeyToken> {
-            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoHlsKeyToken>): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoHlsKeyToken, SVideoHlsKeyToken>): JpaPredicate<VideoHlsKeyToken> {
-            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoHlsKeyToken>, distinct: Boolean): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsKeyToken>,
+            orderBuilders: List<OrderBuilder<SVideoHlsKeyToken>>,
+        ): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsKeyToken>,
+            vararg orderBuilders: OrderBuilder<SVideoHlsKeyToken>,
+        ): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsKeyToken>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoHlsKeyToken>>,
+        ): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsKeyToken>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoHlsKeyToken>,
+        ): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoHlsKeyToken, SVideoHlsKeyToken>): AggregatePredicate<AggVideoHlsKeyToken, VideoHlsKeyToken> {
+            return JpaPredicate.bySpecification(VideoHlsKeyToken::class.java, specify(specifier)).toAggregatePredicate(AggVideoHlsKeyToken::class.java)
         }
     }
 

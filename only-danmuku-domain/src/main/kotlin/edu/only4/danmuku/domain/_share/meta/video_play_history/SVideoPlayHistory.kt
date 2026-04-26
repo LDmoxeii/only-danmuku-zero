@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_play_history
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_play_history.AggVideoPlayHistory
 import edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -137,29 +139,68 @@ class SVideoPlayHistory(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoPlayHistory> {
-            return JpaPredicate.byId(VideoPlayHistory::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.byId(VideoPlayHistory::class.java, id).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoPlayHistory> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoPlayHistory> {
-            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.byIds(VideoPlayHistory::class.java, ids.toList()).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>): JpaPredicate<VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoPlayHistory, SVideoPlayHistory>): JpaPredicate<VideoPlayHistory> {
-            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoPlayHistory>, distinct: Boolean): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPlayHistory>,
+            orderBuilders: List<OrderBuilder<SVideoPlayHistory>>,
+        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPlayHistory>,
+            vararg orderBuilders: OrderBuilder<SVideoPlayHistory>,
+        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPlayHistory>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoPlayHistory>>,
+        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPlayHistory>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoPlayHistory>,
+        ): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoPlayHistory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoPlayHistory, SVideoPlayHistory>): AggregatePredicate<AggVideoPlayHistory, VideoPlayHistory> {
+            return JpaPredicate.bySpecification(VideoPlayHistory::class.java, specify(specifier)).toAggregatePredicate(AggVideoPlayHistory::class.java)
         }
     }
 

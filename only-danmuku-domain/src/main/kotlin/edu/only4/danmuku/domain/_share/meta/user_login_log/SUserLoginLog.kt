@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.user_login_log
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.user_login_log.AggUserLoginLog
 import edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -149,29 +151,68 @@ class SUserLoginLog(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<UserLoginLog> {
-            return JpaPredicate.byId(UserLoginLog::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.byId(UserLoginLog::class.java, id).toAggregatePredicate(AggUserLoginLog::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<UserLoginLog> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(UserLoginLog::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(UserLoginLog::class.java, ids as Iterable<Any>).toAggregatePredicate(AggUserLoginLog::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<UserLoginLog> {
-            return JpaPredicate.byIds(UserLoginLog::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.byIds(UserLoginLog::class.java, ids.toList()).toAggregatePredicate(AggUserLoginLog::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SUserLoginLog>): JpaPredicate<UserLoginLog> {
-            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SUserLoginLog>): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder)).toAggregatePredicate(AggUserLoginLog::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<UserLoginLog, SUserLoginLog>): JpaPredicate<UserLoginLog> {
-            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SUserLoginLog>, distinct: Boolean): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder, distinct)).toAggregatePredicate(AggUserLoginLog::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SUserLoginLog>,
+            orderBuilders: List<OrderBuilder<SUserLoginLog>>,
+        ): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggUserLoginLog::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SUserLoginLog>,
+            vararg orderBuilders: OrderBuilder<SUserLoginLog>,
+        ): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggUserLoginLog::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SUserLoginLog>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SUserLoginLog>>,
+        ): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggUserLoginLog::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SUserLoginLog>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SUserLoginLog>,
+        ): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggUserLoginLog::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<UserLoginLog, SUserLoginLog>): AggregatePredicate<AggUserLoginLog, UserLoginLog> {
+            return JpaPredicate.bySpecification(UserLoginLog::class.java, specify(specifier)).toAggregatePredicate(AggUserLoginLog::class.java)
         }
     }
 

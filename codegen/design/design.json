@@ -6242,7 +6242,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "CaptchaGen",
     "desc": "",
     "aggregates": [],
@@ -6288,7 +6288,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "CaptchaValid",
     "desc": "",
     "aggregates": [],
@@ -6314,7 +6314,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "CleanTempFiles",
     "desc": "",
     "aggregates": [],
@@ -6329,7 +6329,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "DeleteVideoFileResources",
     "desc": "",
     "aggregates": [],
@@ -6349,7 +6349,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "RefreshLoginSession",
     "desc": "",
     "aggregates": [],
@@ -6374,7 +6374,7 @@
   },
   {
     "tag": "client",
-    "package": "edu.only4.danmuku.application.distributed.clients",
+    "package": "",
     "name": "RemoveVideoSearchIndex",
     "desc": "",
     "aggregates": [],
@@ -13078,16 +13078,5 @@
       }
     ],
     "responseFields": []
-  },
-  {
-    "tag": "domain_event",
-    "package": "video_hls_key_token",
-    "name": "VideoHlsKeyTokenIssued",
-    "desc": "视频 HLS 密钥 Token 已签发",
-    "aggregates": [
-      "VideoHlsKeyToken"
-    ],
-    "entity": "VideoHlsKeyToken",
-    "persist": true
   }
 ]

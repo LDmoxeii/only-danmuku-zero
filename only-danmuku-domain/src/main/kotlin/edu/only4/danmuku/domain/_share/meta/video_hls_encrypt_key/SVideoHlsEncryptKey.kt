@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_hls_encrypt_key
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.AggVideoHlsEncryptKey
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -157,29 +159,68 @@ class SVideoHlsEncryptKey(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoHlsEncryptKey> {
-            return JpaPredicate.byId(VideoHlsEncryptKey::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.byId(VideoHlsEncryptKey::class.java, id).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoHlsEncryptKey> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoHlsEncryptKey> {
-            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.byIds(VideoHlsEncryptKey::class.java, ids.toList()).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoHlsEncryptKey>): JpaPredicate<VideoHlsEncryptKey> {
-            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoHlsEncryptKey>): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoHlsEncryptKey, SVideoHlsEncryptKey>): JpaPredicate<VideoHlsEncryptKey> {
-            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoHlsEncryptKey>, distinct: Boolean): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoHlsEncryptKey>>,
+        ): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoHlsEncryptKey>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoHlsEncryptKey>,
+        ): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoHlsEncryptKey, SVideoHlsEncryptKey>): AggregatePredicate<AggVideoHlsEncryptKey, VideoHlsEncryptKey> {
+            return JpaPredicate.bySpecification(VideoHlsEncryptKey::class.java, specify(specifier)).toAggregatePredicate(AggVideoHlsEncryptKey::class.java)
         }
     }
 

@@ -7,7 +7,7 @@ object GetSearchKeywordTopListQry {
     class Request : ListQueryParam<Response>
 
     data class Response(
-        val keywords: List<String>
+        val keyword: String
     )
 
 }

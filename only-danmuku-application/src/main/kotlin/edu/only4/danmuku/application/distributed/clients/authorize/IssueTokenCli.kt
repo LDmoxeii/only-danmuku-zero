@@ -7,7 +7,8 @@ object IssueTokenCli {
     data class Request(
         val userId: Long,
         val accountType: Int,
-        val account: String
+        val account: String,
+        val extra: Map<String, Any>
     ) : RequestParam<Response>
 
     data class Response(

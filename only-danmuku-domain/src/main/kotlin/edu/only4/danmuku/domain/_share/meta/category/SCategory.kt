@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.category
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.category.AggCategory
 import edu.only4.danmuku.domain.aggregates.category.Category
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -145,29 +147,68 @@ class SCategory(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<Category> {
-            return JpaPredicate.byId(Category::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.byId(Category::class.java, id).toAggregatePredicate(AggCategory::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<Category> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCategory, Category> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(Category::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(Category::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCategory::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<Category> {
-            return JpaPredicate.byIds(Category::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.byIds(Category::class.java, ids.toList()).toAggregatePredicate(AggCategory::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SCategory>): JpaPredicate<Category> {
-            return JpaPredicate.bySpecification(Category::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SCategory>): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder)).toAggregatePredicate(AggCategory::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<Category, SCategory>): JpaPredicate<Category> {
-            return JpaPredicate.bySpecification(Category::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SCategory>, distinct: Boolean): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct)).toAggregatePredicate(AggCategory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCategory>,
+            orderBuilders: List<OrderBuilder<SCategory>>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCategory>,
+            vararg orderBuilders: OrderBuilder<SCategory>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCategory>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SCategory>>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCategory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCategory>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SCategory>,
+        ): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCategory::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<Category, SCategory>): AggregatePredicate<AggCategory, Category> {
+            return JpaPredicate.bySpecification(Category::class.java, specify(specifier)).toAggregatePredicate(AggCategory::class.java)
         }
     }
 

@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_quality_policy
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.AggVideoQualityPolicy
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.VideoQualityPolicy
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -141,29 +143,68 @@ class SVideoQualityPolicy(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoQualityPolicy> {
-            return JpaPredicate.byId(VideoQualityPolicy::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.byId(VideoQualityPolicy::class.java, id).toAggregatePredicate(AggVideoQualityPolicy::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoQualityPolicy> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoQualityPolicy::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoQualityPolicy::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoQualityPolicy::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoQualityPolicy> {
-            return JpaPredicate.byIds(VideoQualityPolicy::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.byIds(VideoQualityPolicy::class.java, ids.toList()).toAggregatePredicate(AggVideoQualityPolicy::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoQualityPolicy>): JpaPredicate<VideoQualityPolicy> {
-            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoQualityPolicy>): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoQualityPolicy, SVideoQualityPolicy>): JpaPredicate<VideoQualityPolicy> {
-            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoQualityPolicy>, distinct: Boolean): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoQualityPolicy>,
+            orderBuilders: List<OrderBuilder<SVideoQualityPolicy>>,
+        ): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoQualityPolicy>,
+            vararg orderBuilders: OrderBuilder<SVideoQualityPolicy>,
+        ): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoQualityPolicy>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoQualityPolicy>>,
+        ): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoQualityPolicy>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoQualityPolicy>,
+        ): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoQualityPolicy, SVideoQualityPolicy>): AggregatePredicate<AggVideoQualityPolicy, VideoQualityPolicy> {
+            return JpaPredicate.bySpecification(VideoQualityPolicy::class.java, specify(specifier)).toAggregatePredicate(AggVideoQualityPolicy::class.java)
         }
     }
 

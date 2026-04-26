@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.customer_focus
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.customer_focus.AggCustomerFocus
 import edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -135,29 +137,68 @@ class SCustomerFocus(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<CustomerFocus> {
-            return JpaPredicate.byId(CustomerFocus::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.byId(CustomerFocus::class.java, id).toAggregatePredicate(AggCustomerFocus::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<CustomerFocus> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(CustomerFocus::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(CustomerFocus::class.java, ids as Iterable<Any>).toAggregatePredicate(AggCustomerFocus::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<CustomerFocus> {
-            return JpaPredicate.byIds(CustomerFocus::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.byIds(CustomerFocus::class.java, ids.toList()).toAggregatePredicate(AggCustomerFocus::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SCustomerFocus>): JpaPredicate<CustomerFocus> {
-            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SCustomerFocus>): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<CustomerFocus, SCustomerFocus>): JpaPredicate<CustomerFocus> {
-            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SCustomerFocus>, distinct: Boolean): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct)).toAggregatePredicate(AggCustomerFocus::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCustomerFocus>,
+            orderBuilders: List<OrderBuilder<SCustomerFocus>>,
+        ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCustomerFocus>,
+            vararg orderBuilders: OrderBuilder<SCustomerFocus>,
+        ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCustomerFocus>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SCustomerFocus>>,
+        ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SCustomerFocus>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SCustomerFocus>,
+        ): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggCustomerFocus::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<CustomerFocus, SCustomerFocus>): AggregatePredicate<AggCustomerFocus, CustomerFocus> {
+            return JpaPredicate.bySpecification(CustomerFocus::class.java, specify(specifier)).toAggregatePredicate(AggCustomerFocus::class.java)
         }
     }
 

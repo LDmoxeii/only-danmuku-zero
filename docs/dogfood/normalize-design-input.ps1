@@ -14,6 +14,13 @@ $tagAliases = @{
     "de" = "domain_event"
 }
 
+$packageRootsByTag = @{
+    "command" = "edu.only4.danmuku.application.commands"
+    "query" = "edu.only4.danmuku.application.queries"
+    "client" = "edu.only4.danmuku.application.distributed.clients"
+    "api_payload" = "edu.only4.danmuku.adapter.portal.api.payload"
+}
+
 $reservedNestedTypeNames = @(
     "Any",
     "Array",
@@ -97,6 +104,26 @@ function Normalize-Tag([string] $tag) {
         return $tagAliases[$normalized]
     }
     return $normalized
+}
+
+function Normalize-Package($entry) {
+    if ($null -eq $entry.package) {
+        return
+    }
+    $tag = [string] $entry.tag
+    if (-not $packageRootsByTag.ContainsKey($tag)) {
+        return
+    }
+    $package = ([string] $entry.package).Trim(".")
+    $root = $packageRootsByTag[$tag]
+    if ($package -eq $root) {
+        $entry.package = ""
+        return
+    }
+    $prefix = "$root."
+    if ($package.StartsWith($prefix, [System.StringComparison]::Ordinal)) {
+        $entry.package = $package.Substring($prefix.Length)
+    }
 }
 
 function Normalize-FieldType($field) {
@@ -184,6 +211,7 @@ function Normalize-NestedNamespace($entry, [string] $namespace, [string] $fieldP
 
 function Normalize-Entry($entry) {
     $entry.tag = Normalize-Tag $entry.tag
+    Normalize-Package $entry
     @($entry.requestFields) | ForEach-Object { Normalize-FieldType $_ }
     @($entry.responseFields) | ForEach-Object { Normalize-FieldType $_ }
     $requestNestedError = Normalize-NestedNamespace $entry "request" "requestFields"
@@ -198,6 +226,11 @@ function Normalize-Entry($entry) {
 }
 
 function Entry-Key($entry) {
+    if ($entry.tag -eq "domain_event") {
+        $aggregateKey = (@($entry.aggregates) | Select-Object -First 1)
+        $eventNameKey = ([string] $entry.name) -replace "DomainEvent$", ""
+        return "$($entry.tag)|$aggregateKey|$eventNameKey"
+    }
     return "$($entry.tag)|$($entry.package)|$($entry.name)"
 }
 

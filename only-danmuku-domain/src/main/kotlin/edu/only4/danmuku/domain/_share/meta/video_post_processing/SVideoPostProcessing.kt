@@ -1,5 +1,6 @@
 package edu.only4.danmuku.domain._share.meta.video_post_processing
 
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePredicate
 import com.only4.cap4k.ddd.domain.repo.JpaPredicate
 import com.only4.cap4k.ddd.domain.repo.schema.ExpressionBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.Field
@@ -7,6 +8,7 @@ import com.only4.cap4k.ddd.domain.repo.schema.OrderBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.PredicateBuilder
 import com.only4.cap4k.ddd.domain.repo.schema.SchemaSpecification
 import com.only4.cap4k.ddd.domain.repo.schema.SubqueryConfigure
+import edu.only4.danmuku.domain.aggregates.video_post_processing.AggVideoPostProcessing
 import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -147,29 +149,68 @@ class SVideoPostProcessing(
         }
 
         @JvmStatic
-        fun predicateById(id: Any): JpaPredicate<VideoPostProcessing> {
-            return JpaPredicate.byId(VideoPostProcessing::class.java, id)
+        fun predicateById(id: Any): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.byId(VideoPostProcessing::class.java, id).toAggregatePredicate(AggVideoPostProcessing::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(ids: Iterable<*>): JpaPredicate<VideoPostProcessing> {
+        fun predicateByIds(ids: Iterable<*>): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
             @Suppress("UNCHECKED_CAST")
-            return JpaPredicate.byIds(VideoPostProcessing::class.java, ids as Iterable<Any>)
+            return JpaPredicate.byIds(VideoPostProcessing::class.java, ids as Iterable<Any>).toAggregatePredicate(AggVideoPostProcessing::class.java)
         }
 
         @JvmStatic
-        fun predicateByIds(vararg ids: Any): JpaPredicate<VideoPostProcessing> {
-            return JpaPredicate.byIds(VideoPostProcessing::class.java, ids.toList())
+        fun predicateByIds(vararg ids: Any): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.byIds(VideoPostProcessing::class.java, ids.toList()).toAggregatePredicate(AggVideoPostProcessing::class.java)
         }
 
         @JvmStatic
-        fun predicate(builder: PredicateBuilder<SVideoPostProcessing>): JpaPredicate<VideoPostProcessing> {
-            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder))
+        fun predicate(builder: PredicateBuilder<SVideoPostProcessing>): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder)).toAggregatePredicate(AggVideoPostProcessing::class.java)
         }
 
         @JvmStatic
-        fun predicate(specifier: SchemaSpecification<VideoPostProcessing, SVideoPostProcessing>): JpaPredicate<VideoPostProcessing> {
-            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(specifier))
+        fun predicate(builder: PredicateBuilder<SVideoPostProcessing>, distinct: Boolean): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder, distinct)).toAggregatePredicate(AggVideoPostProcessing::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPostProcessing>,
+            orderBuilders: List<OrderBuilder<SVideoPostProcessing>>,
+        ): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder, false, orderBuilders)).toAggregatePredicate(AggVideoPostProcessing::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPostProcessing>,
+            vararg orderBuilders: OrderBuilder<SVideoPostProcessing>,
+        ): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder, false, *orderBuilders)).toAggregatePredicate(AggVideoPostProcessing::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPostProcessing>,
+            distinct: Boolean,
+            orderBuilders: List<OrderBuilder<SVideoPostProcessing>>,
+        ): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder, distinct, orderBuilders)).toAggregatePredicate(AggVideoPostProcessing::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(
+            builder: PredicateBuilder<SVideoPostProcessing>,
+            distinct: Boolean,
+            vararg orderBuilders: OrderBuilder<SVideoPostProcessing>,
+        ): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(builder, distinct, *orderBuilders)).toAggregatePredicate(AggVideoPostProcessing::class.java)
+        }
+
+        @JvmStatic
+        fun predicate(specifier: SchemaSpecification<VideoPostProcessing, SVideoPostProcessing>): AggregatePredicate<AggVideoPostProcessing, VideoPostProcessing> {
+            return JpaPredicate.bySpecification(VideoPostProcessing::class.java, specify(specifier)).toAggregatePredicate(AggVideoPostProcessing::class.java)
         }
     }
 
