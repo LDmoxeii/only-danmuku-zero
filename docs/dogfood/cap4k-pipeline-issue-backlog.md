@@ -363,3 +363,97 @@ api_payload account.batchSaveAccountList
 处理建议：
 
 短期 dogfood 先跳过并记录，避免阻塞其余 854 个可生成产物验证。后续如果要追平旧插件，需要单独设计 nested model 能力，而不是在当前标准化脚本里静默降级生成错误结构。
+
+### [blocker] [design-domain-event] 旧 `de.requestFields.entity` 与新领域事件模板自动 `entity` 重复
+
+复现命令：
+
+```powershell
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache compileKotlin
+```
+
+实际结果：
+
+`:only-danmuku-domain:compileKotlin` 失败。典型错误：
+
+```text
+CategoryBasicInfoUpdatedDomainEvent.kt:18:9 Conflicting declarations:
+entity: Category
+entity: Category
+```
+
+生成文件示例：
+
+```kotlin
+class CategoryBasicInfoUpdatedDomainEvent(
+    val entity: Category,
+    val entity: Category
+) {
+}
+```
+
+影响范围：
+
+当前 zero dogfood 生成的 domain event 中有 103 个文件存在重复构造参数名，主要是 `entity` 重复。
+
+判断：
+
+旧插件导出的 `de` 输入会显式携带：
+
+```json
+{ "name": "entity", "type": "Category", "nullable": false }
+```
+
+新 pipeline 的 `design/domain_event.kt.peb` 模板又默认给所有领域事件生成：
+
+```kotlin
+val entity: AggregateRoot
+```
+
+两条语义叠加后必然生成重复参数。这不是 Kotlin import 或格式问题，而是旧 design 输入语义与新模板默认语义没有统一。
+
+处理建议：
+
+需要决策领域事件 aggregate entity 的唯一来源。更稳定的方向是 canonical 层把 aggregate entity 作为领域事件固定语义，标准化旧输入时丢弃同名 `entity` request field；或者模板侧不要自动注入，完全依赖 canonical fields。不要两边同时表达。
+
+### [blocker] [manual-boundary] zero host 缺少手写值对象 `UserMessageExtend`
+
+复现命令：
+
+```powershell
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache compileKotlin
+```
+
+实际结果：
+
+`:only-danmuku-domain:compileKotlin` 失败。典型错误：
+
+```text
+SCustomerMessage.kt:241:80 Unresolved reference 'extend'.
+```
+
+生成代码引用：
+
+```kotlin
+Field<edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend>
+```
+
+但 zero host 中不存在：
+
+```text
+only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/customer_message/extend/UserMessageExtend.kt
+```
+
+旧项目中该文件存在：
+
+```text
+only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/customer_message/extend/UserMessageExtend.kt
+```
+
+判断：
+
+这不是 aggregate/source-db 直接可生成产物，而是项目手写值对象。当前 type registry 只能告诉生成器字段类型应该引用谁，不能凭空生成该值对象实现和 converter 逻辑。
+
+处理建议：
+
+如果目标是 zero host 编译通过，需要把 `UserMessageExtend` 归入最小手写宿主材料，或者后续设计独立的 value-object generator。短期不建议把它伪装成 aggregate/design 产物生成。
