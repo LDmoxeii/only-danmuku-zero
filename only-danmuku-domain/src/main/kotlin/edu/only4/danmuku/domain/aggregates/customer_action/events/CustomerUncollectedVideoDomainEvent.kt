@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction
     description = ""
 )
 class CustomerUncollectedVideoDomainEvent(
-    val entity: CustomerAction,
     val entity: CustomerAction
 ) {
 }

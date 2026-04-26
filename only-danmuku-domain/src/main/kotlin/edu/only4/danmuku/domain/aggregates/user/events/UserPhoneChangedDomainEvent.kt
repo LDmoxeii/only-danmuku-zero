@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.user.User
     description = ""
 )
 class UserPhoneChangedDomainEvent(
-    val entity: User,
     val entity: User
 ) {
 }

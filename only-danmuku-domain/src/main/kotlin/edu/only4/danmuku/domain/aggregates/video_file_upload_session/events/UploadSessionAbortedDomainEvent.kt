@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUp
     description = ""
 )
 class UploadSessionAbortedDomainEvent(
-    val entity: VideoFileUploadSession,
     val entity: VideoFileUploadSession
 ) {
 }

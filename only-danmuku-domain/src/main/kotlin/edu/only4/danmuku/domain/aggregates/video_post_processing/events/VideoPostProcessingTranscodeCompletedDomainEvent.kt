@@ -20,7 +20,6 @@ class VideoPostProcessingTranscodeCompletedDomainEvent(
     val fileIndex: Int,
     val outputPrefix: String?,
     val encOutputDir: String?,
-    val variantsJson: String?,
-    val entity: VideoPostProcessing
+    val variantsJson: String?
 ) {
 }

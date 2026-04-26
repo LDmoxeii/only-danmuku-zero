@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog
     description = ""
 )
 class PasswordInputFailedDomainEvent(
-    val entity: UserLoginLog,
     val entity: UserLoginLog
 ) {
 }

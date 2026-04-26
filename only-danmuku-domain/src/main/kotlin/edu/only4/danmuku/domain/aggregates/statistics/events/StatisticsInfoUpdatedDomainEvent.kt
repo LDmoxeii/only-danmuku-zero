@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.statistics.Statistics
     description = ""
 )
 class StatisticsInfoUpdatedDomainEvent(
-    val entity: Statistics,
     val entity: Statistics
 ) {
 }

@@ -71,6 +71,10 @@ sources.db.password is required when db is enabled.
 
 ### [medium] [db-annotation-compat] 旧 `@I` 表级忽略注解没有进入新 aggregate 语义
 
+状态：
+
+已在 cap4k source-db 中支持表级 `@I` / `@IGNORE`，带值写法会被拒绝。被忽略表不再进入 selected schema snapshot 和 aggregate plan。
+
 复现命令：
 
 ```powershell
@@ -91,7 +95,7 @@ MySQL 原库包含 `__event`、`__request`、`__saga` 等框架表，表注释�
 
 处理建议：
 
-当前 H2 材料直接跳过 `__*` 表。是否支持 `@I` 等待评估。
+已按旧注解规范补齐，无需继续通过 H2 材料绕开。
 
 ### [medium] [db-annotation-compat] 旧 `@Spe` / `@Fac` 语义没有进入新 aggregate planner
 
@@ -164,6 +168,10 @@ de: 1
 
 ### [low] [layout-default] `designQueryHandler` 默认输出路径和 only-danmuku 旧布局不同
 
+状态：
+
+已按规范决策修正 cap4k 默认布局：`designQueryHandler` 默认包根改为 `adapter.application.queries`。zero dogfood 已移除显式 layout 覆盖，复验生成路径落在旧规范布局。
+
 复现命令：
 
 ```powershell
@@ -190,9 +198,13 @@ only-danmuku-adapter/src/main/kotlin/edu/only4/danmuku/adapter/application/queri
 
 处理建议：
 
-dogfood 如需贴近旧项目，可在 `build.gradle.kts` 显式配置 layout；默认值是否调整等待评估。
+已按旧布局作为规范决策修正默认值，不再要求 dogfood 显式覆盖。
 
 ### [blocker] [design-query-list-compat] `SKIP` 迁移时新 query-list handler 与旧 query-list request 契约不兼容
+
+状态：
+
+默认 handler layout 已对齐旧规范布局后，这个迁移场景不会再因为 handler 路径错位而新生成一份不兼容 handler。旧 `Item` / list / page 契约兼容仍属于后续 nested model 能力决策，本轮不处理。
 
 复现命令：
 
@@ -366,6 +378,10 @@ api_payload account.batchSaveAccountList
 
 ### [blocker] [design-domain-event] 旧 `de.requestFields.entity` 与新领域事件模板自动 `entity` 重复
 
+状态：
+
+zero 标准化脚本已在 `domain_event` 输入中丢弃 `requestFields.entity`，保留新 pipeline 的固定聚合实体语义。复验 104 个 domain event 输入中同名 `entity` request field 数量为 0，生成代码不再出现重复构造参数。
+
 复现命令：
 
 ```powershell
@@ -418,6 +434,10 @@ val entity: AggregateRoot
 
 ### [blocker] [manual-boundary] zero host 缺少手写值对象 `UserMessageExtend`
 
+状态：
+
+已从原项目拷贝 `UserMessageExtend` 到 zero host，并补齐 `engine-json` 依赖。该类继续作为手写值对象边界，不伪装成当前 generator 产物。
+
 复现命令：
 
 ```powershell
@@ -457,3 +477,42 @@ only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/customer
 处理建议：
 
 如果目标是 zero host 编译通过，需要把 `UserMessageExtend` 归入最小手写宿主材料，或者后续设计独立的 value-object generator。短期不建议把它伪装成 aggregate/design 产物生成。
+
+### [blocker] [bootstrap-start] start 模块默认骨架缺少 Spring Boot dependency BOM
+
+状态：
+
+已在 cap4k 默认 bootstrap start module build template 中补充 `org.springframework.boot:spring-boot-dependencies:3.5.6` platform；zero host 的 start 模块也同步补齐。
+
+复现命令：
+
+```powershell
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache compileKotlin
+```
+
+实际结果：
+
+`:only-danmuku-start:compileKotlin` 解析 Spring Boot starter 依赖失败：
+
+```text
+Could not find org.springframework.boot:spring-boot-starter-webflux:.
+Could not find org.springframework.boot:spring-boot-starter-actuator:.
+```
+
+判断：
+
+start 模块模板直接声明 Spring Boot starter，但没有 Spring Boot 插件或 BOM 提供版本约束。对于最小 bootstrap 骨架，依赖版本来源必须由模板自己保证。
+
+处理建议：
+
+保持 start module 默认骨架内置 Spring Boot BOM。后续如果引入 Spring Boot Gradle 插件，也不能让 starter 版本依赖隐式外部配置。
+
+### [info] [dogfood-host-dependencies] zero host 需要显式提供生成代码引用的外部依赖
+
+状态：
+
+已补齐本轮编译所需依赖：domain 使用 `engine-json`，application 使用 `engine-common` 和 `spring-web`，adapter 使用 `engine-translation`。
+
+判断：
+
+这些依赖不是 generator bug。生成代码引用的 `CaptchaChannel`、`MultipartFile`、translation annotation 等类型来自真实项目的外部库或框架 API，zero host 从零生成时必须显式提供。

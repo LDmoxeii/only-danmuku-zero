@@ -16,6 +16,15 @@ pluginManagement {
             }
             url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/cap4k")
         }
+        maven {
+            credentials {
+                username = providers.gradleProperty("aliyun.maven.username").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.username' for Only Engine Maven repository.")
+                password = providers.gradleProperty("aliyun.maven.password").orNull
+                    ?: error("Missing required Gradle property 'aliyun.maven.password' for Only Engine Maven repository.")
+            }
+            url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/only-engine")
+        }
     }
 }
 

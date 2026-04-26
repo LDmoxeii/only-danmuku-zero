@@ -21,7 +21,6 @@ class VideoPostProcessingEncryptContextPreparedDomainEvent(
     val keyVersion: Int,
     val transcodeOutputPrefix: String?,
     val encryptOutputDir: String?,
-    val variantsJson: String?,
-    val entity: VideoPostProcessing
+    val variantsJson: String?
 ) {
 }

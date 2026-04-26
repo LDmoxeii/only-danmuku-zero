@@ -19,7 +19,6 @@ class VideoPostProcessingCompletedDomainEvent(
     val videoPostId: Long,
     val duration: Int?,
     val failedCount: Int,
-    val lastFailReason: String?,
-    val entity: VideoPostProcessing
+    val lastFailReason: String?
 ) {
 }

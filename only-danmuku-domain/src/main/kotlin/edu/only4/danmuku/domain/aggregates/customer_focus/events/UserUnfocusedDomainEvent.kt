@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
     description = ""
 )
 class UserUnfocusedDomainEvent(
-    val entity: CustomerFocus,
     val entity: CustomerFocus
 ) {
 }

@@ -209,11 +209,22 @@ function Normalize-NestedNamespace($entry, [string] $namespace, [string] $fieldP
     return $null
 }
 
+function Normalize-DomainEventFields($entry) {
+    if ($entry.tag -ne "domain_event") {
+        return
+    }
+    if ($entry.PSObject.Properties.Name -notcontains "requestFields") {
+        return
+    }
+    $entry.requestFields = @($entry.requestFields | Where-Object { ([string] $_.name) -ne "entity" })
+}
+
 function Normalize-Entry($entry) {
     $entry.tag = Normalize-Tag $entry.tag
     Normalize-Package $entry
     @($entry.requestFields) | ForEach-Object { Normalize-FieldType $_ }
     @($entry.responseFields) | ForEach-Object { Normalize-FieldType $_ }
+    Normalize-DomainEventFields $entry
     $requestNestedError = Normalize-NestedNamespace $entry "request" "requestFields"
     if ($null -ne $requestNestedError) {
         return [pscustomobject]@{ Entry = $entry; SkipReason = $requestNestedError }

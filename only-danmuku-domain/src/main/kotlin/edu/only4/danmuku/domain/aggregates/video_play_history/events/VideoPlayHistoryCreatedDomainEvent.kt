@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory
     description = ""
 )
 class VideoPlayHistoryCreatedDomainEvent(
-    val entity: VideoPlayHistory,
     val entity: VideoPlayHistory
 ) {
 }

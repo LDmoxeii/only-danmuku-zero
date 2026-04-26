@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_audit_trace.VideoAuditTrace
     description = ""
 )
 class VideoAuditTraceRecordedDomainEvent(
-    val entity: VideoAuditTrace,
     val entity: VideoAuditTrace
 ) {
 }

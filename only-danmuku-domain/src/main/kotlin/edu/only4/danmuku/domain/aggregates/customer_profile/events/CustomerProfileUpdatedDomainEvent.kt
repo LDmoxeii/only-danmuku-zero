@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile
     description = ""
 )
 class CustomerProfileUpdatedDomainEvent(
-    val entity: CustomerProfile,
     val entity: CustomerProfile
 ) {
 }

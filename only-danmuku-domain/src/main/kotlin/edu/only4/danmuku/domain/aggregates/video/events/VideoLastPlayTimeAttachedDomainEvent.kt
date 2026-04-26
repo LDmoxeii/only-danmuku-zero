@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video.Video
     description = ""
 )
 class VideoLastPlayTimeAttachedDomainEvent(
-    val entity: Video,
     val entity: Video
 ) {
 }

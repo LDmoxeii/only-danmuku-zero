@@ -22,6 +22,7 @@
 - 已带完整包根的 design package 会转成相对 package，避免生成到 `.../edu/only4/...` 嵌套路径。
 - design 字段中的聚合实体、本地枚举、共享枚举短类型会转成生成器产物 FQN。
 - `[]` 嵌套字段写法会转成当前 pipeline 支持的单层 nested field 写法。
+- `domain_event.requestFields.entity` 会被丢弃，聚合实体参数由新 pipeline 的领域事件固定语义生成。
 
 ## Current Generation Result
 
@@ -58,6 +59,18 @@
 | design domain event handler | 104 |
 | design query / unique query | 101 |
 | design query handler / unique handler | 101 |
+
+编译验证：
+
+```powershell
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache compileKotlin
+```
+
+结果：
+
+- `compileKotlin` 成功。
+- zero host 当前保留最小手写边界 `UserMessageExtend`。
+- zero host 当前显式提供生成代码需要的外部依赖：`engine-json`、`engine-common`、`engine-translation`、`spring-web`。
 
 ## Directly Generatable
 

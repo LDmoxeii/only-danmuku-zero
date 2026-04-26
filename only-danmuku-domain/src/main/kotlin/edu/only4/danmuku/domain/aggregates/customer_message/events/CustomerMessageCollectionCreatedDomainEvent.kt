@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage
     description = ""
 )
 class CustomerMessageCollectionCreatedDomainEvent(
-    val entity: CustomerMessage,
     val entity: CustomerMessage
 ) {
 }

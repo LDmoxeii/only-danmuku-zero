@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
     description = ""
 )
 class DanmukuBatchDeletedDomainEvent(
-    val entity: VideoDanmuku,
     val entity: VideoDanmuku
 ) {
 }

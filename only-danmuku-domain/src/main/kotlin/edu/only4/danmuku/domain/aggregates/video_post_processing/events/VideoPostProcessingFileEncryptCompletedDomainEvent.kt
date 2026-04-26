@@ -17,7 +17,6 @@ import edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProces
 class VideoPostProcessingFileEncryptCompletedDomainEvent(
     val entity: VideoPostProcessing,
     val videoPostId: Long,
-    val fileIndex: Int,
-    val entity: VideoPostProcessing
+    val fileIndex: Int
 ) {
 }

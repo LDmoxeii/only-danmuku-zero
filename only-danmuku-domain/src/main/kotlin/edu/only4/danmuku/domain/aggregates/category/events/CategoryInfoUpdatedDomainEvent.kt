@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.category.Category
     description = ""
 )
 class CategoryInfoUpdatedDomainEvent(
-    val entity: Category,
     val entity: Category
 ) {
 }

@@ -16,7 +16,6 @@ import edu.only4.danmuku.domain.aggregates.video.Video
 )
 class VideoLikeCountDeltaAppliedDomainEvent(
     val entity: Video,
-    val entity: Video,
     val delta: Int
 ) {
 }

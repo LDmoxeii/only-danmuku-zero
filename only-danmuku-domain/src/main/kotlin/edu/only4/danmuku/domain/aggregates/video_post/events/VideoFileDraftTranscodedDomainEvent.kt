@@ -2,7 +2,6 @@ package edu.only4.danmuku.domain.aggregates.video_post.events
 
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
-import edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 
 /**
@@ -17,7 +16,6 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 )
 class VideoFileDraftTranscodedDomainEvent(
     val entity: VideoPost,
-    val entity: VideoFilePost,
     val success: Boolean,
     val errorMessage: String?
 ) {

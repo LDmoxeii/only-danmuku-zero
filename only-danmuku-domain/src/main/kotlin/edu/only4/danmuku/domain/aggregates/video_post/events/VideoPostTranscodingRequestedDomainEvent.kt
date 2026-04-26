@@ -17,8 +17,7 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 class VideoPostTranscodingRequestedDomainEvent(
     val entity: VideoPost,
     val videoPostId: Long,
-    val fileList: List<FileList>,
-    val entity: VideoPost
+    val fileList: List<FileList>
 ) {
     data class FileList(
         val uploadId: Long,

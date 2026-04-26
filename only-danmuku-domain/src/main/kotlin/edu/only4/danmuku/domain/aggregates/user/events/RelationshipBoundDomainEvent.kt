@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.user.User
     description = ""
 )
 class RelationshipBoundDomainEvent(
-    val entity: User,
     val entity: User
 ) {
 }

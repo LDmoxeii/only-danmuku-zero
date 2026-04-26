@@ -31,6 +31,13 @@ allprojects {
             }
             url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/cap4k")
         }
+        maven {
+            credentials {
+                username = aliyunMavenUsername
+                password = aliyunMavenPassword
+            }
+            url = uri("https://packages.aliyun.com/67053c6149e9309ce56b9e9e/maven/only-engine")
+        }
     }
 }
 
@@ -101,9 +108,6 @@ cap4k {
         aggregateUniqueValidator {
             packageRoot.set("application.validator")
             packageSuffix.set("")
-        }
-        designQueryHandler {
-            packageRoot.set("adapter.application.queries")
         }
         designDomainEventHandler {
             packageRoot.set("application.subscribers.domain")

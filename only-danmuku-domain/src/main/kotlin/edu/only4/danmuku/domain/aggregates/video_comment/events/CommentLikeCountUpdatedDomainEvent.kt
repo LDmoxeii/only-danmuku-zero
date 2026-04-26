@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_comment.VideoComment
     description = ""
 )
 class CommentLikeCountUpdatedDomainEvent(
-    val entity: VideoComment,
     val entity: VideoComment
 ) {
 }

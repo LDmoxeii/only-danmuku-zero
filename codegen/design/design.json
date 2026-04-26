@@ -10908,13 +10908,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -10927,13 +10921,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -10965,13 +10953,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -10984,13 +10966,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11003,13 +10979,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11022,13 +10992,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11041,13 +11005,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11060,13 +11018,7 @@
     ],
     "entity": "Category",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.category.Category",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11079,13 +11031,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11098,13 +11044,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11117,13 +11057,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11136,13 +11070,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11155,13 +11083,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11174,13 +11096,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11193,13 +11109,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11212,13 +11122,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11231,13 +11135,7 @@
     ],
     "entity": "CustomerAction",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11250,13 +11148,7 @@
     ],
     "entity": "CustomerFocus",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11269,13 +11161,7 @@
     ],
     "entity": "CustomerFocus",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11288,13 +11174,7 @@
     ],
     "entity": "CustomerMessage",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11307,13 +11187,7 @@
     ],
     "entity": "CustomerMessage",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11326,13 +11200,7 @@
     ],
     "entity": "CustomerMessage",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11345,13 +11213,7 @@
     ],
     "entity": "CustomerMessage",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11364,13 +11226,7 @@
     ],
     "entity": "CustomerMessage",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_message.CustomerMessage",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11383,13 +11239,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11402,13 +11252,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11422,11 +11266,6 @@
     "entity": "CustomerProfile",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      },
       {
         "name": "amount",
         "type": "Int",
@@ -11445,13 +11284,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11464,13 +11297,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11484,11 +11311,6 @@
     "entity": "CustomerProfile",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      },
       {
         "name": "deduction",
         "type": "Int",
@@ -11507,13 +11329,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11526,13 +11342,7 @@
     ],
     "entity": "CustomerProfile",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.customer_profile.CustomerProfile",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11545,13 +11355,7 @@
     ],
     "entity": "Statistics",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.statistics.Statistics",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11564,13 +11368,7 @@
     ],
     "entity": "Statistics",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.statistics.Statistics",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11583,13 +11381,7 @@
     ],
     "entity": "Statistics",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.statistics.Statistics",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11602,13 +11394,7 @@
     ],
     "entity": "Statistics",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.statistics.Statistics",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11621,13 +11407,7 @@
     ],
     "entity": "Statistics",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.statistics.Statistics",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11640,13 +11420,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11659,13 +11433,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11678,13 +11446,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11697,13 +11459,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11716,13 +11472,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11735,13 +11485,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11754,13 +11498,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11773,13 +11511,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11792,13 +11524,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11811,13 +11537,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11830,13 +11550,7 @@
     ],
     "entity": "User",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user.User",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11849,13 +11563,7 @@
     ],
     "entity": "UserLoginLog",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.user_login_log.UserLoginLog",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11868,13 +11576,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11888,11 +11590,6 @@
     "entity": "Video",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
       {
         "name": "delta",
         "type": "Int",
@@ -11913,11 +11610,6 @@
     "persist": false,
     "requestFields": [
       {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
-      {
         "name": "delta",
         "type": "Int",
         "nullable": false
@@ -11937,11 +11629,6 @@
     "persist": false,
     "requestFields": [
       {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
-      {
         "name": "delta",
         "type": "Int",
         "nullable": false
@@ -11959,13 +11646,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -11979,11 +11660,6 @@
     "entity": "Video",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
       {
         "name": "delta",
         "type": "Int",
@@ -12002,13 +11678,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12021,13 +11691,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12040,13 +11704,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12060,11 +11718,6 @@
     "entity": "Video",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
       {
         "name": "delta",
         "type": "Int",
@@ -12085,11 +11738,6 @@
     "persist": false,
     "requestFields": [
       {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      },
-      {
         "name": "delta",
         "type": "Int",
         "nullable": false
@@ -12107,13 +11755,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12126,13 +11768,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12145,13 +11781,7 @@
     ],
     "entity": "Video",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video.Video",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12164,13 +11794,7 @@
     ],
     "entity": "VideoAuditTrace",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_audit_trace.VideoAuditTrace",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12183,13 +11807,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12202,13 +11820,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12221,13 +11833,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12240,13 +11846,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12259,13 +11859,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12278,13 +11872,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12297,13 +11885,7 @@
     ],
     "entity": "VideoComment",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_comment.VideoComment",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12316,13 +11898,7 @@
     ],
     "entity": "VideoDanmuku",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12335,13 +11911,7 @@
     ],
     "entity": "VideoDanmuku",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12354,13 +11924,7 @@
     ],
     "entity": "VideoDanmuku",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12373,13 +11937,7 @@
     ],
     "entity": "VideoFileUploadSession",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12392,13 +11950,7 @@
     ],
     "entity": "VideoFileUploadSession",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12411,13 +11963,7 @@
     ],
     "entity": "VideoFileUploadSession",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12430,13 +11976,7 @@
     ],
     "entity": "VideoFileUploadSession",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12449,13 +11989,7 @@
     ],
     "entity": "VideoFileUploadSession",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12468,13 +12002,7 @@
     ],
     "entity": "VideoHlsEncryptKey",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.VideoHlsEncryptKey",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12487,13 +12015,7 @@
     ],
     "entity": "VideoHlsKeyToken",
     "persist": true,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_hls_key_token.VideoHlsKeyToken",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12506,13 +12028,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12525,13 +12041,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12544,13 +12054,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12563,13 +12067,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12582,13 +12080,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12601,13 +12093,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12620,13 +12106,7 @@
     ],
     "entity": "VideoPlayHistory",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_play_history.VideoPlayHistory",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12639,13 +12119,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12658,13 +12132,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12677,13 +12145,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12697,11 +12159,6 @@
     "entity": "VideoPost",
     "persist": false,
     "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoFilePost",
-        "nullable": false
-      },
       {
         "name": "success",
         "type": "Boolean",
@@ -12725,13 +12182,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12744,13 +12195,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12763,13 +12208,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12817,11 +12256,6 @@
         "name": "fileList.duration",
         "type": "Int",
         "nullable": true
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
       }
     ],
     "responseFields": []
@@ -12836,13 +12270,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12855,13 +12283,7 @@
     ],
     "entity": "VideoPost",
     "persist": false,
-    "requestFields": [
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post.VideoPost",
-        "nullable": false
-      }
-    ],
+    "requestFields": [],
     "responseFields": []
   },
   {
@@ -12894,11 +12316,6 @@
         "name": "lastFailReason",
         "type": "String",
         "nullable": true
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing",
-        "nullable": false
       }
     ],
     "responseFields": []
@@ -12943,11 +12360,6 @@
         "name": "variantsJson",
         "type": "String",
         "nullable": true
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing",
-        "nullable": false
       }
     ],
     "responseFields": []
@@ -12971,11 +12383,6 @@
       {
         "name": "fileIndex",
         "type": "Int",
-        "nullable": false
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing",
         "nullable": false
       }
     ],
@@ -13026,11 +12433,6 @@
         "name": "fileList.encOutputDir",
         "type": "String",
         "nullable": false
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing",
-        "nullable": false
       }
     ],
     "responseFields": []
@@ -13070,11 +12472,6 @@
         "name": "variantsJson",
         "type": "String",
         "nullable": true
-      },
-      {
-        "name": "entity",
-        "type": "edu.only4.danmuku.domain.aggregates.video_post_processing.VideoPostProcessing",
-        "nullable": false
       }
     ],
     "responseFields": []

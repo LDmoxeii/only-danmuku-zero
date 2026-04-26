@@ -15,7 +15,6 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
     description = ""
 )
 class VideoDraftSubmittedDomainEvent(
-    val entity: VideoPost,
     val entity: VideoPost
 ) {
 }
