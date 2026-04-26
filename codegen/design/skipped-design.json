@@ -1,0 +1,44 @@
+[
+  {
+    "tag": "api_payload",
+    "package": "admin_category",
+    "name": "getCategoryTree",
+    "reason": "unsupported legacy Item response type in response: children"
+  },
+  {
+    "tag": "api_payload",
+    "package": "category",
+    "name": "getCategoryTree",
+    "reason": "unsupported legacy Item response type in response: children"
+  },
+  {
+    "tag": "command",
+    "package": "video_post",
+    "name": "SyncVideoPostProcessStatus",
+    "reason": "unsupported multi-level nested field in request: fileList.variants.quality"
+  },
+  {
+    "tag": "query",
+    "package": "category",
+    "name": "GetCategoryTree",
+    "reason": "unsupported self-recursive Response type in response: children"
+  },
+  {
+    "tag": "query",
+    "package": "message",
+    "name": "GetNoReadMessageCountGroup",
+    "reason": "unsupported legacy Item response type in response: list"
+  },
+  {
+    "tag": "query",
+    "package": "video_comment",
+    "name": "VideoCommentPage",
+    "reason": "unsupported self-recursive Response type in response: children"
+  },
+  {
+    "tag": "api_payload",
+    "package": "account",
+    "name": "batchSaveAccountList",
+    "reason": "unsupported multi-level nested field in request: account.bank.code"
+  }
+]

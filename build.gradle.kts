@@ -69,7 +69,11 @@ cap4k {
     sources {
         designJson {
             enabled.set(true)
-            files.from("iterate/drawing_board.json")
+            files.from("codegen/design/design.json")
+        }
+        enumManifest {
+            enabled.set(true)
+            files.from("codegen/enum-manifest/shared-enums.json")
         }
         db {
             enabled.set(true)
@@ -83,9 +87,39 @@ cap4k {
             excludeTables.set(emptyList())
         }
     }
+    layout {
+        aggregateEnumTranslation {
+            packageRoot.set("adapter.domain.translation")
+        }
+        aggregateUniqueQuery {
+            packageSuffix.set("")
+        }
+        aggregateUniqueQueryHandler {
+            packageRoot.set("adapter.application.queries")
+            packageSuffix.set("")
+        }
+        aggregateUniqueValidator {
+            packageRoot.set("application.validator")
+            packageSuffix.set("")
+        }
+        designQueryHandler {
+            packageRoot.set("adapter.application.queries")
+        }
+        designDomainEventHandler {
+            packageRoot.set("application.subscribers.domain")
+            packageSuffix.set("")
+        }
+    }
     generators {
         aggregate {
             enabled.set(true)
+            artifacts {
+                factory.set(true)
+                specification.set(true)
+                wrapper.set(true)
+                unique.set(true)
+                enumTranslation.set(true)
+            }
         }
         designCommand {
             enabled.set(true)
@@ -100,6 +134,9 @@ cap4k {
             enabled.set(true)
         }
         designClientHandler {
+            enabled.set(true)
+        }
+        designValidator {
             enabled.set(true)
         }
         designApiPayload {
