@@ -1,18 +1,7 @@
 package {{ basePackage }}.adapter.portal.api.web
 
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.DeleteComment
-import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.DeleteDanmuku
-import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.GetAllVideoList
-import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.GetCommentPage
-import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.GetDanmukuPage
-import {{ basePackage }}.application.commands.video_comment.DeleteVideoCommentCmd
-import {{ basePackage }}.application.commands.video_danmuku.DeleteVideoDanmukuCmd
-import {{ basePackage }}.application.queries.video.GetVideoAllList
-import {{ basePackage }}.application.queries.video_comment.VideoCommentPageQry
-import {{ basePackage }}.application.queries.video_danmuku.GetVideoDanmukuPageQry
+import {{ basePackage }}.adapter.portal.api.payload.u_center_interact.*
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

@@ -1,13 +1,10 @@
 package {{ basePackage }}.adapter.portal.api.admin
 
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import {{ basePackage }}.adapter.portal.api.payload.admin_interact.DeleteComment
 import {{ basePackage }}.adapter.portal.api.payload.admin_interact.DeleteDanmuku
-import {{ basePackage }}.adapter.portal.api.payload.admin_interact.GetVideoCommentPage
 import {{ basePackage }}.adapter.portal.api.payload.admin_interact.GetDanmukuPage
-import {{ basePackage }}.application.commands.video_comment.DeleteVideoCommentCmd
-import {{ basePackage }}.application.commands.video_danmuku.DeleteVideoDanmukuCmd
+import {{ basePackage }}.adapter.portal.api.payload.admin_interact.GetVideoCommentPage
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

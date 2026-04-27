@@ -186,5 +186,304 @@
     "package": "",
     "name": "VideoExists",
     "desc": "视频必须存在"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "CommentDeletePermission",
+    "desc": "无权限删除该评论",
+    "message": "无权限删除该评论",
+    "targets": ["CLASS"],
+    "valueType": "Any"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "DanmukuDeletePermission",
+    "desc": "无权限删除该弹幕",
+    "message": "无权限删除该弹幕",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "danmukuIdField", "type": "String", "defaultValue": "danmukuId" },
+      { "name": "operatorIdField", "type": "String", "defaultValue": "operatorId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "DanmukuTextFormat",
+    "desc": "弹幕参数格式不正确",
+    "message": "弹幕参数格式不正确",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "textField", "type": "String", "defaultValue": "text" },
+      { "name": "colorField", "type": "String", "defaultValue": "color" },
+      { "name": "modeField", "type": "String", "defaultValue": "mode" },
+      { "name": "timeField", "type": "String", "defaultValue": "time" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "MaxVideoP_Count",
+    "desc": "上传分片数量超过系统限制",
+    "message": "上传分片数量超过系统限制",
+    "targets": ["CLASS", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "countField", "type": "String", "defaultValue": "pCount" },
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "NicknameChangeAllowed",
+    "desc": "硬币余额不足，无法修改昵称",
+    "message": "硬币余额不足，无法修改昵称",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" },
+      { "name": "nicknameField", "type": "String", "defaultValue": "nickName" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "NotSelf",
+    "desc": "不能对自己进行该操作",
+    "message": "不能对自己进行该操作",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "userId" },
+      { "name": "targetIdField", "type": "String", "defaultValue": "targetId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "NotSelfCoin",
+    "desc": "不能给自己的视频投币",
+    "message": "不能给自己的视频投币",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" },
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "ReplyCommentExists",
+    "desc": "被回复的评论不存在或不属于该视频",
+    "message": "被回复的评论不存在或不属于该视频",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" },
+      { "name": "replyCommentIdField", "type": "String", "defaultValue": "replyCommentId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "SafeFilePath",
+    "desc": "非法的文件路径，存在安全风险",
+    "message": "非法的文件路径，存在安全风险",
+    "targets": ["FIELD", "VALUE_PARAMETER"],
+    "valueType": "String"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "SeriesBelongToUser",
+    "desc": "存在不属于当前用户的系列",
+    "message": "存在不属于当前用户的系列",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "userId" },
+      { "name": "seriesIdsField", "type": "String", "defaultValue": "seriesIds" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "SeriesOwnership",
+    "desc": "无权操作该视频系列",
+    "message": "无权操作该视频系列",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "seriesIdField", "type": "String", "defaultValue": "seriesId" },
+      { "name": "operatorIdField", "type": "String", "defaultValue": "operatorId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "SeriesVideoCountLimit",
+    "desc": "系列视频数量超过允许上限",
+    "message": "系列视频数量超过允许上限",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "videoIdsField", "type": "String", "defaultValue": "videoIds" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "SufficientCoinBalance",
+    "desc": "硬币余额不足",
+    "message": "硬币余额不足",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" },
+      { "name": "coinCountField", "type": "String", "defaultValue": "coinCount" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "UserExists",
+    "desc": "目标用户不存在",
+    "message": "目标用户不存在",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "targetIdField", "type": "String", "defaultValue": "userId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "ValidateDeleteUploadSession",
+    "desc": "删除上传会话参数非法",
+    "message": "删除上传会话参数非法",
+    "targets": ["CLASS", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "customerIdField", "type": "String", "defaultValue": "customerId" },
+      { "name": "uploadIdField", "type": "String", "defaultValue": "uploadId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "ValidateUploadChunk",
+    "desc": "分片上传参数非法",
+    "message": "分片上传参数非法",
+    "targets": ["CLASS", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "customerIdField", "type": "String", "defaultValue": "customerId" },
+      { "name": "uploadIdField", "type": "String", "defaultValue": "uploadId" },
+      { "name": "chunkIndexField", "type": "String", "defaultValue": "chunkIndex" },
+      { "name": "chunkFileField", "type": "String", "defaultValue": "chunkFile" },
+      { "name": "chunkSizeField", "type": "String", "defaultValue": "chunkSize" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "ValidAuditStatus",
+    "desc": "无效的审核状态",
+    "message": "无效的审核状态",
+    "targets": ["FIELD", "VALUE_PARAMETER"],
+    "valueType": "Int"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoCommentOwner",
+    "desc": "无权置顶该评论",
+    "message": "无权置顶该评论",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "commentIdField", "type": "String", "defaultValue": "commentId" },
+      { "name": "operatorIdField", "type": "String", "defaultValue": "operatorId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoDeletePermission",
+    "desc": "无权限删除该视频",
+    "message": "无权限删除该视频",
+    "targets": ["CLASS"],
+    "valueType": "Any"
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoIdsBelongToUser",
+    "desc": "包含不属于当前用户的视频",
+    "message": "包含不属于当前用户的视频",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "userIdField", "type": "String", "defaultValue": "userId" },
+      { "name": "videoIdsField", "type": "String", "defaultValue": "videoIds" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoInSeries",
+    "desc": "视频不在指定系列中",
+    "message": "视频不在指定系列中",
+    "targets": ["CLASS"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "seriesIdField", "type": "String", "defaultValue": "seriesId" },
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoPostEditableStatus",
+    "desc": "视频草稿状态不可编辑",
+    "message": "视频草稿状态不可编辑",
+    "targets": ["CLASS", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" },
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoPostExists",
+    "desc": "视频草稿不存在",
+    "message": "视频草稿不存在",
+    "targets": ["CLASS", "FIELD", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" },
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" }
+    ]
+  },
+  {
+    "tag": "validator",
+    "package": "",
+    "name": "VideoPostStatusPending",
+    "desc": "视频草稿状态必须为待审核",
+    "message": "视频草稿状态必须为待审核",
+    "targets": ["CLASS", "VALUE_PARAMETER"],
+    "valueType": "Any",
+    "parameters": [
+      { "name": "videoIdField", "type": "String", "defaultValue": "videoId" },
+      { "name": "userIdField", "type": "String", "defaultValue": "customerId" }
+    ]
   }
 ]

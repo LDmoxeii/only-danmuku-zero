@@ -1,12 +1,8 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import {{ basePackage }}.adapter.portal.api.payload.video_danmuku.GetDanmukuList
 import {{ basePackage }}.adapter.portal.api.payload.video_danmuku.PostDanmuku
-import {{ basePackage }}.application.commands.video_danmuku.PostDanmukuCmd
-import {{ basePackage }}.application.queries.video_danmuku.GetDanmukuListByFileIdQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

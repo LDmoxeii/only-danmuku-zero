@@ -1,32 +1,15 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import cn.dev33.satoken.stp.StpUtil
-import com.only.engine.exception.BusinessException
-import {{ basePackage }}.domain.shared.error.DanmukuBusinessErrors
-import com.only.engine.json.misc.JsonUtils
-import com.only.engine.oss.factory.OssFactory
 import com.only.engine.web.annotation.IgnoreResultWrapper
-import com.only4.cap4k.ddd.core.Mediator
-import {{ basePackage }}.adapter.portal.api.payload.video_encrypt.IssueToken
 import {{ basePackage }}.adapter.portal.api.payload.video_encrypt.GetVideEncVariants
-import {{ basePackage }}.application.commands.video_encrypt.ConsumeVideoHlsKeyTokenCmd
-import {{ basePackage }}.application.commands.video_encrypt.IssueVideoHlsKeyTokenCmd
-import {{ basePackage }}.application.queries.file_storage.GetResourceAccessUrlQry
-import {{ basePackage }}.application.queries.video_encrypt.GetLatestVideoHlsKeyVersionQry
-import {{ basePackage }}.application.queries.video_encrypt.GetVideoEncryptStatusQry
-import {{ basePackage }}.application.queries.video_encrypt.ListVideoQualityAuthQry
+import {{ basePackage }}.adapter.portal.api.payload.video_encrypt.IssueToken
 import {{ basePackage }}.application.queries.video.GetVideoFileContextByIdQry
-import {{ basePackage }}.application.queries.video.ListVideoFileVariantsQry
+import {{ basePackage }}.application.queries.video_encrypt.GetVideoEncryptStatusQry
 import {{ basePackage }}.domain.aggregates.video_quality_policy.enums.QualityAuthPolicy
 import org.springframework.core.io.ByteArrayResource
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.net.URI
-import java.nio.charset.StandardCharsets
 
 @SaIgnore
 @RestController

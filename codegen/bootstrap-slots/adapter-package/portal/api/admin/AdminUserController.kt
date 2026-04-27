@@ -1,6 +1,5 @@
 package {{ basePackage }}.adapter.portal.api.admin
 
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import {{ basePackage }}.adapter.portal.api.payload.admin_user.ChangeStatus
 import {{ basePackage }}.adapter.portal.api.payload.admin_user.GetUserPage

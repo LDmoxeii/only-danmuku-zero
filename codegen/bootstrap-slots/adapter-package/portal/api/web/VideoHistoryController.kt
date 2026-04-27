@@ -1,13 +1,8 @@
 package {{ basePackage }}.adapter.portal.api.web
 
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import {{ basePackage }}.adapter.portal.api.payload.video_history.DeleteVideoHistory
 import {{ basePackage }}.adapter.portal.api.payload.video_history.GetHistoryPage
-import {{ basePackage }}.application.commands.video_play_history.ClearHistoryCmd
-import {{ basePackage }}.application.commands.video_play_history.DelHistoryCmd
-import {{ basePackage }}.application.queries.video_play_history.GetUserPlayHistoryQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

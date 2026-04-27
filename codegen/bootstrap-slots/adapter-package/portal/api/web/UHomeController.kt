@@ -1,27 +1,8 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import {{ basePackage }}.adapter.portal.api.payload.u_home.BindPhone
-import {{ basePackage }}.adapter.portal.api.payload.u_home.CancelFocus
-import {{ basePackage }}.adapter.portal.api.payload.u_home.Focus
-import {{ basePackage }}.adapter.portal.api.payload.u_home.GetCustomerProfileDetail
-import {{ basePackage }}.adapter.portal.api.payload.u_home.GetFansPage
-import {{ basePackage }}.adapter.portal.api.payload.u_home.GetFocusPage
-import {{ basePackage }}.adapter.portal.api.payload.u_home.GetCollectionPage
-import {{ basePackage }}.adapter.portal.api.payload.u_home.GetVideoPage
-import {{ basePackage }}.adapter.portal.api.payload.u_home.SaveTheme
-import {{ basePackage }}.adapter.portal.api.payload.u_home.UpdateCustomerProfile
-import {{ basePackage }}.application.commands.customer_focus.FocusCmd
-import {{ basePackage }}.application.commands.customer_focus.UnFocusCmd
-import {{ basePackage }}.application.commands.customer_profile.UpdateCustomerProfileCmd
-import {{ basePackage }}.application.commands.customer_profile.BindPhoneCmd
-import {{ basePackage }}.application.queries.customer_focus.CheckFocusStatusQry
-import {{ basePackage }}.application.queries.customer_profile.GetCustomerProfileQry
-import {{ basePackage }}.application.queries.statistics.GetTotalStatisticsInfoQry
-import {{ basePackage }}.domain._share.meta.user.SUser
+import {{ basePackage }}.adapter.portal.api.payload.u_home.*
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

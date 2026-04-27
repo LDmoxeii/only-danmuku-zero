@@ -1,22 +1,7 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
-import {{ basePackage }}.adapter.portal.api.payload.video_series.ChangeVideoSeriesSort
-import {{ basePackage }}.adapter.portal.api.payload.video_series.DeleteSeriesVideo
-import {{ basePackage }}.adapter.portal.api.payload.video_series.DeleteVideoSeries
-import {{ basePackage }}.adapter.portal.api.payload.video_series.VideoSeriesLoad
-import {{ basePackage }}.adapter.portal.api.payload.video_series.GetAllSeriesVideoList
-import {{ basePackage }}.adapter.portal.api.payload.video_series.GetVideoSeriesDetail
-import {{ basePackage }}.adapter.portal.api.payload.video_series.LoadVideoSeriesWithVideo
-import {{ basePackage }}.adapter.portal.api.payload.video_series.SaveSeriesVideo
-import {{ basePackage }}.adapter.portal.api.payload.video_series.SaveVideoSeries
-import {{ basePackage }}.application.commands.customer_video_series.*
-import {{ basePackage }}.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
-import {{ basePackage }}.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
-import {{ basePackage }}.application.queries.customer_video_series.GetCustomerVideoSeriesVideoQry
-import {{ basePackage }}.application.queries.video.GetVideoAllList
+import {{ basePackage }}.adapter.portal.api.payload.video_series.*
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

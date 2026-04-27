@@ -1,16 +1,7 @@
 package {{ basePackage }}.adapter.portal.api.admin
 
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import {{ basePackage }}.adapter.portal.api.payload.admin_video.*
-import {{ basePackage }}.application.commands.video.RecommendVideoCmd
-import {{ basePackage }}.application.commands.video_post.DeleteVideoPostCmd
-import {{ basePackage }}.application.commands.video_post.RecordVideoAuditTraceCmd
-import {{ basePackage }}.application.queries.video.GetVideoPlayFilesQry
-import {{ basePackage }}.domain.aggregates.user.enums.UserType
-import {{ basePackage }}.domain.aggregates.video_audit_trace.enums.AuditStatus
-import {{ basePackage }}.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

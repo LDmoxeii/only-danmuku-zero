@@ -1,13 +1,10 @@
 package {{ basePackage }}.adapter.portal.api.admin
 
-import com.only4.cap4k.ddd.core.Mediator
 import {{ basePackage }}.adapter.portal.api.payload.admin_category.ChangeCategorySort
 import {{ basePackage }}.adapter.portal.api.payload.admin_category.GetCategoryTree
 import {{ basePackage }}.adapter.portal.api.payload.admin_category.SaveCategory
 import {{ basePackage }}.adapter.portal.api.payload.admin_category.UpdateCategory
 import {{ basePackage }}.application.commands.category.DeleteCategoryCmd
-import {{ basePackage }}.application.commands.category.UpdateCategorySortOrderCmd
-import {{ basePackage }}.application.queries.category.GetCategoryTreeQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

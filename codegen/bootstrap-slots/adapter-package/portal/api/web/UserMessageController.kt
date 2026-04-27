@@ -1,16 +1,10 @@
 package {{ basePackage }}.adapter.portal.api.web
 
-import com.only.engine.satoken.utils.LoginHelper
-import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import {{ basePackage }}.adapter.portal.api.payload.user_message.DeleteMessage
-import {{ basePackage }}.adapter.portal.api.payload.user_message.GetNoReadCountGroup
 import {{ basePackage }}.adapter.portal.api.payload.user_message.GetMessagePage
+import {{ basePackage }}.adapter.portal.api.payload.user_message.GetNoReadCountGroup
 import {{ basePackage }}.adapter.portal.api.payload.user_message.ReadAllMessage
-import {{ basePackage }}.application.commands.customer_message.DeleteMessageCmd
-import {{ basePackage }}.application.commands.customer_message.MarkAllAsReadCmd
-import {{ basePackage }}.application.queries.message.GetNoReadMessageCountGroupQry
-import {{ basePackage }}.application.queries.message.GetNoReadMessageCountQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

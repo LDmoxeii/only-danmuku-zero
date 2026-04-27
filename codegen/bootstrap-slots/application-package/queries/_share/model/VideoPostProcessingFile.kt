@@ -1,6 +1,6 @@
 package {{ basePackage }}.application.queries._share.model
 
-import {{ basePackage }}.domain.aggregates.video_post.enums.EncryptMethod
+import {{ basePackage }}.domain._share.enums.EncryptMethod
 import {{ basePackage }}.domain.aggregates.video_post_processing.enums.ProcessStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity

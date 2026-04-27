@@ -1,22 +1,10 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.exception.BusinessException
-import {{ basePackage }}.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.web.annotation.IgnoreResultWrapper
-import com.only4.cap4k.ddd.core.Mediator
 import {{ basePackage }}.adapter.portal.api.payload.video_abr.GetVideoVariants
-import {{ basePackage }}.application.distributed.clients.oss.ReadObjectAsTextCli
-import {{ basePackage }}.application.queries.video_storage.GetVideoHlsResourceUrlQry
-import {{ basePackage }}.application.queries.video_transcode.GetVideoAbrMasterQry
-import {{ basePackage }}.application.queries.video_transcode.GetVideoPostIdByFileIdQry
-import {{ basePackage }}.application.queries.video_transcode.ListVideoAbrVariantsQry
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.net.URI
 
 @SaIgnore
 @RestController

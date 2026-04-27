@@ -1,26 +1,15 @@
 package {{ basePackage }}.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
-import com.only.engine.satoken.utils.LoginHelper
 import com.only.engine.web.annotation.IgnoreResultWrapper
-import com.only4.cap4k.ddd.core.Mediator
 import {{ basePackage }}.adapter.portal.api.payload.file.DeleteUploadSession
 import {{ basePackage }}.adapter.portal.api.payload.file.PreUploadVideo
 import {{ basePackage }}.adapter.portal.api.payload.file.UploadVideo
-import {{ basePackage }}.application.commands.file_upload_session.CreateUploadSessionCmd
-import {{ basePackage }}.application.commands.file_upload_session.DeleteUploadSessionCmd
-import {{ basePackage }}.application.commands.file_upload_session.UploadVideoChunkCmd
-import {{ basePackage }}.application.distributed.clients.file_storage.UploadImageResourceCli
-import {{ basePackage }}.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
-import {{ basePackage }}.application.queries.file_storage.GetResourceAccessUrlQry
-import {{ basePackage }}.application.queries.video_transcode.GetUploadSessionTempPathQry
 import jakarta.validation.constraints.NotEmpty
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.net.URI
 
 /**
  * 文件操作控制器 - 处理文件上传、资源获取等操作

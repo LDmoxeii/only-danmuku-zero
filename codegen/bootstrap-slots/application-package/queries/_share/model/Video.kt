@@ -1,7 +1,7 @@
 package {{ basePackage }}.application.queries._share.model
 
 import {{ basePackage }}.domain.aggregates.video.enums.RecommendType
-import {{ basePackage }}.domain.aggregates.video_post.enums.PostType
+import {{ basePackage }}.domain._share.enums.PostType
 import org.babyfish.jimmer.sql.*
 
 /**

@@ -1,6 +1,6 @@
 package {{ basePackage }}.application.queries._share.model
 
-import {{ basePackage }}.domain.aggregates.user.enums.UserType
+import {{ basePackage }}.domain._share.enums.UserType
 import org.babyfish.jimmer.sql.*
 
 @Entity

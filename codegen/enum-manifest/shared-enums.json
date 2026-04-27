@@ -1,7 +1,7 @@
 [
   {
     "name": "UserType",
-    "package": "edu.only4.danmuku.domain.aggregates.user.enums",
+    "package": "edu.only4.danmuku.domain._share.enums",
     "generateTranslation": true,
     "items": [
       { "value": 0, "name": "UNKNOW", "desc": "未知类型" },
@@ -10,7 +10,7 @@
   },
   {
     "name": "PostType",
-    "package": "edu.only4.danmuku.domain.aggregates.video_post.enums",
+    "package": "edu.only4.danmuku.domain._share.enums",
     "generateTranslation": true,
     "items": [
       { "value": 0, "name": "UNKNOW", "desc": "未知类型" },
@@ -20,7 +20,7 @@
   },
   {
     "name": "EncryptMethod",
-    "package": "edu.only4.danmuku.domain.aggregates.video_post.enums",
+    "package": "edu.only4.danmuku.domain._share.enums",
     "generateTranslation": true,
     "items": [
       { "value": 1, "name": "HLS_AES_128", "desc": "AES-128" },

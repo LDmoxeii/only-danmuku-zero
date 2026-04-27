@@ -601,20 +601,16 @@ Could not find com.only4:ksp-processor:0.2.0-SNAPSHOT.
 
 状态：
 
-已将 7 个简单字段级 `Long` validator 迁入 `iterate/drawing_board.json`，由 `designValidator` 生成到默认 `application.validators` 包根：
+已将普通 validator 统一迁入 `iterate/drawing_board.json`，由 `designValidator` 生成到默认 `application.validators` 包根。复杂 validator 只保留注解 API 和 `return true` 骨架，真实业务逻辑不再通过 bootstrap slot 保留。
 
 - `CategoryDeletionAllowed`
 - `CategoryMustExist`
+- `CommentDeletePermission`
 - `CommentExists`
 - `CommentNotClosed`
+- `DanmukuDeletePermission`
 - `DanmukuExists`
 - `DanmukuInteractionAllowed`
-- `VideoExists`
-
-以下复杂 validator 继续保留在 bootstrap slot 的 `codegen/bootstrap-slots/application-package/validators`，同时标记为能力缺口：
-
-- `CommentDeletePermission`
-- `DanmukuDeletePermission`
 - `DanmukuTextFormat`
 - `MaxVideoPCount`
 - `NicknameChangeAllowed`
@@ -632,6 +628,7 @@ Could not find com.only4:ksp-processor:0.2.0-SNAPSHOT.
 - `ValidAuditStatus`
 - `VideoCommentOwner`
 - `VideoDeletePermission`
+- `VideoExists`
 - `VideoIdsBelongToUser`
 - `VideoInSeries`
 - `VideoPostEditableStatus`
@@ -640,8 +637,8 @@ Could not find com.only4:ksp-processor:0.2.0-SNAPSHOT.
 
 判断：
 
-当前 `designValidator` 模板只能生成字段/参数级 `Long` validator 空骨架，无法表达 class-level target、自定义注解参数、`String`/`Int?`/`Any` 等特殊 valueType，也无法保留真实业务校验逻辑。这些 validator 如果直接从 slot 删除，会导致 dogfood 完整流程后的项目缺少类型，无法保证编译闭环。
+`designValidator` 已能表达 class-level target、自定义注解参数、`String`/`Int`/`Any` 等 valueType。当前 dogfood 只要求生成可编译骨架，不要求迁移旧 validator 的业务校验逻辑。
 
 处理建议：
 
-短期保留复杂 validator slot，作为 dogfood 编译补齐层。后续如果要继续收敛 slot，需要先扩展 `ValidatorModel` 和 `design/validator.kt.peb`，至少支持 target、valueType、annotation params，并明确生成器 conflict policy 不能覆盖用户手写逻辑。
+bootstrap slot 不再保留 `application-package/validators`。后续如果要恢复真实 validator 逻辑，应在业务项目中手写覆盖或引入更明确的扩展机制，不能再把历史实现作为 zero dogfood 的基础输入。

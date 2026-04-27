@@ -1,6 +1,6 @@
 package {{ basePackage }}.application.queries._share.model
 
-import {{ basePackage }}.domain.aggregates.user.enums.UserType
+import {{ basePackage }}.domain._share.enums.UserType
 import {{ basePackage }}.domain.aggregates.user_abnormal_operation_log.enums.AbnormalOpType
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
