@@ -277,7 +277,7 @@ foreach ($entry in $activeEntries) {
 $json = $merged | ConvertTo-Json -Depth 100
 [System.IO.File]::WriteAllText($outputFile, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
 
-$skippedJson = if ($skipped.Count -eq 0) { "[]" } else { $skipped | ConvertTo-Json -Depth 20 }
+$skippedJson = if ($skipped.Count -eq 0) { "[]" } else { ConvertTo-Json -InputObject @($skipped) -Depth 20 }
 [System.IO.File]::WriteAllText($skippedFile, $skippedJson + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
 
 Write-Host "Wrote $($merged.Count) standardized design entries to $outputFile"
