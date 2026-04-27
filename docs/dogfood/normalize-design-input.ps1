@@ -25,38 +25,6 @@ $packageRootsByTag = @{
     "api_payload" = "edu.only4.danmuku.adapter.portal.api.payload"
 }
 
-$reservedNestedTypeNames = @(
-    "Any",
-    "Array",
-    "Boolean",
-    "Byte",
-    "Char",
-    "Collection",
-    "Double",
-    "Float",
-    "Int",
-    "Iterable",
-    "List",
-    "Long",
-    "Map",
-    "MutableCollection",
-    "MutableIterable",
-    "MutableList",
-    "MutableMap",
-    "MutableSet",
-    "Nothing",
-    "Number",
-    "Pair",
-    "Sequence",
-    "Set",
-    "Short",
-    "String",
-    "Triple",
-    "Unit",
-    "Request",
-    "Response"
-)
-
 $generatedTypeFqns = @{
     "UserType" = "edu.only4.danmuku.domain.aggregates.user.enums.UserType"
     "PostType" = "edu.only4.danmuku.domain.aggregates.video_post.enums.PostType"
@@ -142,15 +110,54 @@ function Normalize-FieldType($field) {
     $field.type = $type
 }
 
-function To-NestedTypeName([string] $rawName) {
-    $parts = [regex]::Split($rawName, "[^A-Za-z0-9]+") | Where-Object { $_ -ne "" }
-    return ($parts | ForEach-Object {
-        if ($_.Length -eq 1) {
-            $_.ToUpperInvariant()
-        } else {
-            $_.Substring(0, 1).ToUpperInvariant() + $_.Substring(1)
+function Test-TypeContainsToken([string] $type, [string] $token) {
+    return $type -match "(?<![A-Za-z0-9_.])$([regex]::Escape($token))(?![A-Za-z0-9_])"
+}
+
+function Replace-TypeToken([string] $type, [string] $token, [string] $replacement) {
+    return [regex]::Replace($type, "(?<![A-Za-z0-9_.])$([regex]::Escape($token))(?![A-Za-z0-9_])", $replacement)
+}
+
+function Get-NestedChildFields($fields, [string] $fieldName) {
+    $prefix = "$fieldName."
+    return @($fields | Where-Object { $null -ne $_.name -and ([string] $_.name).StartsWith($prefix, [System.StringComparison]::Ordinal) })
+}
+
+function Normalize-RecursiveFieldTypes($fields, [string] $namespace) {
+    foreach ($field in $fields) {
+        if ($null -eq $field.type) {
+            continue
         }
-    }) -join ""
+
+        $fieldName = [string] $field.name
+        $fieldType = [string] $field.type
+        $isRootField = -not $fieldName.Contains(".")
+        $isKnownRootTreeField = $namespace -eq "response" -and $isRootField -and $fieldName -eq "children"
+        $childFields = Get-NestedChildFields $fields $fieldName
+
+        if (Test-TypeContainsToken $fieldType "Response") {
+            if ($isKnownRootTreeField) {
+                $fieldType = Replace-TypeToken $fieldType "Response" "self"
+                $field.type = $fieldType
+            } else {
+                return "unsupported Response recursion type in ${namespace}: $fieldName"
+            }
+        }
+
+        if (Test-TypeContainsToken $fieldType "Item") {
+            if ($isKnownRootTreeField -and $childFields.Count -eq 0) {
+                $fieldType = Replace-TypeToken $fieldType "Item" "self"
+                $field.type = $fieldType
+            } elseif ($childFields.Count -gt 0) {
+                # A direct field with child declarations defines a local Item model.
+                $field.type = $fieldType
+            } else {
+                return "unsupported Item type without local child fields in ${namespace}: $fieldName"
+            }
+        }
+    }
+
+    return $null
 }
 
 function Normalize-NestedNamespace($entry, [string] $namespace, [string] $fieldProperty) {
@@ -160,53 +167,32 @@ function Normalize-NestedNamespace($entry, [string] $namespace, [string] $fieldP
     }
 
     foreach ($field in $fields) {
-        if ($null -ne $field.type -and ([string] $field.type) -match "(?<![A-Za-z0-9_.])Response(?![A-Za-z0-9_])") {
-            return "unsupported self-recursive Response type in ${namespace}: $($field.name)"
-        }
-        if ($null -ne $field.type -and ([string] $field.type) -match "(?<![A-Za-z0-9_.])Item(?![A-Za-z0-9_])") {
-            return "unsupported legacy Item response type in ${namespace}: $($field.name)"
-        }
-    }
-
-    foreach ($field in $fields) {
         if ($null -ne $field.name) {
             $field.name = ([string] $field.name).Replace("[]", "")
         }
     }
 
-    $groups = @{}
+    $recursiveTypeError = Normalize-RecursiveFieldTypes $fields $namespace
+    if ($null -ne $recursiveTypeError) {
+        return $recursiveTypeError
+    }
+
     foreach ($field in $fields) {
         $name = [string] $field.name
         if (-not $name.Contains(".")) {
             continue
         }
+
         $parts = $name.Split(".")
-        if ($parts.Count -ne 2) {
-            return "unsupported multi-level nested field in ${namespace}: $name"
-        }
-        $rootName = $parts[0]
-        if (-not $groups.ContainsKey($rootName)) {
-            $nestedTypeName = To-NestedTypeName $rootName
-            if ($nestedTypeName -in $reservedNestedTypeNames) {
-                return "unsupported reserved nested type name in ${namespace}: $nestedTypeName"
+        for ($index = 1; $index -lt $parts.Count; $index++) {
+            $containerPrefix = ($parts[0..($index - 1)] -join ".")
+            $directContainers = @($fields | Where-Object { $_.name -eq $containerPrefix })
+            if ($directContainers.Count -eq 0) {
+                return "missing direct container field for nested field in ${namespace}: $containerPrefix (required by $name)"
             }
-            $groups[$rootName] = $nestedTypeName
-        }
-    }
-
-    foreach ($rootName in $groups.Keys) {
-        $directRoots = @($fields | Where-Object { $_.name -eq $rootName })
-        if ($directRoots.Count -ne 1) {
-            return "missing direct root field for nested field in ${namespace}: $rootName"
-        }
-
-        $nestedTypeName = $groups[$rootName]
-        $directRoot = $directRoots[0]
-        $currentType = [string] $directRoot.type
-        if ($currentType -match "^(Collection|Iterable|List|MutableCollection|MutableList|MutableSet|Set)<.*>$") {
-            $directRoot.type = "$($matches[1])<$nestedTypeName>"
-        } else {
-            $directRoot.type = $nestedTypeName
+            if ($directContainers.Count -gt 1) {
+                return "duplicate direct container field for nested field in ${namespace}: $containerPrefix (required by $name)"
+            }
         }
     }
 
@@ -291,7 +277,7 @@ foreach ($entry in $activeEntries) {
 $json = $merged | ConvertTo-Json -Depth 100
 [System.IO.File]::WriteAllText($outputFile, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
 
-$skippedJson = $skipped | ConvertTo-Json -Depth 20
+$skippedJson = if ($skipped.Count -eq 0) { "[]" } else { $skipped | ConvertTo-Json -Depth 20 }
 [System.IO.File]::WriteAllText($skippedFile, $skippedJson + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
 
 Write-Host "Wrote $($merged.Count) standardized design entries to $outputFile"

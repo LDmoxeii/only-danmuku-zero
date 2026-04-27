@@ -228,6 +228,56 @@
   {
     "tag": "api_payload",
     "package": "admin_category",
+    "name": "getCategoryTree",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      {
+        "name": "categoryId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "categoryCode",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "categoryName",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "parentId",
+        "type": "Long",
+        "nullable": true
+      },
+      {
+        "name": "icon",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "background",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "sort",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "children",
+        "type": "List<self>",
+        "nullable": false
+      }
+    ]
+  },
+  {
+    "tag": "api_payload",
+    "package": "admin_category",
     "name": "saveCategory",
     "desc": "",
     "aggregates": [],
@@ -812,6 +862,56 @@
       }
     ],
     "responseFields": []
+  },
+  {
+    "tag": "api_payload",
+    "package": "category",
+    "name": "getCategoryTree",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      {
+        "name": "categoryId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "categoryCode",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "categoryName",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "parentCategoryId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "icon",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "background",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "sort",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "children",
+        "type": "List<self>",
+        "nullable": false
+      }
+    ]
   },
   {
     "tag": "api_payload",
@@ -2958,7 +3058,7 @@
       },
       {
         "name": "videoInfoList",
-        "type": "List<VideoInfoList>",
+        "type": "List<VideoInfoItem>",
         "nullable": true
       },
       {
@@ -5672,7 +5772,7 @@
       },
       {
         "name": "uploadFileList",
-        "type": "List<UploadFileList>",
+        "type": "List<VideoPostFileSpec>",
         "nullable": false
       },
       {
@@ -5780,6 +5880,140 @@
   {
     "tag": "command",
     "package": "video_post",
+    "name": "SyncVideoPostProcessStatus",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      {
+        "name": "videoPostId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "targetStatus",
+        "type": "edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus",
+        "nullable": false
+      },
+      {
+        "name": "duration",
+        "type": "Int",
+        "nullable": true
+      },
+      {
+        "name": "failReason",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "fileList",
+        "type": "List<FileItem>",
+        "nullable": false
+      },
+      {
+        "name": "fileList.fileIndex",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "fileList.transcodeOutputPrefix",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "fileList.encryptOutputPrefix",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "fileList.variants",
+        "type": "List<VariantItem>",
+        "nullable": false
+      },
+      {
+        "name": "fileList.variants.quality",
+        "type": "String",
+        "nullable": false,
+        "defaultValue": ""
+      },
+      {
+        "name": "fileList.variants.width",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "fileList.variants.height",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "fileList.variants.videoBitrateKbps",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "fileList.variants.audioBitrateKbps",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "fileList.variants.bandwidthBps",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "fileList.variants.playlistPath",
+        "type": "String",
+        "nullable": false,
+        "defaultValue": ""
+      },
+      {
+        "name": "fileList.variants.segmentPrefix",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "fileList.variants.segmentDuration",
+        "type": "Int",
+        "nullable": true
+      },
+      {
+        "name": "fileList.duration",
+        "type": "Int",
+        "nullable": true
+      },
+      {
+        "name": "fileList.fileSize",
+        "type": "Long",
+        "nullable": true
+      },
+      {
+        "name": "fileList.encryptMethod",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "fileList.keyVersion",
+        "type": "Int",
+        "nullable": true
+      }
+    ],
+    "responseFields": [
+      {
+        "name": "success",
+        "type": "Boolean",
+        "nullable": false,
+        "defaultValue": "true"
+      }
+    ]
+  },
+  {
+    "tag": "command",
+    "package": "video_post",
     "name": "TranscodeAllTranscodingFiles",
     "desc": "",
     "aggregates": [],
@@ -5872,7 +6106,7 @@
       },
       {
         "name": "uploadFileList",
-        "type": "List<UploadFileList>",
+        "type": "List<VideoPostFileSpec>",
         "nullable": false
       },
       {
@@ -6165,7 +6399,7 @@
       },
       {
         "name": "fileList",
-        "type": "List<FileList>",
+        "type": "List<VideoPostProcessingFileSpec>",
         "nullable": false
       },
       {
@@ -7228,6 +7462,56 @@
   {
     "tag": "query",
     "package": "category",
+    "name": "GetCategoryTree",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      {
+        "name": "categoryId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "code",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "parentId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "icon",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "background",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "sort",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "children",
+        "type": "List<self>",
+        "nullable": false
+      }
+    ]
+  },
+  {
+    "tag": "query",
+    "package": "category",
     "name": "UniqueCategoryCode",
     "desc": "",
     "aggregates": [],
@@ -7878,7 +8162,7 @@
       },
       {
         "name": "videoList",
-        "type": "List<VideoList>",
+        "type": "List<VideoItem>",
         "nullable": true
       },
       {
@@ -8006,7 +8290,7 @@
       },
       {
         "name": "videoList",
-        "type": "List<VideoList>",
+        "type": "List<VideoItem>",
         "nullable": true
       },
       {
@@ -8142,6 +8426,31 @@
         "name": "sendUserAvatar",
         "type": "String",
         "nullable": true
+      }
+    ]
+  },
+  {
+    "tag": "query",
+    "package": "message",
+    "name": "GetNoReadMessageCountGroup",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [],
+    "responseFields": [
+      {
+        "name": "list",
+        "type": "List<Item>",
+        "nullable": false
+      },
+      {
+        "name": "list.messageType",
+        "type": "Int",
+        "nullable": false
+      },
+      {
+        "name": "list.count",
+        "type": "Int",
+        "nullable": false
       }
     ]
   },
@@ -9305,6 +9614,131 @@
   },
   {
     "tag": "query",
+    "package": "video_comment",
+    "name": "VideoCommentPage",
+    "desc": "",
+    "aggregates": [],
+    "requestFields": [
+      {
+        "name": "videoId",
+        "type": "Long",
+        "nullable": true
+      },
+      {
+        "name": "videoUserId",
+        "type": "Long",
+        "nullable": true
+      },
+      {
+        "name": "videoNameFuzzy",
+        "type": "String",
+        "nullable": true
+      }
+    ],
+    "responseFields": [
+      {
+        "name": "commentId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "parentCommentId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "videoId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "videoUserId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "videoName",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "videoCover",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "content",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "imgPath",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "customerId",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "customerNickname",
+        "type": "String",
+        "nullable": false
+      },
+      {
+        "name": "customerAvatar",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "replyCustomerId",
+        "type": "Long",
+        "nullable": true
+      },
+      {
+        "name": "replyCustomerNickname",
+        "type": "String",
+        "nullable": true
+      },
+      {
+        "name": "postTime",
+        "type": "Long",
+        "nullable": false
+      },
+      {
+        "name": "likeCount",
+        "type": "Int",
+        "nullable": true,
+        "defaultValue": "0"
+      },
+      {
+        "name": "hateCount",
+        "type": "Int",
+        "nullable": true,
+        "defaultValue": "0"
+      },
+      {
+        "name": "topType",
+        "type": "Int",
+        "nullable": true,
+        "defaultValue": "0"
+      },
+      {
+        "name": "childrenCount",
+        "type": "Int",
+        "nullable": false,
+        "defaultValue": "0"
+      },
+      {
+        "name": "children",
+        "type": "List<self>",
+        "nullable": true
+      }
+    ]
+  },
+  {
+    "tag": "query",
     "package": "video_danmuku",
     "name": "CheckDanmukuExists",
     "desc": "",
@@ -9731,7 +10165,7 @@
       },
       {
         "name": "videoFileList",
-        "type": "List<VideoFileList>",
+        "type": "List<VideoFileItem>",
         "nullable": false
       },
       {
@@ -10205,7 +10639,7 @@
     "responseFields": [
       {
         "name": "files",
-        "type": "List<Files>",
+        "type": "List<FileItem>",
         "nullable": false
       },
       {
@@ -10497,7 +10931,7 @@
       },
       {
         "name": "variants",
-        "type": "List<Variants>",
+        "type": "List<VariantItem>",
         "nullable": false
       },
       {
@@ -12229,7 +12663,7 @@
       },
       {
         "name": "fileList",
-        "type": "List<FileList>",
+        "type": "List<FileItem>",
         "nullable": false
       },
       {
@@ -12406,7 +12840,7 @@
       },
       {
         "name": "fileList",
-        "type": "List<FileList>",
+        "type": "List<FileItem>",
         "nullable": false
       },
       {
@@ -12475,6 +12909,64 @@
       }
     ],
     "responseFields": []
+  },
+  {
+    "tag": "api_payload",
+    "package": "account",
+    "name": "batchSaveAccountList",
+    "desc": "批量新增客商账户信息（来源：付款申请）",
+    "requestFields": [
+      {
+        "name": "globalId",
+        "type": "String",
+        "required": true,
+        "desc": "客商全局Id",
+        "defaultValue": "0"
+      },
+      {
+        "name": "account",
+        "type": "AccountInfo",
+        "required": true,
+        "desc": "账户信息"
+      },
+      {
+        "name": "account.accountNumber",
+        "type": "String",
+        "required": true,
+        "desc": "账号"
+      },
+      {
+        "name": "account.accountName",
+        "type": "String",
+        "required": true,
+        "desc": "户名"
+      },
+      {
+        "name": "account.bank",
+        "type": "Bank",
+        "required": true,
+        "desc": "银行"
+      },
+      {
+        "name": "account.bank.code",
+        "type": "String",
+        "required": true,
+        "desc": "银行编码"
+      },
+      {
+        "name": "account.currency",
+        "type": "String",
+        "required": true,
+        "desc": "币种"
+      }
+    ],
+    "responseFields": [
+      {
+        "name": "result",
+        "type": "Boolean",
+        "desc": "处理成功返回 true"
+      }
+    ]
   },
   {
     "tag": "validator",
