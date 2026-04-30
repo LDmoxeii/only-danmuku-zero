@@ -108,22 +108,6 @@ cap4k {
             excludeTables.set(emptyList())
         }
     }
-    layout {
-        aggregateEnumTranslation {
-            packageRoot.set("adapter.domain.translation")
-        }
-        aggregateUniqueQuery {
-            packageSuffix.set("")
-        }
-        aggregateUniqueQueryHandler {
-            packageRoot.set("adapter.application.queries")
-            packageSuffix.set("")
-        }
-        designDomainEventHandler {
-            packageRoot.set("application.subscribers.domain")
-            packageSuffix.set("")
-        }
-    }
     generators {
         aggregate {
             enabled.set(true)
