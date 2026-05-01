@@ -664,7 +664,7 @@ class CustomerVideoSeries(
 
 在生成器侧修复，不在 zero 项目手动改生成实体。规则建议为：DB default 优先；无法从 DB default 归一化时，非空基础类型按 Kotlin 类型兜底，例如 `Long = 0L`、`Int = 0`、`String = ""`、`Boolean = false`；nullable 字段默认为 `null`；集合关系继续使用 `mutableListOf()`。需要补 aggregate planner / renderer / compile-functional 覆盖。
 
-### [blocker] [migration-query-contract] 能由 design/generator 表达的 query contract 不应在迁移中手改源码
+### [blocker] [migration-contract] Query/Cmd/Cli contract 必须由 design/generator 重生成
 
 复现条件：
 
@@ -676,7 +676,9 @@ only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，
 
 判断：
 
-凡是 application query/client/command 的 `Request` / `Response` 结构、是否是 `items` 容器、是否是 `page` 容器，都应该由 design 输入和 generator 决定。手动修 query contract 只能作为临时 unblock，不应该进入最终 dogfood 基准。
+凡是 application query/client/command 的 `Request` / `Response` 结构、是否是 `items` 容器、是否是 `page` 容器，都必须由 design 输入和 generator 决定。手动修 contract 只能作为临时 unblock，不应该进入最终 dogfood 基准。
+
+`docs/dogfood/audit-design-contracts.ps1` 已把这条规则固化成脚本：它从 `codegen/design/design.json` 推导所有 `*Cmd`、`*Qry`、`*Cli` 期望产物，并把 checked-in source 中的同名 contract 标记为 `CHECKED_IN_CONTRACT`。
 
 处理建议：
 
