@@ -148,6 +148,6 @@ cap4k {
         }
     }
     templates {
-        conflictPolicy.set("OVERWRITE")
+        conflictPolicy.set("SKIP")
     }
 }
