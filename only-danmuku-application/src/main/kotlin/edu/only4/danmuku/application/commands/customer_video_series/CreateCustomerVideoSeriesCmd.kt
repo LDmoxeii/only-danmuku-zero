@@ -1,34 +1,165 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
+
+import edu.only4.danmuku.domain.aggregates.video_post_processing.*
+
+import edu.only4.danmuku.domain.aggregates.video_post.*
+
+import edu.only4.danmuku.domain.aggregates.video_play_history.*
+
+import edu.only4.danmuku.domain.aggregates.video_hls_key_token.*
+
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.*
+
+import edu.only4.danmuku.domain.aggregates.video_danmuku.*
+
+import edu.only4.danmuku.domain.aggregates.video_comment.*
+
+import edu.only4.danmuku.domain.aggregates.video.*
+
+import edu.only4.danmuku.domain.aggregates.user.*
+
+import edu.only4.danmuku.domain.aggregates.statistics.*
+
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.*
+
+import edu.only4.danmuku.domain.aggregates.customer_video_series.*
+
+import edu.only4.danmuku.domain.aggregates.customer_profile.*
+
+import edu.only4.danmuku.domain.aggregates.customer_message.*
+
+import edu.only4.danmuku.domain.aggregates.category.*
+
+import com.only.engine.error.CommonErrors
+import com.only.engine.exception.AppException
+import com.only.engine.exception.BusinessException
+import com.only.engine.exception.DependencyException
+import com.only.engine.exception.RequestException
+import com.only.engine.exception.SystemException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+import edu.only4.danmuku.domain._share.meta.customer_video_series.SCustomerVideoSeries
+import edu.only4.danmuku.domain.aggregates.customer_video_series.factory.CustomerVideoSeriesFactory
+import edu.only4.danmuku.application.validators.UniqueSeriesNameForUser
+import edu.only4.danmuku.application.validators.VideoIdsBelongToUser
+import edu.only4.danmuku.application.validators.SeriesVideoCountLimit
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 import org.springframework.stereotype.Service
 
+/**
+ * 创建用户视频系列
+ *
+ * 该文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/15
+ */
 object CreateCustomerVideoSeriesCmd {
 
     @Service
     class Handler : Command<Request, Response> {
-
         override fun exec(request: Request): Response {
-            Mediator.uow.save()
+            val normalizedName = request.seriesName.trim()
+            val normalizedDescription = request.seriesDescription?.trim()?.takeIf { it.isNotEmpty() }
 
-            return Response(
-                seriesId = TODO("set seriesId")
-            )
+            val incomingVideoIds = parseVideoIds(request.videoIds)
+
+            val targetSeries = if (request.seriesId != null) {
+                val series = Mediator.repositories.findFirst(
+                    SCustomerVideoSeries.predicateById(request.seriesId)
+                ) ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "系列不存在: ${request.seriesId}")
+
+                if (series.customerId != request.userId) {
+                    throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "没有权限操作该系列")
+                }
+
+                series.updateBasicInfo(normalizedName, normalizedDescription)
+
+                incomingVideoIds?.let { videoIds -> series.replaceVideos(request.userId, videoIds) }
+                series
+            } else {
+                val sort = determineNextSort(request.userId)
+                val series = Mediator.factories.create(
+                    CustomerVideoSeriesFactory.Payload(
+                        customerId = request.userId,
+                        seriesName = normalizedName,
+                        seriesDescription = normalizedDescription,
+                        sort = sort
+                    )
+                )
+
+                val videosToAttach = incomingVideoIds ?: emptyList()
+                if (videosToAttach.isNotEmpty()) {
+                    series.replaceVideos(request.userId, videosToAttach)
+                }
+                series
+            }
+
+            Mediator.uow.save()
+            return Response(seriesId = targetSeries.id)
+        }
+
+        private fun determineNextSort(userId: Long): Byte {
+            val currentMax = Mediator.repositories.findFirst(
+                SCustomerVideoSeries.predicate(
+                    { schema -> schema.customerId eq userId },
+                    { schema -> schema.sort.desc() }
+                ),
+                persist = false
+            )?.sort?.toInt() ?: 0
+            val next = currentMax + 1
+            if (next > Byte.MAX_VALUE) {
+                throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "系列数量已达到上限")
+            }
+            return next.toByte()
+        }
+
+        private fun parseVideoIds(rawVideoIds: String?): List<Long>? {
+            rawVideoIds ?: return null
+            val result = mutableListOf<Long>()
+            val dedupe = mutableSetOf<Long>()
+            rawVideoIds.split(',').forEach { part ->
+                val trimmed = part.trim()
+                if (trimmed.isEmpty()) {
+                    return@forEach
+                }
+                val id = trimmed.toLongOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
+                if (id <= 0) {
+                    throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
+                }
+                if (dedupe.add(id)) {
+                    result.add(id)
+                }
+            }
+            return result
         }
     }
 
+    @UniqueSeriesNameForUser(userIdField = "userId", seriesIdField = "seriesId", seriesNameField = "seriesName")
+    @VideoIdsBelongToUser(userIdField = "userId", videoIdsField = "videoIds")
+    @SeriesVideoCountLimit(videoIdsField = "videoIds")
     data class Request(
+        /** 用户ID */
         val userId: Long,
-        val seriesId: Long?,
+        /** 系列ID(编辑时用) */
+        val seriesId: Long? = null,
+        /** 系列名称 */
+        @field:NotBlank(message = "系列名称不能为空")
+        @field:Size(max = 100, message = "系列名称长度不能超过100个字符")
         val seriesName: String,
-        val seriesDescription: String?,
-        val videoIds: String?
+        /** 系列描述 */
+        @field:Size(max = 200, message = "系列描述长度不能超过200个字符")
+        val seriesDescription: String? = null,
+        /** 视频ID列表(逗号分隔) */
+        val videoIds: String? = null,
     ) : RequestParam<Response>
 
     data class Response(
-        val seriesId: Long
+        /** 系列ID */
+        val seriesId: Long,
     )
-
 }

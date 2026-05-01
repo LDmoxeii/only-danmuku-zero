@@ -1,4 +1,3 @@
-
 package edu.only4.danmuku.adapter.portal.api.payload.admin_video
 
 object AuditVideo {
@@ -8,7 +7,4 @@ object AuditVideo {
         val status: Int,
         val reason: String?
     )
-
-    class Response
-
 }

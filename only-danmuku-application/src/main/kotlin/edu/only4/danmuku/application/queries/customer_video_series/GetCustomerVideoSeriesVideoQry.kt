@@ -10,12 +10,16 @@ object GetCustomerVideoSeriesVideoQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val seriesId: Long,
-        val seriesName: String?,
-        val seriesDescription: String?,
-        val sort: Int?,
-        val videoList: List<VideoItem>?
+        val items: List<SeriesItem>
     ) {
+        data class SeriesItem(
+            val seriesId: Long,
+            val seriesName: String?,
+            val seriesDescription: String?,
+            val sort: Int?,
+            val videoList: List<VideoItem>?
+        )
+
         data class VideoItem(
             val videoId: Long,
             val videoCover: String,

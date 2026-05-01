@@ -11,7 +11,11 @@ object ListVideoHlsEncryptKeysByPostFileQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val encryptKeyId: Long
-    )
+        val items: List<EncryptKeyItem>
+    ) {
+        data class EncryptKeyItem(
+            val encryptKeyId: Long
+        )
+    }
 
 }

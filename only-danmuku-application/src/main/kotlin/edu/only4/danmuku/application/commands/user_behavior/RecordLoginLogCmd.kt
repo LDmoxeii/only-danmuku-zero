@@ -1,25 +1,82 @@
 package edu.only4.danmuku.application.commands.user_behavior
 
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
+
+import edu.only4.danmuku.domain.aggregates.video_post_processing.*
+
+import edu.only4.danmuku.domain.aggregates.video_post.*
+
+import edu.only4.danmuku.domain.aggregates.video_play_history.*
+
+import edu.only4.danmuku.domain.aggregates.video_hls_key_token.*
+
+import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.*
+
+import edu.only4.danmuku.domain.aggregates.video_danmuku.*
+
+import edu.only4.danmuku.domain.aggregates.video_comment.*
+
+import edu.only4.danmuku.domain.aggregates.video.*
+
+import edu.only4.danmuku.domain.aggregates.user.*
+
+import edu.only4.danmuku.domain.aggregates.statistics.*
+
+import edu.only4.danmuku.domain.aggregates.video_file_upload_session.*
+
+import edu.only4.danmuku.domain.aggregates.customer_video_series.*
+
+import edu.only4.danmuku.domain.aggregates.customer_profile.*
+
+import edu.only4.danmuku.domain.aggregates.customer_message.*
+
+import edu.only4.danmuku.domain.aggregates.category.*
+
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
+
 import edu.only4.danmuku.domain._share.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
+import edu.only4.danmuku.domain.aggregates.user_login_log.factory.UserLoginLogFactory
+
 import org.springframework.stereotype.Service
 
+/**
+ * 记录用户登录日志
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/20
+ */
 object RecordLoginLogCmd {
 
     @Service
     class Handler : Command<Request, Response> {
-
         override fun exec(request: Request): Response {
+            val occurTime = request.occurTime ?: (System.currentTimeMillis() / 1000L)
+            val log = Mediator.factories.create(
+                UserLoginLogFactory.Payload(
+                    userId = request.userId,
+                    userType = request.userType,
+                    loginName = request.loginName,
+                    loginType = request.loginType,
+                    result = request.result,
+                    ip = request.ip,
+                    userAgent = request.userAgent,
+                    reason = request.reason,
+                    occurTime = occurTime
+                )
+            )
+
             Mediator.uow.save()
 
             return Response(
-                logId = TODO("set logId")
+                logId = log.id
             )
         }
+
     }
 
     data class Request(
@@ -29,13 +86,12 @@ object RecordLoginLogCmd {
         val loginType: LoginType,
         val result: LoginResult,
         val ip: String,
-        val userAgent: String?,
-        val reason: String?,
-        val occurTime: Long?
+        val userAgent: String? = null,
+        val reason: String? = null,
+        val occurTime: Long? = null,
     ) : RequestParam<Response>
 
     data class Response(
         val logId: Long
     )
-
 }

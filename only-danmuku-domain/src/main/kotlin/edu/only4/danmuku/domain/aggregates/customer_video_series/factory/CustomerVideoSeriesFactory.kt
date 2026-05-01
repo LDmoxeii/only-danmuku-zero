@@ -3,9 +3,18 @@ package edu.only4.danmuku.domain.aggregates.customer_video_series.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+
 import edu.only4.danmuku.domain.aggregates.customer_video_series.CustomerVideoSeries
+
 import org.springframework.stereotype.Service
 
+/**
+ * 用户视频序列归档;
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/15
+ */
 @Service
 @Aggregate(
     aggregate = "CustomerVideoSeries",
@@ -16,16 +25,33 @@ import org.springframework.stereotype.Service
 class CustomerVideoSeriesFactory : AggregateFactory<CustomerVideoSeriesFactory.Payload, CustomerVideoSeries> {
 
     override fun create(payload: Payload): CustomerVideoSeries {
-        TODO("Implement aggregate construction")
+        return CustomerVideoSeries(
+            id = 0L,
+            customerId = payload.customerId,
+            seriesName = payload.seriesName,
+            seriesDescription = payload.seriesDescription,
+            sort = payload.sort.toInt(),
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L
+        )
     }
 
-    @Aggregate(
+     @Aggregate(
         aggregate = "CustomerVideoSeries",
-        name = "Payload",
+        name = "CustomerVideoSeriesPayload",
         type = Aggregate.TYPE_FACTORY_PAYLOAD,
         description = ""
     )
     data class Payload(
-        val name: String
-    ) : AggregatePayload<CustomerVideoSeries>
+         val customerId: Long,
+         val seriesName: String,
+         val seriesDescription: String? = null,
+         val sort: Byte = 0,
+     ) : AggregatePayload<CustomerVideoSeries>
+
 }

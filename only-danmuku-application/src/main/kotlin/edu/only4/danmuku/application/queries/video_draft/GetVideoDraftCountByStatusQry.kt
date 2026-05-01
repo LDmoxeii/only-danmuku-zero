@@ -8,8 +8,8 @@ object GetVideoDraftCountByStatusQry {
 
     data class Request(
         val userId: Long,
-        val status: VideoStatus?,
-        val excludeStatusArray: List<VideoStatus>?
+        val status: VideoStatus? = null,
+        val excludeStatusArray: List<VideoStatus>? = null
     ) : RequestParam<Response>
 
     data class Response(

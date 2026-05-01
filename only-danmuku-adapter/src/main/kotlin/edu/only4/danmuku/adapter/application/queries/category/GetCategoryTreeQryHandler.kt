@@ -1,20 +1,71 @@
 package edu.only4.danmuku.adapter.application.queries.category
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.Category
+import edu.only4.danmuku.application.queries._share.model.parentId
+import edu.only4.danmuku.application.queries._share.model.sort
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
+import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.springframework.stereotype.Service
 
 /**
- *
- *
- * 本文件由 cap4k pipeline 生成
+ * 获取分类树形结构
  */
 @Service
-class GetCategoryTreeQryHandler : Query<GetCategoryTreeQry.Request, GetCategoryTreeQry.Response> {
+class GetCategoryTreeQryHandler(
+    private val sqlClient: KSqlClient
+) : Query<GetCategoryTreeQry.Request, GetCategoryTreeQry.Response> {
 
     override fun exec(request: GetCategoryTreeQry.Request): GetCategoryTreeQry.Response {
+        val categories = sqlClient.createQuery(Category::class) {
+            orderBy(table.sort)
+            select(table)
+        }.execute()
+        val childrenByParentId = categories.groupBy { it.parentId ?: 0L }
+
         return GetCategoryTreeQry.Response(
-            items = TODO("set items")
+            items = childrenByParentId[0L]
+                .orEmpty()
+                .sortedBy { it.sort }
+                .map { readModelToItem(it, childrenByParentId) }
+        )
+    }
+
+    private fun readModelToItem(
+        dto: Category,
+        childrenByParentId: Map<Long, List<Category>>
+    ): GetCategoryTreeQry.Response.CategoryItem {
+        return GetCategoryTreeQry.Response.CategoryItem(
+            categoryId = dto.id,
+            code = dto.code,
+            name = dto.name,
+            parentId = dto.parentId ?: 0,
+            icon = dto.icon,
+            background = dto.background,
+            sort = dto.sort,
+            children = childrenByParentId[dto.id]
+                .orEmpty()
+                .sortedBy { it.sort }
+                .map { readModelToChild(it, childrenByParentId) }
+        )
+    }
+
+    private fun readModelToChild(
+        dto: Category,
+        childrenByParentId: Map<Long, List<Category>>
+    ): GetCategoryTreeQry.Response.Children {
+        return GetCategoryTreeQry.Response.Children(
+            categoryId = dto.id,
+            code = dto.code,
+            name = dto.name,
+            parentId = dto.parentId ?: 0,
+            icon = dto.icon,
+            background = dto.background,
+            sort = dto.sort,
+            children = childrenByParentId[dto.id]
+                .orEmpty()
+                .sortedBy { it.sort }
+                .map { readModelToChild(it, childrenByParentId) }
         )
     }
 }

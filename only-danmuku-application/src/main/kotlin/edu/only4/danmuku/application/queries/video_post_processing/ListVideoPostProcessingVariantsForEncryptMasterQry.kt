@@ -11,11 +11,15 @@ object ListVideoPostProcessingVariantsForEncryptMasterQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val quality: String,
-        val width: Int,
-        val height: Int,
-        val bandwidthBps: Int,
-        val playlistPath: String
-    )
+        val items: List<VariantItem>
+    ) {
+        data class VariantItem(
+            val quality: String,
+            val width: Int,
+            val height: Int,
+            val bandwidthBps: Int,
+            val playlistPath: String
+        )
+    }
 
 }

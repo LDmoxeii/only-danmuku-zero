@@ -1,15 +1,26 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
+import com.only.engine.satoken.utils.LoginHelper
 import com.only.engine.web.annotation.IgnoreResultWrapper
+import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.file.DeleteUploadSession
 import edu.only4.danmuku.adapter.portal.api.payload.file.PreUploadVideo
 import edu.only4.danmuku.adapter.portal.api.payload.file.UploadVideo
+import edu.only4.danmuku.application.commands.file_upload_session.CreateUploadSessionCmd
+import edu.only4.danmuku.application.commands.file_upload_session.DeleteUploadSessionCmd
+import edu.only4.danmuku.application.commands.file_upload_session.UploadVideoChunkCmd
+import edu.only4.danmuku.application.distributed.clients.file_storage.UploadImageResourceCli
+import edu.only4.danmuku.application.distributed.clients.file_upload_session.UploadVideoChunkStorageCli
+import edu.only4.danmuku.application.queries.file_storage.GetResourceAccessUrlQry
+import edu.only4.danmuku.application.queries.video_transcode.GetUploadSessionTempPathQry
 import jakarta.validation.constraints.NotEmpty
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.net.URI
 
 /**
  * 文件操作控制器 - 处理文件上传、资源获取等操作
@@ -25,7 +36,12 @@ class FileController {
     fun getResource(
         @NotEmpty sourceName: String
     ): ResponseEntity<Unit> {
-        TODO("Pending controller adapter contract implementation.")
+        val result = Mediator.queries.send(
+            GetResourceAccessUrlQry.Request(resourceKey = sourceName)
+        )
+        return ResponseEntity.status(HttpStatus.FOUND)
+            .location(URI.create(result.url))
+            .build()
     }
 
     /**
@@ -33,7 +49,15 @@ class FileController {
      */
     @PostMapping("/preUploadVideo")
     fun preUploadVideo(@RequestBody @Validated request: PreUploadVideo.Request): Long {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        val result = Mediator.commands.send(
+            CreateUploadSessionCmd.Request(
+                customerId = currentUserId,
+                fileName = request.fileName,
+                chunks =  request.chunks
+            )
+        )
+        return result.uploadId
     }
 
     /**
@@ -45,7 +69,26 @@ class FileController {
         @RequestParam("chunkIndex") chunkIndex: Int,
         @RequestParam("uploadId") uploadId: Long,
     ): UploadVideo.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        val tempPath = Mediator.queries.send(
+            GetUploadSessionTempPathQry.Request(uploadId = uploadId)
+        ).tempPath
+        val storageResp = Mediator.requests.send(
+            UploadVideoChunkStorageCli.Request(
+                tempPath = tempPath,
+                chunkIndex = chunkIndex,
+                chunkFile = chunkFile
+            )
+        )
+        Mediator.commands.send(
+            UploadVideoChunkCmd.Request(
+                customerId = currentUserId,
+                uploadId = uploadId,
+                chunkIndex = chunkIndex,
+                chunkSize = storageResp.size
+            )
+        )
+        return UploadVideo.Response()
     }
 
     /**
@@ -53,14 +96,25 @@ class FileController {
      */
     @PostMapping("/deleteUploadSession")
     fun deleteUploadSession(@RequestBody @Validated request: DeleteUploadSession.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        Mediator.commands.send(
+            DeleteUploadSessionCmd.Request(
+                customerId = currentUserId,
+                uploadId = request.uploadId
+            )
+        )
     }
 
     @PostMapping("/uploadImage")
     fun uploadImage(
         file: MultipartFile,
         createThumbnail: Boolean,
-    ): String {
-        TODO("Pending controller adapter contract implementation.")
-    }
+    ): String
+        = Mediator.requests.send(
+            UploadImageResourceCli.Request(
+                file = file,
+                createThumbnail = createThumbnail,
+                bizType = "COVER"
+            )
+        ).resourceKey
 }

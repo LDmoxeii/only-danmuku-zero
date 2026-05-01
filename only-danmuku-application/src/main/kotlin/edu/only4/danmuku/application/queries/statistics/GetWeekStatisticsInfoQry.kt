@@ -7,13 +7,17 @@ import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 object GetWeekStatisticsInfoQry {
 
     data class Request(
-        val userId: Long?,
-        val dataType: StatisticsDataType
+        val userId: Long? = null,
+        val dataType: StatisticsDataType = StatisticsDataType.UNKNOW
     ) : RequestParam<Response>
 
     data class Response(
-        val date: Long,
-        val count: Int
-    )
+        val items: List<StatisticsItem>
+    ) {
+        data class StatisticsItem(
+            val date: Long,
+            val count: Int
+        )
+    }
 
 }

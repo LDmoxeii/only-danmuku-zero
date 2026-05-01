@@ -3,9 +3,20 @@ package edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.factory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+
 import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.UserAbnormalOperationLog
+import edu.only4.danmuku.domain._share.enums.UserType
+import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.enums.AbnormalOpType
+
 import org.springframework.stereotype.Service
 
+/**
+ * 用户异常操作日志;
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/20
+ */
 @Service
 @Aggregate(
     aggregate = "UserAbnormalOperationLog",
@@ -16,16 +27,39 @@ import org.springframework.stereotype.Service
 class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLogFactory.Payload, UserAbnormalOperationLog> {
 
     override fun create(payload: Payload): UserAbnormalOperationLog {
-        TODO("Implement aggregate construction")
+        return UserAbnormalOperationLog(
+            id = 0L,
+            userId = payload.userId,
+            userType = payload.userType,
+            opType = payload.opType,
+            ip = payload.ip,
+            occurTime = payload.occurTime,
+            description = payload.description,
+            extra = payload.extra,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L
+        )
     }
 
-    @Aggregate(
+     @Aggregate(
         aggregate = "UserAbnormalOperationLog",
-        name = "Payload",
+        name = "UserAbnormalOperationLogPayload",
         type = Aggregate.TYPE_FACTORY_PAYLOAD,
         description = ""
     )
     data class Payload(
-        val name: String
+        val userId: Long,
+        val userType: UserType,
+        val opType: AbnormalOpType,
+        val ip: String,
+        val occurTime: Long,
+        val description: String?,
+        val extra: String?,
     ) : AggregatePayload<UserAbnormalOperationLog>
+
 }

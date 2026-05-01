@@ -1,4 +1,3 @@
-
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
 object LoadVideoSeriesWithVideo {
@@ -8,18 +7,21 @@ object LoadVideoSeriesWithVideo {
     )
 
     data class Response(
-        val seriesId: String?,
-        val seriesName: String?,
-        val seriesDescription: String?,
-        val sort: Int?,
-        val videoInfoList: List<VideoInfoItem>?
-    ) {
-        data class VideoInfoItem(
-            val videoId: String?,
-            val videoCover: String?,
-            val videoName: String?,
-            val playCount: Int?
-        )
-    }
+        var list: List<Item>? = null
+    )
 
+    data class Item(
+        var seriesId: String? = null,
+        var seriesName: String? = null,
+        var seriesDescription: String? = null,
+        var sort: Int? = null,
+        var videoInfoList: List<VideoInfoItem>? = null,
+    )
+
+    data class VideoInfoItem(
+        var videoId: String? = null,
+        var videoCover: String? = null,
+        var videoName: String? = null,
+        var playCount: Int? = null,
+    )
 }

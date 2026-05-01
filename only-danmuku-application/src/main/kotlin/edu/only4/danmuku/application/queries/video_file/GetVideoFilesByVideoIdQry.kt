@@ -10,14 +10,18 @@ object GetVideoFilesByVideoIdQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val fileId: Long,
-        val videoId: Long,
-        val userId: Long,
-        val fileIndex: Int,
-        val fileName: String,
-        val fileSize: Long,
-        val filePath: String,
-        val duration: Int
-    )
+        val items: List<FileItem>
+    ) {
+        data class FileItem(
+            val fileId: Long,
+            val videoId: Long,
+            val userId: Long,
+            val fileIndex: Int,
+            val fileName: String,
+            val fileSize: Long,
+            val filePath: String,
+            val duration: Int
+        )
+    }
 
 }

@@ -6,6 +6,9 @@ import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import edu.only4.danmuku.domain.aggregates.customer_focus.CustomerFocus
 import org.springframework.stereotype.Service
 
+/**
+ * 用户关注;
+ */
 @Service
 @Aggregate(
     aggregate = "CustomerFocus",
@@ -16,16 +19,30 @@ import org.springframework.stereotype.Service
 class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, CustomerFocus> {
 
     override fun create(payload: Payload): CustomerFocus {
-        TODO("Implement aggregate construction")
+        val entity = CustomerFocus(
+            id = 0L,
+            customerId = payload.customerId,
+            focusCustomerId = payload.focusCustomerId,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L
+        )
+        return entity
     }
 
-    @Aggregate(
+     @Aggregate(
         aggregate = "CustomerFocus",
-        name = "Payload",
+        name = "CustomerFocusPayload",
         type = Aggregate.TYPE_FACTORY_PAYLOAD,
         description = ""
     )
     data class Payload(
-        val name: String
-    ) : AggregatePayload<CustomerFocus>
+         val customerId: Long,
+         val focusCustomerId: Long,
+     ) : AggregatePayload<CustomerFocus>
+
 }

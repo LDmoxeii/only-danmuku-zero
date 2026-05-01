@@ -11,7 +11,11 @@ object ListVideoHlsKeyTokensByPostFileQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val tokenId: Long
-    )
+        val items: List<TokenItem>
+    ) {
+        data class TokenItem(
+            val tokenId: Long
+        )
+    }
 
 }

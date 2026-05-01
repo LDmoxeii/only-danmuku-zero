@@ -1,7 +1,14 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import com.only.engine.satoken.utils.LoginHelper
+import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.u_center_statistics.GetActualTimeStatistics
 import edu.only4.danmuku.adapter.portal.api.payload.u_center_statistics.GetWeekStatisticsInfo
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_statistics.GetWeekStatisticsInfo.Converter
+import edu.only4.danmuku.application.queries.statistics.GetPreviousDayStatisticsInfoQry
+import edu.only4.danmuku.application.queries.statistics.GetTotalStatisticsInfoQry
+import edu.only4.danmuku.application.queries.statistics.GetWeekStatisticsInfoQry
+import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,12 +21,48 @@ class UCenterStatisticsController {
 
     @PostMapping("/getActualTimeStatistics")
     fun getActualTimeStatistics(): GetActualTimeStatistics.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request(currentUserId))
+        val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request(currentUserId))
+
+        val preDayDataMap = mapOf(
+            1 to preDayData.playCount,      // 播放量 (PLAY)
+            2 to preDayData.userCount,      // 用户数 (FANS)
+            3 to preDayData.likeCount,      // 点赞 (LIKE)
+            4 to preDayData.collectCount,   // 收藏 (COLLECTION)
+            5 to preDayData.coinCount,      // 投币 (COIN)
+            6 to preDayData.commentCount,   // 评论 (COMMENT)
+            7 to preDayData.danmukuCount      // 弹幕 (DANMUKU)
+        )
+
+        val totalCountInfoMap = mapOf(
+            "playCount" to totalData.playCount,
+            "userCount" to totalData.userCount,
+            "likeCount" to totalData.likeCount,
+            "collectCount" to totalData.collectCount,
+            "coinCount" to totalData.coinCount,
+            "commentCount" to totalData.commentCount,
+            "danmukuCount" to totalData.danmukuCount
+        )
+
+        return GetActualTimeStatistics.Response(
+            preDayData = preDayDataMap,
+            totalCountInfo = totalCountInfoMap
+        )
     }
 
     @PostMapping("/getWeekStatisticsInfo")
     fun getWeekStatisticsInfo(@RequestBody @Validated request: GetWeekStatisticsInfo.Request): List<GetWeekStatisticsInfo.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+
+        val weekData = Mediator.queries.send(
+            GetWeekStatisticsInfoQry.Request(
+                dataType = StatisticsDataType.valueOfOrNull(request.dataType) ?: StatisticsDataType.UNKNOW,
+                userId = currentUserId
+            )
+        )
+
+        return weekData.items.map { Converter.INSTANCE.fromQry(it) }
     }
 
 }

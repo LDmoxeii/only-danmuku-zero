@@ -10,15 +10,19 @@ object ListVideoPostProcessingFilesForSyncQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val fileIndex: Int,
-        val transcodeOutputPrefix: String?,
-        val encryptOutputPrefix: String?,
-        val variants: List<VariantItem>,
-        val duration: Int?,
-        val fileSize: Long?,
-        val encryptMethod: String?,
-        val keyVersion: Int?
+        val items: List<FileItem>
     ) {
+        data class FileItem(
+            val fileIndex: Int,
+            val transcodeOutputPrefix: String?,
+            val encryptOutputPrefix: String?,
+            val variants: List<VariantItem>,
+            val duration: Int?,
+            val fileSize: Long?,
+            val encryptMethod: String?,
+            val keyVersion: Int?
+        )
+
         data class VariantItem(
             val quality: String,
             val width: Int,

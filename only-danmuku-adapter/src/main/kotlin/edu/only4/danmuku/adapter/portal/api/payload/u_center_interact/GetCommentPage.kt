@@ -1,24 +1,53 @@
-
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_interact
 
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
+import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.application.queries.video_comment.VideoCommentPageQry
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
+
+/**
+ * 加载用户收到的评论接口载荷
+ */
 object GetCommentPage {
 
     data class Request(
-        val videoId: Long?
-    )
+        val videoId: Long? = null
+    ) : PageParam()
 
     data class Response(
-        val commentId: String?,
-        val avatar: String?,
-        val videoId: String?,
-        val videoName: String?,
+        var commentId: String? = null,
+        val avatar: String? = null,
+        var videoId: String? = null,
+        var videoName: String? = null,
         val videoCover: String,
-        val content: String?,
-        val imgPath: String?,
-        val userId: String?,
-        val nickName: String?,
-        val replyNickName: String?,
-        val postTime: Long
+        var content: String? = null,
+        val imgPath: String? = null,
+        var userId: String? = null,
+        var nickName: String? = null,
+        val replyNickName: String? = null,
+        @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
+        var postTime: Long
     )
 
+    @Mapper(componentModel = "default")
+    interface Converter {
+
+        @Mapping(source = "currentUserId", target = "videoUserId")
+        fun toQry(req: Request, currentUserId: Long): VideoCommentPageQry.Request
+
+        @Mapping(source = "commentId", target = "commentId")
+        @Mapping(source = "videoId", target = "videoId")
+        @Mapping(source = "customerId", target = "userId")
+        @Mapping(source = "customerNickname", target = "nickName")
+        @Mapping(source = "customerAvatar", target = "avatar")
+        @Mapping(source = "replyCustomerNickname", target = "replyNickName")
+        fun fromQry(resp: VideoCommentPageQry.Response.CommentItem): Response
+
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
 }

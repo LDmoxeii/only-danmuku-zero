@@ -1,10 +1,13 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
+import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.adapter.portal.api.payload.admin_interact.DeleteComment
 import edu.only4.danmuku.adapter.portal.api.payload.admin_interact.DeleteDanmuku
-import edu.only4.danmuku.adapter.portal.api.payload.admin_interact.GetDanmukuPage
 import edu.only4.danmuku.adapter.portal.api.payload.admin_interact.GetVideoCommentPage
+import edu.only4.danmuku.adapter.portal.api.payload.admin_interact.GetDanmukuPage
+import edu.only4.danmuku.application.commands.video_comment.DeleteVideoCommentCmd
+import edu.only4.danmuku.application.commands.video_danmuku.DeleteVideoDanmukuCmd
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,22 +20,44 @@ class AdminInteractController {
 
     @PostMapping("/page")
     fun page(@RequestBody @Validated request: GetDanmukuPage.Request): PageData<GetDanmukuPage.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val queryResult = Mediator.queries.send(GetDanmukuPage.Converter.INSTANCE.toQry(request))
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+            list = queryResult.page.list.map { GetDanmukuPage.Converter.INSTANCE.fromApp(it) },
+            totalCount = queryResult.page.totalCount
+        )
     }
 
     @PostMapping("/delDanmuku")
     fun deleteDanmuku(@RequestBody @Validated request: DeleteDanmuku.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        Mediator.commands.send(
+            DeleteVideoDanmukuCmd.Request(
+                danmukuId = request.danmukuId
+            )
+        )
     }
 
     @PostMapping("/getVideoCommentPage")
     fun getVideoCommentPage(@RequestBody @Validated request: GetVideoCommentPage.Request): PageData<GetVideoCommentPage.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val queryResult = Mediator.queries.send(GetVideoCommentPage.Converter.INSTANCE.toQry(request))
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+            list = queryResult.page.list.map { GetVideoCommentPage.Converter.INSTANCE.fromApp(it) },
+            totalCount = queryResult.page.totalCount
+        )
     }
 
     @PostMapping("/delComment")
     fun deleteComment(@RequestBody @Validated request: DeleteComment.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        Mediator.commands.send(
+            DeleteVideoCommentCmd.Request(
+                commentId = request.commentId,
+            )
+        )
     }
 
 }

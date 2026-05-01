@@ -1,4 +1,3 @@
-
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
 object DeleteVideoSeries {
@@ -8,5 +7,4 @@ object DeleteVideoSeries {
     )
 
     class Response
-
 }

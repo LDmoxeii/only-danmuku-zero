@@ -8,7 +8,11 @@ object GetSearchKeywordTopListQry {
     class Request : RequestParam<Response>
 
     data class Response(
-        val keyword: String
-    )
+        val items: List<Item>
+    ) {
+        data class Item(
+            val keyword: String
+        )
+    }
 
 }

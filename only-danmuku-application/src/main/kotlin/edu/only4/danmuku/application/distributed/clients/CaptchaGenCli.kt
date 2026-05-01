@@ -7,9 +7,9 @@ object CaptchaGenCli {
 
     data class Request(
         val bizType: String,
-        val channel: CaptchaChannel,
-        val targets: List<String>,
-        val templateCode: String?
+        val channel: CaptchaChannel = CaptchaChannel.INLINE,
+        val targets: List<String> = emptyList(),
+        val templateCode: String? = null
     ) : RequestParam<Response>
 
     data class Response(

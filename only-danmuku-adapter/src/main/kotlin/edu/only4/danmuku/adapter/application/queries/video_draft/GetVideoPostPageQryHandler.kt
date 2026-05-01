@@ -1,44 +1,93 @@
 package edu.only4.danmuku.adapter.application.queries.video_draft
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import com.only4.cap4k.ddd.core.share.PageData
+import edu.only4.danmuku.application.queries._share.model.*
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostPageQry
+import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.springframework.stereotype.Service
 
 /**
- *
- *
- * 本文件由 cap4k pipeline 生成
+ * 获取视频投稿分页列表
  */
 @Service
-class GetVideoPostPageQryHandler : Query<GetVideoPostPageQry.Request, GetVideoPostPageQry.Response> {
+class GetVideoPostPageQryHandler(
+    private val sqlClient: KSqlClient,
+) : Query<GetVideoPostPageQry.Request, GetVideoPostPageQry.Response> {
 
     override fun exec(request: GetVideoPostPageQry.Request): GetVideoPostPageQry.Response {
+        val pageResult = sqlClient.createQuery(VideoPost::class) {
+            where(table.customerId `eq?` request.userId)
+            where(table.videoName `ilike?` request.videoNameFuzzy)
+            where(table.parentCategoryId `eq?` request.categoryParentId)
+            where(table.categoryId `eq?` request.categoryId)
+            where(table.id `valueNotIn?` request.excludeVideoIds)
+            when (request.recommendType) {
+                RecommendType.RECOMMEND -> where(table.video.recommendType eq RecommendType.RECOMMEND)
+                RecommendType.NOT_RECOMMEND -> {
+                    val video = table.`video?`
+                    where(or(video.id.isNull(), video.recommendType eq RecommendType.NOT_RECOMMEND))
+                }
+                else -> Unit
+            }
+            orderBy(table.createTime.desc())
+            select(table.fetchBy {
+                allScalarFields()
+                video {
+                    allScalarFields()
+                }
+                customer {
+                    allScalarFields()
+                    relation {
+                        allScalarFields()
+                    }
+                }
+                parentCategory {
+                    allScalarFields()
+                }
+                category {
+                    allScalarFields()
+                }
+            })
+        }.fetchPage(request.pageNum - 1, request.pageSize)
+
         return GetVideoPostPageQry.Response(
-            videoId = TODO("set videoId"),
-            videoCover = TODO("set videoCover"),
-            videoName = TODO("set videoName"),
-            userId = TODO("set userId"),
-            createTime = TODO("set createTime"),
-            lastUpdateTime = TODO("set lastUpdateTime"),
-            parentCategoryId = TODO("set parentCategoryId"),
-            categoryId = TODO("set categoryId"),
-            postType = TODO("set postType"),
-            originInfo = TODO("set originInfo"),
-            tags = TODO("set tags"),
-            introduction = TODO("set introduction"),
-            duration = TODO("set duration"),
-            status = TODO("set status"),
-            playCount = TODO("set playCount"),
-            likeCount = TODO("set likeCount"),
-            danmukuCount = TODO("set danmukuCount"),
-            commentCount = TODO("set commentCount"),
-            coinCount = TODO("set coinCount"),
-            collectCount = TODO("set collectCount"),
-            recommendType = TODO("set recommendType"),
-            lastPlayTime = TODO("set lastPlayTime"),
-            nickName = TODO("set nickName"),
-            avatar = TODO("set avatar"),
-            categoryFullName = TODO("set categoryFullName")
+            page = PageData.create(
+                pageNum = request.pageNum,
+                pageSize = request.pageSize,
+                list = pageResult.rows.map { post ->
+                    GetVideoPostPageQry.Response.VideoPostItem(
+                        videoId = post.id,
+                        videoCover = post.videoCover,
+                        videoName = post.videoName,
+                        userId = post.customerId,
+                        createTime = post.createTime ?: 0,
+                        lastUpdateTime = post.updateTime,
+                        parentCategoryId = post.parentCategoryId,
+                        categoryId = post.categoryId,
+                        postType = post.postType,
+                        originInfo = post.originInfo,
+                        tags = post.tags,
+                        introduction = post.introduction,
+                        duration = post.duration,
+                        status = post.status,
+                        playCount = post.video?.playCount ?: 0,
+                        likeCount = post.video?.likeCount ?: 0,
+                        danmukuCount = post.video?.danmukuCount ?: 0,
+                        commentCount = post.video?.commentCount ?: 0,
+                        coinCount = post.video?.coinCount ?: 0,
+                        collectCount = post.video?.collectCount ?: 0,
+                        recommendType = post.video?.recommendType ?: RecommendType.NOT_RECOMMEND,
+                        lastPlayTime = post.video?.lastPlayTime ?: 0,
+                        nickName = post.customer.nickName,
+                        avatar = post.customer.relation?.avatar,
+                        categoryFullName = post.parentCategory.name + post.category?.name
+                    )
+                },
+                totalCount = pageResult.totalRowCount
+            )
         )
     }
 }

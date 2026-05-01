@@ -9,12 +9,12 @@ import com.only4.cap4k.ddd.core.share.PageData
 object VideoCommentPageQry {
 
     data class Request(
-        override val pageNum: Int = 1,
-        override val pageSize: Int = 10,
+        override var pageNum: Int = 1,
+        override var pageSize: Int = 10,
 
-        val videoId: Long?,
-        val videoUserId: Long?,
-        val videoNameFuzzy: String?
+        var videoId: Long? = null,
+        var videoUserId: Long? = null,
+        var videoNameFuzzy: String? = null
     ) : PageRequest, RequestParam<Response>
 
     data class Response(

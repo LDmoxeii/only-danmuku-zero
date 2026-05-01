@@ -1,10 +1,13 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
+import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.admin_category.ChangeCategorySort
 import edu.only4.danmuku.adapter.portal.api.payload.admin_category.GetCategoryTree
 import edu.only4.danmuku.adapter.portal.api.payload.admin_category.SaveCategory
 import edu.only4.danmuku.adapter.portal.api.payload.admin_category.UpdateCategory
 import edu.only4.danmuku.application.commands.category.DeleteCategoryCmd
+import edu.only4.danmuku.application.commands.category.UpdateCategorySortOrderCmd
+import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,27 +23,44 @@ class AdminCategoryController {
 
     @PostMapping("/getCategoryTree")
     fun getCategoryTree(): List<GetCategoryTree.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val treeResult = Mediator.qry.send(GetCategoryTreeQry.Request())
+        return treeResult.items.map { GetCategoryTree.Converter.INSTANCE.fromApp(it) }
     }
 
     @PostMapping("/save")
     fun save(@RequestBody @Validated request: SaveCategory.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        Mediator.commands.send(
+            SaveCategory.Converter.INSTANCE.toCmd(request)
+        )
     }
 
     @PostMapping("/update")
     fun update(@RequestBody @Validated request: UpdateCategory.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        Mediator.commands.send(
+            UpdateCategory.Converter.INSTANCE.toCmd(request)
+        )
     }
 
     @PostMapping("/delete")
     fun delete(@RequestBody @Validated request: DeleteCategoryCmd.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        Mediator.commands.send(
+            DeleteCategoryCmd.Request(
+                categoryId = request.categoryId
+            )
+        )
     }
 
     @PostMapping("/changeSort")
     fun changeSort(@RequestBody @Validated request: ChangeCategorySort.Request) {
-        TODO("Pending controller adapter contract implementation.")
+        val categoryIdList = request.categoryIds.split(",")
+            .map { it.trim().toLong() }
+
+        Mediator.commands.send(
+            UpdateCategorySortOrderCmd.Request(
+                parentId = request.parentId,
+                categoryIds = categoryIdList
+            )
+        )
     }
 
 }

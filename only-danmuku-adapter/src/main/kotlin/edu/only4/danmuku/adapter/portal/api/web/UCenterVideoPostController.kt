@@ -1,7 +1,25 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import com.only.engine.exception.BusinessException
+import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
+import com.only.engine.json.misc.JsonUtils
+import com.only.engine.satoken.utils.LoginHelper
+import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.*
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.DeleteVideo
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.SaveVideoPost
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.SaveVideoPostInteraction
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.GetVideoByVideoId
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.GetVideoPostCountInfo
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.GetVideoPostPage
+import edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post.UpdateVideoPost
+import edu.only4.danmuku.application.commands.video_post.ChangeVideoPostInteractionCmd
+import edu.only4.danmuku.application.commands.video_post.CreateVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.DeleteVideoPostCmd
+import edu.only4.danmuku.application.commands.video_post.UpdateVideoPostCmd
+import edu.only4.danmuku.application.queries.video_draft.GetVideoDraftCountByStatusQry
+import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,35 +32,157 @@ class UCenterVideoPostController {
 
     @PostMapping("/videoPost/save")
     fun save(@RequestBody @Validated request: SaveVideoPost.Request): SaveVideoPost.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        val seenIndex = mutableSetOf<Int>()
+        val uploadFiles = JsonUtils.parseArray(request.uploadFileList, SaveVideoPost.PostFileItem::class.java)
+            .mapIndexed { index, item ->
+                val fileIndex = item.fileIndex ?: index
+                if (!seenIndex.add(fileIndex)) {
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "文件索引重复: $fileIndex")
+                }
+                CreateVideoPostCmd.VideoPostFileSpec(
+                    uploadId = item.uploadId,
+                    fileIndex = fileIndex,
+                    fileName = item.fileName,
+                    fileSize = item.fileSize,
+                    duration = item.duration
+                )
+            }
+        Mediator.commands.send(
+            CreateVideoPostCmd.Request(
+                customerId = currentUserId,
+                videoCover = request.videoCover,
+                videoName = request.videoName,
+                parentCategoryId = request.parentCategoryId,
+                categoryId = request.categoryId,
+                postType = request.postType,
+                originInfo = request.originInfo,
+                tags = request.tags,
+                introduction = request.introduction,
+                interaction = request.interaction,
+                uploadFileList = uploadFiles,
+            )
+        )
+        return SaveVideoPost.Response()
     }
 
     @PostMapping("/videoPost//update")
     fun update(@RequestBody @Validated request: UpdateVideoPost.Request): UpdateVideoPost.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+        val seenIndex = mutableSetOf<Int>()
+        val uploadFiles = JsonUtils.parseArray(request.uploadFileList, UpdateVideoPost.PostFileItem::class.java)
+            .mapIndexed { index, item ->
+                val fileIndex = item.fileIndex ?: index
+                if (!seenIndex.add(fileIndex)) {
+                    throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "文件索引重复: $fileIndex")
+                }
+                UpdateVideoPostCmd.VideoPostFileSpec(
+                    uploadId = item.uploadId,
+                    fileIndex = fileIndex,
+                    fileName = item.fileName,
+                    fileSize = item.fileSize,
+                    duration = item.duration
+                )
+            }
+        Mediator.commands.send(
+            UpdateVideoPostCmd.Request(
+                videoPostId = request.videoPostId,
+                customerId = currentUserId,
+                videoCover = request.videoCover,
+                videoName = request.videoName,
+                pCategoryId = request.parentCategoryId,
+                categoryId = request.categoryId,
+                postType = request.postType,
+                originInfo = request.originInfo,
+                tags = request.tags,
+                introduction = request.introduction,
+                interaction = request.interaction,
+                uploadFileList = uploadFiles,
+            )
+        )
+        return UpdateVideoPost.Response()
     }
 
     @PostMapping("/videoPost/getPage")
     fun getPage(@RequestBody @Validated request: GetVideoPostPage.Request): PageData<GetVideoPostPage.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+
+        val queryResult = Mediator.queries.send(GetVideoPostPage.Converter.INSTANCE.toQry(request, currentUserId))
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+            list = queryResult.page.list.map { GetVideoPostPage.Converter.INSTANCE.fromQry(it) },
+            totalCount = queryResult.page.totalCount
+        )
     }
 
     @PostMapping("/videoPost/getCountInfo")
     fun getCountInfo(): GetVideoPostCountInfo.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+
+        // 查询审核通过的数量 (status = 4)
+        val auditPassCount = Mediator.queries.send(
+            GetVideoDraftCountByStatusQry.Request(
+                userId = currentUserId,
+                status = VideoStatus.REVIEW_PASSED
+            )
+        ).count
+
+        // 查询审核失败的数量 (status = 5)
+        val auditFailCount = Mediator.queries.send(
+            GetVideoDraftCountByStatusQry.Request(
+                userId = currentUserId,
+                status = VideoStatus.REVIEW_FAILED
+            )
+        ).count
+
+        // 查询进行中的数量 (排除审核通过和不通过)
+        val inProgress = Mediator.queries.send(
+            GetVideoDraftCountByStatusQry.Request(
+                userId = currentUserId,
+                excludeStatusArray = listOf(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED)
+            )
+        ).count
+
+        return GetVideoPostCountInfo.Response(
+            auditPassCount = auditPassCount,
+            auditFailCount = auditFailCount,
+            inProgress = inProgress
+        )
     }
 
     @PostMapping("/getVideoByVideoId")
     fun getVideoByVideoId(@RequestBody @Validated request: GetVideoByVideoId.Request): GetVideoByVideoId.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()!!
+
+        val queryResult = Mediator.queries.send(
+            GetVideoPostInfoQry.Request(
+                videoPostId = request.videoId,
+                userId = currentUserId
+            )
+        )
+
+        return GetVideoByVideoId.Converter.INSTANCE.fromQry(queryResult)
     }
 
     @PostMapping("/videoPost/saveInteraction")
-    fun saveInteraction(@RequestBody @Validated request: SaveVideoPostInteraction.Request) {
-        TODO("Pending controller adapter contract implementation.")
-    }
+    fun saveInteraction(@RequestBody @Validated request: SaveVideoPostInteraction.Request) =
+        Mediator.commands.send(
+            ChangeVideoPostInteractionCmd.Request(
+                videoPostId = request.videoPostId,
+                userId = LoginHelper.getUserId()!!,
+                interaction = request.interaction
+            )
+        )
+
     @PostMapping("videoPost/delete")
-    fun delete(@RequestBody @Validated request: DeleteVideo.Request) {
-        TODO("Pending controller adapter contract implementation.")
-    }
+    fun delete(@RequestBody @Validated request: DeleteVideo.Request) =
+        Mediator.commands.send(
+            DeleteVideoPostCmd.Request(
+                videoId = request.videoId,
+                operatorId = LoginHelper.getUserId()!!
+            )
+        )
 }
+

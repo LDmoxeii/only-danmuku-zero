@@ -1,5 +1,6 @@
 package edu.only4.danmuku.application.validators
 
+import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -7,7 +8,7 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
 /**
- * 无效的审核状态
+ * 校验审核状态是否为允许的取值
  */
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
@@ -16,9 +17,19 @@ import kotlin.reflect.KClass
 annotation class ValidAuditStatus(
     val message: String = "无效的审核状态",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<ValidAuditStatus, Int> {
-        override fun isValid(value: Int?, context: ConstraintValidatorContext): Boolean = true
+    class Validator : ConstraintValidator<ValidAuditStatus, Int?> {
+        private val allowedStatuses = setOf(
+            VideoStatus.REVIEW_PASSED.value,
+            VideoStatus.REVIEW_FAILED.value
+        )
+
+        override fun isValid(value: Int?, context: ConstraintValidatorContext): Boolean {
+            if (value == null) {
+                return true
+            }
+            return allowedStatuses.contains(value)
+        }
     }
 }

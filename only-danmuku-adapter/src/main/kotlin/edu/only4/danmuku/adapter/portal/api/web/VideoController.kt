@@ -1,8 +1,25 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
 import cn.dev33.satoken.annotation.SaIgnore
+import com.only.engine.satoken.utils.LoginHelper
+import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
-import edu.only4.danmuku.adapter.portal.api.payload.video.*
+import edu.only4.danmuku.adapter.portal.api.payload.video.ReportVideoPlayOnline
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoDetail
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoRecommendList
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoPage
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetHotVidePage
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetVideoPList
+import edu.only4.danmuku.adapter.portal.api.payload.video.GetRecommendVideoList
+import edu.only4.danmuku.adapter.portal.api.payload.video.VideoSearch
+import edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoPlayOnlineCli
+import edu.only4.danmuku.application.distributed.clients.statistics.ReportVideoSearchCountCli
+import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
+import edu.only4.danmuku.application.queries.statistics.GetSearchKeywordTopListQry
+import edu.only4.danmuku.application.queries.video.GetHotVideoPageQry
+import edu.only4.danmuku.application.queries.video.GetRecommendVideosQry
+import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
+import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,55 +32,120 @@ class VideoController {
 
     @SaIgnore
     @PostMapping("/getRecommendVideoList")
-    fun getRecommendVideoList(): List<GetRecommendVideoList.Response> {
-        TODO("Pending controller adapter contract implementation.")
+    fun getRecommendVideoList(): List<GetRecommendVideoList.Item> {
+        val videoList = Mediator.queries.send(GetRecommendVideosQry.Request())
+        return videoList.items.map { GetRecommendVideoList.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
     @PostMapping("/page")
     fun page(@RequestBody @Validated request: GetVideoPage.Request): PageData<GetVideoPage.Response> {
-        TODO("Pending controller adapter contract implementation.")
+
+        val queryResult = Mediator.queries.send(GetVideoPage.Converter.INSTANCE.toQry(request))
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+            list = queryResult.page.list.map { GetVideoPage.Converter.INSTANCE.fromQry(it) },
+            totalCount = queryResult.page.totalCount,
+        )
     }
 
     @SaIgnore
     @PostMapping("/getVideoPList")
-    fun getVideoPList(@RequestBody @Validated request: GetVideoPlist.Request): List<GetVideoPlist.Response> {
-        TODO("Pending controller adapter contract implementation.")
+    fun getVideoPList(@RequestBody @Validated request: GetVideoPList.Request): List<GetVideoPList.FileItem> {
+        val fileList = Mediator.queries.send(
+            GetVideoFilesByVideoIdQry.Request(request.videoId)
+        )
+
+        return fileList.items.map { GetVideoPList.Converter.INSTANCE.fromApp(it) }
     }
 
     @SaIgnore
     @PostMapping("/detail")
     fun detail(@RequestBody @Validated request: GetVideoDetail.Request): GetVideoDetail.Response {
-        TODO("Pending controller adapter contract implementation.")
+        val currentUserId = LoginHelper.getUserId()
+
+        // 调用查询获取视频详情
+        val videoInfo = Mediator.queries.send(
+            GetVideoInfoQry.Request(videoId = request.videoId)
+        )
+
+        val userActionList = currentUserId?.let {
+            val actionList = Mediator.queries.send(
+                GetUserActionsByVideoIdQry.Request(
+                    userId = currentUserId,
+                    videoId = request.videoId
+                )
+            )
+            actionList.items.map { GetVideoDetail.Converter.INSTANCE.fromApp(it) }
+        } ?: emptyList()
+
+        return GetVideoDetail.Response(
+            videoInfo = GetVideoDetail.Converter.INSTANCE.fromApp(videoInfo),
+            userActionList = userActionList
+        )
     }
 
     @SaIgnore
     @PostMapping("/getVideoRecommendList")
-    fun getVideoRecommendList(@RequestBody @Validated  request: GetVideoRecommendList.Request): List<GetVideoRecommendList.Response> {
-        TODO("Pending controller adapter contract implementation.")
+    fun getVideoRecommendList(@RequestBody @Validated  request: GetVideoRecommendList.Request): List<GetVideoRecommendList.Item> {
+        val queryResult = Mediator.queries.send(GetVideoRecommendList.Converter.INSTANCE.toQry(request))
+
+        return queryResult.page.list.map { GetVideoRecommendList.Converter.INSTANCE.fromQry(it) }
     }
 
     @SaIgnore
     @PostMapping("/reportVideoPlayOnline")
-    fun reportVideoPlayOnline(@RequestBody @Validated request: ReportVideoPlayOnline.Request): Long {
-        TODO("Pending controller adapter contract implementation.")
-    }
+    fun reportVideoPlayOnline(@RequestBody @Validated request: ReportVideoPlayOnline.Request): Long = Mediator.requests.send(
+        ReportVideoPlayOnlineCli.Request(
+            fileId = request.fileId,
+            deviceId = request.deviceId
+        )
+    ).current
+
     @SaIgnore
     @PostMapping("/search")
     fun search(@RequestBody @Validated request: VideoSearch.Request): PageData<VideoSearch.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val queryResult = Mediator.queries.send(
+            VideoSearch.Converter.INSTANCE.toQry(request)
+        )
+
+        Mediator.requests.send(
+            ReportVideoSearchCountCli.Request(
+                keyword = request.keyword
+            )
+        )
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+            list = queryResult.page.list.map { VideoSearch.Converter.INSTANCE.fromQry(it) },
+            totalCount = queryResult.page.totalCount,
+        )
     }
 
     @SaIgnore
     @PostMapping("/getSearchKeywordTop")
     fun getSearchKeywordTop(): Collection<String> {
-        TODO("Pending controller adapter contract implementation.")
+        return Mediator.queries.send(
+            GetSearchKeywordTopListQry.Request()
+        ).items.map { it.keyword }
     }
 
     @SaIgnore
     @PostMapping("/getHotVidePage")
     fun getHotVidePage(@RequestBody @Validated request: GetHotVidePage.Request): PageData<GetHotVidePage.Response> {
-        TODO("Pending controller adapter contract implementation.")
+        val queryResult = Mediator.queries.send(GetHotVidePage.Converter.INSTANCE.toQry(request))
+
+        return PageData.create(
+            pageNum = queryResult.page.pageNum,
+            pageSize = queryResult.page.pageSize,
+
+            list = queryResult.page.list.map { GetHotVidePage.Converter.INSTANCE.fromQry(it) },
+
+            totalCount = queryResult.page.totalCount,
+        )
     }
 
 }

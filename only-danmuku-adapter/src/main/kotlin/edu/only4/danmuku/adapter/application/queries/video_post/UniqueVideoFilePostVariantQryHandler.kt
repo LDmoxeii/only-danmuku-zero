@@ -1,20 +1,35 @@
 package edu.only4.danmuku.adapter.application.queries.video_post
 
 import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries._share.model.VideoFilePostVariant
+import edu.only4.danmuku.application.queries._share.model.filePostId
+import edu.only4.danmuku.application.queries._share.model.id
+import edu.only4.danmuku.application.queries._share.model.quality
 import edu.only4.danmuku.application.queries.video_post.UniqueVideoFilePostVariantQry
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.`ne?`
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.exists
 import org.springframework.stereotype.Service
 
 /**
- *
- *
- * 本文件由 cap4k pipeline 生成
+ * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
+ * @author cap4k-ddd-codegen
  */
 @Service
-class UniqueVideoFilePostVariantQryHandler : Query<UniqueVideoFilePostVariantQry.Request, UniqueVideoFilePostVariantQry.Response> {
+class UniqueVideoFilePostVariantQryHandler(
+    private val sqlClient: KSqlClient,
+) : Query<UniqueVideoFilePostVariantQry.Request, UniqueVideoFilePostVariantQry.Response> {
 
     override fun exec(request: UniqueVideoFilePostVariantQry.Request): UniqueVideoFilePostVariantQry.Response {
+        val exists = sqlClient.exists(VideoFilePostVariant::class) {
+            where(table.filePostId eq request.filePostId)
+            where(table.quality eq request.quality)
+            where(table.id `ne?` request.excludeVideoFilePostVariantId)
+        }
+
         return UniqueVideoFilePostVariantQry.Response(
-            exists = TODO("set exists")
+            exists = exists
         )
     }
 }

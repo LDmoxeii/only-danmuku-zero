@@ -8,15 +8,19 @@ object GetRecommendVideosQry {
     class Request : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
-        val videoCover: String?,
-        val videoName: String?,
-        val userId: Long,
-        val nickName: String?,
-        val avatar: String?,
-        val playCount: Int?,
-        val likeCount: Int?,
-        val createTime: Long
-    )
+        val items: List<VideoItem>
+    ) {
+        data class VideoItem(
+            val videoId: Long,
+            val videoCover: String?,
+            val videoName: String?,
+            val userId: Long,
+            val nickName: String?,
+            val avatar: String?,
+            val playCount: Int?,
+            val likeCount: Int?,
+            val createTime: Long
+        )
+    }
 
 }

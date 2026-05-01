@@ -12,16 +12,20 @@ object GetUserActionsByVideoIdQry {
     ) : RequestParam<Response>
 
     data class Response(
-        val actionId: Long,
-        val userId: Long,
-        val videoId: Long,
-        val videoName: String,
-        val videoCover: String,
-        val videoUserId: Long,
-        val commentId: Long?,
-        val actionType: ActionType,
-        val actionCount: Int,
-        val actionTime: Long
-    )
+        val items: List<ActionItem>
+    ) {
+        data class ActionItem(
+            val actionId: Long,
+            val userId: Long,
+            val videoId: Long,
+            val videoName: String,
+            val videoCover: String,
+            val videoUserId: Long,
+            val commentId: Long?,
+            val actionType: ActionType,
+            val actionCount: Int,
+            val actionTime: Long
+        )
+    }
 
 }
