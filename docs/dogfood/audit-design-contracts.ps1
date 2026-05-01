@@ -150,7 +150,96 @@ function Invoke-ContractAudit {
     })
 }
 
-$results = Invoke-ContractAudit
-$results | Group-Object status | Sort-Object Name | ForEach-Object {
-    Write-Host "$($_.Name): $($_.Count)"
+function Convert-ToProjectRelativePath([string] $path) {
+    if ([string]::IsNullOrWhiteSpace($path)) {
+        return ""
+    }
+    $root = [string] $projectRoot
+    if ($path.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $path.Substring($root.Length).TrimStart("\", "/")
+    }
+    return $path
 }
+
+function Convert-MarkdownCell([string] $text) {
+    if ($null -eq $text) {
+        return ""
+    }
+    return $text.Replace("|", "\|")
+}
+
+function New-AuditSummary($results) {
+    $total = @($results).Count
+    $generated = @($results | Where-Object { $_.status -eq "GENERATED" }).Count
+    $checkedIn = @($results | Where-Object { $_.status -eq "CHECKED_IN_CONTRACT" }).Count
+    $missing = @($results | Where-Object { $_.status -eq "MISSING_CONTRACT" }).Count
+    $legacy = @($results | Where-Object { $_.status -eq "GENERATED_WITH_LEGACY_MARKER" }).Count
+    return [pscustomobject]@{
+        total = $total
+        generated = $generated
+        checkedIn = $checkedIn
+        missing = $missing
+        generatedWithLegacyMarker = $legacy
+        failures = $checkedIn + $missing + $legacy
+    }
+}
+
+function Write-AuditJson($report) {
+    $json = $report | ConvertTo-Json -Depth 20
+    Set-Content -LiteralPath $jsonReportFile -Value $json -Encoding utf8NoBOM
+}
+
+function Write-AuditMarkdown($report) {
+    $lines = [System.Collections.Generic.List[string]]::new()
+    $lines.Add("# Cap4k Pipeline Contract Audit")
+    $lines.Add("")
+    $lines.Add("Generated at: ``$($report.generatedAt)``")
+    $lines.Add("")
+    $lines.Add("## Summary")
+    $lines.Add("")
+    $lines.Add("| Metric | Count |")
+    $lines.Add("| --- | ---: |")
+    $lines.Add("| Total Query/Cmd/Cli contracts | $($report.summary.total) |")
+    $lines.Add("| Generated contracts | $($report.summary.generated) |")
+    $lines.Add("| Checked-in contract drift | $($report.summary.checkedIn) |")
+    $lines.Add("| Missing contracts | $($report.summary.missing) |")
+    $lines.Add("| Generated files with legacy markers | $($report.summary.generatedWithLegacyMarker) |")
+    $lines.Add("| Failures | $($report.summary.failures) |")
+    $lines.Add("")
+    $lines.Add("## Failures")
+    $lines.Add("")
+
+    $failures = @($report.results | Where-Object { $_.status -ne "GENERATED" } | Sort-Object tag, packageName, typeName)
+    if ($failures.Count -eq 0) {
+        $lines.Add("No contract drift detected.")
+    } else {
+        $lines.Add("| Status | Tag | Type | Generated Path | Source Path | Legacy Markers |")
+        $lines.Add("| --- | --- | --- | --- | --- | --- |")
+        foreach ($failure in $failures) {
+            $markers = ($failure.legacyMarkers -join ", ")
+            $lines.Add("| $(Convert-MarkdownCell $failure.status) | $(Convert-MarkdownCell $failure.tag) | $(Convert-MarkdownCell $failure.typeName) | $(Convert-MarkdownCell (Convert-ToProjectRelativePath $failure.generatedPath)) | $(Convert-MarkdownCell (Convert-ToProjectRelativePath $failure.sourcePath)) | $(Convert-MarkdownCell $markers) |")
+        }
+    }
+
+    Set-Content -LiteralPath $markdownReportFile -Value $lines -Encoding utf8NoBOM
+}
+
+$results = Invoke-ContractAudit
+$summary = New-AuditSummary $results
+$report = [pscustomobject]@{
+    generatedAt = (Get-Date).ToString("o")
+    designFile = Convert-ToProjectRelativePath $designFile
+    generatedRoot = Convert-ToProjectRelativePath $generatedRoot
+    sourceRoot = Convert-ToProjectRelativePath $sourceRoot
+    summary = $summary
+    results = @($results)
+}
+
+Write-AuditJson $report
+Write-AuditMarkdown $report
+
+if ($summary.failures -gt 0) {
+    Write-Error "Design contract audit failed with $($summary.failures) drift item(s). See $markdownReportFile"
+}
+
+Write-Host "Design contract audit passed. See $markdownReportFile"
