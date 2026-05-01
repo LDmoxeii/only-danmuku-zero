@@ -1,0 +1,27 @@
+package edu.only4.danmuku.adapter.application.queries.customer_video_series
+
+import com.only4.cap4k.ddd.core.application.query.Query
+import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
+import org.springframework.stereotype.Service
+
+/**
+ *
+ *
+ * 本文件由 cap4k pipeline 生成
+ */
+@Service
+class GetCustomerVideoSeriesListQryHandler : Query<GetCustomerVideoSeriesListQry.Request, GetCustomerVideoSeriesListQry.Response> {
+
+    override fun exec(request: GetCustomerVideoSeriesListQry.Request): GetCustomerVideoSeriesListQry.Response {
+        return GetCustomerVideoSeriesListQry.Response(
+            seriesId = TODO("set seriesId"),
+            seriesName = TODO("set seriesName"),
+            seriesDescription = TODO("set seriesDescription"),
+            sort = TODO("set sort"),
+            videoCount = TODO("set videoCount"),
+            cover = TODO("set cover"),
+            createTime = TODO("set createTime"),
+            updateTime = TODO("set updateTime")
+        )
+    }
+}
