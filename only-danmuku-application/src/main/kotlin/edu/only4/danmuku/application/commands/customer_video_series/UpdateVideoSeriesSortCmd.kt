@@ -79,7 +79,7 @@ object UpdateVideoSeriesSortCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
     }
 
@@ -93,5 +93,5 @@ object UpdateVideoSeriesSortCmd {
         val seriesIds: List<Long>
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

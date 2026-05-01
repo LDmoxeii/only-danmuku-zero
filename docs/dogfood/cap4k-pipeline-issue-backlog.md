@@ -680,7 +680,7 @@ only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，
 
 `docs/dogfood/audit-design-contracts.ps1` 已把这条规则固化成脚本：它从 `codegen/design/design.json` 推导所有 `*Cmd`、`*Qry`、`*Cli` 期望产物，再从 `build/cap4k/plan.json` 读取实际 `outputPath`，校验该路径上的 `Request` / `Response` 结构是否与 plan context 一致。
 
-当前 drift 清单见 `docs/dogfood/cap4k-pipeline-contract-drift-backlog.md`。
+当前 drift 闭环记录见 `docs/dogfood/cap4k-pipeline-contract-drift-backlog.md`。
 
 处理建议：
 

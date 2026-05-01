@@ -56,7 +56,7 @@ object BatchDeleteDanmukuCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
     }
 
@@ -64,5 +64,5 @@ object BatchDeleteDanmukuCmd {
         val videoId: Long,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

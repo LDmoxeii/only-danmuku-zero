@@ -52,11 +52,11 @@ object SendLikeMessageCmd {
         override fun exec(request: Request): Response {
             val video = Mediator.repositories.findOne(
                 SVideo.predicateById(request.videoId)
-            ) ?: return Response()
+            ) ?: return Response
 
             val receiverId = video.customerId
             if (receiverId == request.sendUserId) {
-                return Response()
+                return Response
             }
 
             val exists = Mediator.repositories.findFirst(
@@ -84,7 +84,7 @@ object SendLikeMessageCmd {
                 Mediator.uow.save()
             }
 
-            return Response()
+            return Response
         }
 
     }
@@ -94,5 +94,5 @@ object SendLikeMessageCmd {
         val sendUserId: Long,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

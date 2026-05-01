@@ -52,7 +52,7 @@ object BatchDeleteCommentCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
     }
 
@@ -60,6 +60,5 @@ object BatchDeleteCommentCmd {
         val videoId: Long,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }
-

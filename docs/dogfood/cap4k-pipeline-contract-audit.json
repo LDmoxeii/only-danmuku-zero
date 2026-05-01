@@ -3,11 +3,10 @@
   "planFile": "build\\cap4k\\plan.json",
   "summary": {
     "total": 206,
-    "plannedAndMatched": 183,
-    "failures": 23,
+    "plannedAndMatched": 206,
+    "failures": 0,
     "statuses": {
-      "PLANNED_AND_MATCHED": 183,
-      "CONTRACT_STRUCTURE_DRIFT": 23
+      "PLANNED_AND_MATCHED": 206
     }
   },
   "results": [
@@ -364,14 +363,12 @@
       "designName": "FinalizeCategoryAfterCreate",
       "packageName": "edu.only4.danmuku.application.commands.category",
       "typeName": "FinalizeCategoryAfterCreateCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\category\\FinalizeCategoryAfterCreateCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -510,84 +507,72 @@
       "designName": "SendCollectMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendCollectMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendCollectMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "SendCommentMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendCommentMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendCommentMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "SendLikeMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendLikeMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendLikeMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "SendReplyMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendReplyMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendReplyMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "SendVideoAuditFailedMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendVideoAuditFailedMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendVideoAuditFailedMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "SendVideoAuditPassedMessage",
       "packageName": "edu.only4.danmuku.application.commands.customer_message",
       "typeName": "SendVideoAuditPassedMessageCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_message\\SendVideoAuditPassedMessageCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -606,28 +591,24 @@
       "designName": "BindPhone",
       "packageName": "edu.only4.danmuku.application.commands.customer_profile",
       "typeName": "BindPhoneCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_profile\\BindPhoneCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "CreateCustomerProfile",
       "packageName": "edu.only4.danmuku.application.commands.customer_profile",
       "typeName": "CreateCustomerProfileCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_profile\\CreateCustomerProfileCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -658,14 +639,12 @@
       "designName": "TransferCoin",
       "packageName": "edu.only4.danmuku.application.commands.customer_profile",
       "typeName": "TransferCoinCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_profile\\TransferCoinCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -696,14 +675,12 @@
       "designName": "DeleteVideoSeries",
       "packageName": "edu.only4.danmuku.application.commands.customer_video_series",
       "typeName": "DeleteVideoSeriesCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_video_series\\DeleteVideoSeriesCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -734,28 +711,24 @@
       "designName": "UpdateCustomerVideoSeriesVideos",
       "packageName": "edu.only4.danmuku.application.commands.customer_video_series",
       "typeName": "UpdateCustomerVideoSeriesVideosCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_video_series\\UpdateCustomerVideoSeriesVideosCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "UpdateVideoSeriesSort",
       "packageName": "edu.only4.danmuku.application.commands.customer_video_series",
       "typeName": "UpdateVideoSeriesSortCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\customer_video_series\\UpdateVideoSeriesSortCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -810,28 +783,24 @@
       "designName": "ChangePassword",
       "packageName": "edu.only4.danmuku.application.commands.user",
       "typeName": "ChangePasswordCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\user\\ChangePasswordCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "ChangeUserPhone",
       "packageName": "edu.only4.danmuku.application.commands.user",
       "typeName": "ChangeUserPhoneCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\user\\ChangeUserPhoneCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -1030,70 +999,60 @@
       "designName": "ApplyCustomerDislikedComment",
       "packageName": "edu.only4.danmuku.application.commands.video_comment",
       "typeName": "ApplyCustomerDislikedCommentCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_comment\\ApplyCustomerDislikedCommentCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "ApplyCustomerLikedComment",
       "packageName": "edu.only4.danmuku.application.commands.video_comment",
       "typeName": "ApplyCustomerLikedCommentCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_comment\\ApplyCustomerLikedCommentCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "ApplyCustomerUndislikedComment",
       "packageName": "edu.only4.danmuku.application.commands.video_comment",
       "typeName": "ApplyCustomerUndislikedCommentCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_comment\\ApplyCustomerUndislikedCommentCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "ApplyCustomerUnlikedComment",
       "packageName": "edu.only4.danmuku.application.commands.video_comment",
       "typeName": "ApplyCustomerUnlikedCommentCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_comment\\ApplyCustomerUnlikedCommentCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
       "designName": "BatchDeleteComment",
       "packageName": "edu.only4.danmuku.application.commands.video_comment",
       "typeName": "BatchDeleteCommentCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_comment\\BatchDeleteCommentCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -1148,14 +1107,12 @@
       "designName": "BatchDeleteDanmuku",
       "packageName": "edu.only4.danmuku.application.commands.video_danmuku",
       "typeName": "BatchDeleteDanmukuCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_danmuku\\BatchDeleteDanmukuCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -1270,14 +1227,12 @@
       "designName": "InitTempAndStartUploading",
       "packageName": "edu.only4.danmuku.application.commands.video_file_upload_session",
       "typeName": "InitTempAndStartUploadingCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_file_upload_session\\InitTempAndStartUploadingCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",
@@ -1464,14 +1419,12 @@
       "designName": "StartVideoPostProcessing",
       "packageName": "edu.only4.danmuku.application.commands.video_post_processing",
       "typeName": "StartVideoPostProcessingCmd",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\commands\\video_post_processing\\StartVideoPostProcessingCmd.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing Response type"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "command",

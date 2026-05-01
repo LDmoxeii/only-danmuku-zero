@@ -51,7 +51,7 @@ object SendVideoAuditFailedMessageCmd {
         override fun exec(request: Request): Response {
             val video = Mediator.repositories.findOne(
                 SVideoPost.predicateById(request.videoId)
-            ) ?: return Response()
+            ) ?: return Response
 
             val extend = UserMessageExtend(auditStatus = 5)
             Mediator.factories.create(
@@ -64,7 +64,7 @@ object SendVideoAuditFailedMessageCmd {
                 )
             )
             Mediator.uow.save()
-            return Response()
+            return Response
         }
     }
 
@@ -74,5 +74,5 @@ object SendVideoAuditFailedMessageCmd {
         val messageContent: String? = null,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

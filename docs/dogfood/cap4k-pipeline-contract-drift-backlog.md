@@ -1,28 +1,30 @@
-# Cap4k Pipeline Contract Drift Backlog
+# Cap4k Pipeline Contract Drift Closure
 
 Source report: `docs/dogfood/cap4k-pipeline-contract-audit.md`
 
 Current baseline:
 
 - Total Query/Cmd/Cli contracts: 206
-- Planned and matched contracts: 183
-- Open drift items: 23
-- Drift class: `CONTRACT_STRUCTURE_DRIFT`
+- Planned and matched contracts: 206
+- Open drift items: 0
+- Closed drift class: `CONTRACT_STRUCTURE_DRIFT`
 
 The previous 9 query request-field findings were audit false positives caused by `var` request properties. The audit now accepts both `val` and `var` contract fields.
 
-## Fix Rule
+## Verified Fix Rule
 
-All open items are command empty-response shape drift. The planned/generated contract expects an explicit generated empty response shape, while the migrated source still declares a plain `class Response`.
+The closed items were command empty-response shape drift. The planned/generated contract expects an explicit generated empty response shape, while the migrated source still declared a plain `class Response`.
 
-Preferred fix:
+Verified fix:
 
-- Replace `class Response` with `data object Response`.
-- Replace `return Response()` with `return Response`.
-- Keep the hand-written handler body unless the generator can fully regenerate that behavior.
-- Rerun `pwsh -NoProfile -ExecutionPolicy Bypass -File .\docs\dogfood\audit-design-contracts.ps1` after each batch.
+- The 23 command files were backed up under `build/dogfood/contract-drift-sandbox/originals`.
+- The 23 matching command design entries were isolated under `build/dogfood/contract-drift-sandbox/design-only-open-drift.json`.
+- `cap4kGenerate` was run with only `designCommand` enabled and `OVERWRITE` conflict policy; generated output produced 23 `data object Response` declarations and 0 `class Response` declarations.
+- Hand-written handler logic was restored from the backup and the empty-response contract was aligned to the generated shape.
+- Final verification passed with `pwsh -NoProfile -ExecutionPolicy Bypass -File .\docs\dogfood\audit-design-contracts.ps1`.
+- Final verification passed with `.\gradlew.bat --no-configuration-cache --no-build-cache compileKotlin`.
 
-## Open Items
+## Closed Items
 
 | Area | Type | File | Drift | Fix |
 | --- | --- | --- | --- | --- |

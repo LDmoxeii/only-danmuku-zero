@@ -65,7 +65,7 @@ object BindPhoneCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
 
     }
@@ -75,5 +75,5 @@ object BindPhoneCmd {
         val phone: String,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

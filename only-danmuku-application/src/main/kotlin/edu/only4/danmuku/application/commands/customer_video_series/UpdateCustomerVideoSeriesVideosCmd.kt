@@ -70,7 +70,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
 
             val incomingVideoIds = parseVideoIds(request.videoIds)
             if (incomingVideoIds.isEmpty()) {
-                return Response()
+                return Response
             }
 
             val currentVideoIds = series.videos
@@ -81,7 +81,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 val removalSet = incomingVideoIds.toSet()
                 val filtered = currentVideoIds.filterNot(removalSet::contains)
                 if (filtered.size == currentVideoIds.size) {
-                    return Response()
+                    return Response
                 }
                 filtered
             } else {
@@ -99,7 +99,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
             series.replaceVideos(request.userId, updatedVideoIds)
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
 
         private fun parseVideoIds(rawVideoIds: String?): List<Long> {
@@ -145,5 +145,5 @@ object UpdateCustomerVideoSeriesVideosCmd {
         val isDelete: Boolean = false
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

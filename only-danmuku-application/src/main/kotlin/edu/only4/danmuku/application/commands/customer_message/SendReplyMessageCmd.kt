@@ -51,11 +51,11 @@ object SendReplyMessageCmd {
         override fun exec(request: Request): Response {
             val parent = Mediator.repositories.findOne(
                 SVideoComment.predicateById(request.replyCommentId)
-            ) ?: return Response()
+            ) ?: return Response
 
             val receiverId = parent.customerId
             if (receiverId == request.sendUserId) {
-                return Response()
+                return Response
             }
 
             val extend = UserMessageExtend(
@@ -73,7 +73,7 @@ object SendReplyMessageCmd {
                 )
             )
             Mediator.uow.save()
-            return Response()
+            return Response
         }
 
         // no-op
@@ -87,6 +87,5 @@ object SendReplyMessageCmd {
         val replyCommentContent: String?,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }
-

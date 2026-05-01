@@ -82,8 +82,7 @@ object StartVideoPostProcessingCmd {
             processing.appendFiles(filePayloads)
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response
         }
 
     }
@@ -101,7 +100,7 @@ object StartVideoPostProcessingCmd {
         val duration: Int?
     )
 
-    class Response
+    data object Response
 
     private fun resolveOutputDir(videoPostId: Long, fileIndex: Int): String {
         val base = System.getProperty("java.io.tmpdir").trimEnd('/', '\\')

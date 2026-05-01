@@ -61,7 +61,7 @@ object InitTempAndStartUploadingCmd {
         override fun exec(request: Request): Response {
             val session: VideoFileUploadSession = Mediator.repositories.findFirst(
                 SVideoFileUploadSession.predicateById(request.uploadId)
-            ) ?: return Response()
+            ) ?: return Response
 
             val tempDir = request.tempDir.trim()
             if (tempDir.isBlank()) {
@@ -72,8 +72,7 @@ object InitTempAndStartUploadingCmd {
 
             Mediator.uow.save()
 
-            return Response(
-            )
+            return Response
         }
 
     }
@@ -83,6 +82,5 @@ object InitTempAndStartUploadingCmd {
         val tempDir: String,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    data object Response
 }

@@ -70,7 +70,7 @@ object ChangePasswordCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
     }
 
@@ -80,5 +80,5 @@ object ChangePasswordCmd {
         val newPassword: String,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

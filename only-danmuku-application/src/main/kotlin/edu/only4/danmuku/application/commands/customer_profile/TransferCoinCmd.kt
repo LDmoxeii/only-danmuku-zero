@@ -53,7 +53,7 @@ object TransferCoinCmd {
 
             sender.transferCoin(receiver, request.amount)
             Mediator.uow.save()
-            return Response()
+            return Response
         }
     }
 
@@ -63,6 +63,5 @@ object TransferCoinCmd {
         val amount: Int,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }
-

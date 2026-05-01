@@ -63,7 +63,7 @@ object DeleteVideoSeriesCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
     }
 
@@ -74,5 +74,5 @@ object DeleteVideoSeriesCmd {
         val seriesId: Long
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

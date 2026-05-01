@@ -49,7 +49,7 @@ object ApplyCustomerUndislikedCommentCmd {
             ) ?: error("Video comment not found: ${request.commentId}")
             comment.updateStatistics(likeChange = 0, hateChange = -1)
             Mediator.uow.save()
-            return Response()
+            return Response
         }
     }
 
@@ -57,5 +57,5 @@ object ApplyCustomerUndislikedCommentCmd {
         val commentId: Long,
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }

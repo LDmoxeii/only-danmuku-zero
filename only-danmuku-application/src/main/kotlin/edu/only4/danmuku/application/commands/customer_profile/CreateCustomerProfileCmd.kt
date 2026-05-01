@@ -61,7 +61,7 @@ object CreateCustomerProfileCmd {
 
             Mediator.uow.save()
 
-            return Response()
+            return Response
         }
 
     }
@@ -73,6 +73,5 @@ object CreateCustomerProfileCmd {
         val registerCoinCount: Int,
     ) : RequestParam<Response>
 
-    class Response(
-    )
+    data object Response
 }

@@ -82,7 +82,7 @@ object FinalizeCategoryAfterCreateCmd {
             category.updateNodePath(parentPath)
 
             Mediator.uow.save()
-            return Response()
+            return Response
         }
     }
 
@@ -90,6 +90,5 @@ object FinalizeCategoryAfterCreateCmd {
         val categoryId: Long
     ) : RequestParam<Response>
 
-    class Response
+    data object Response
 }
-
