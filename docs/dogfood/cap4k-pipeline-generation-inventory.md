@@ -15,12 +15,13 @@
 生成后可以执行 contract 审计：
 
 ```powershell
+.\gradlew.bat --refresh-dependencies --no-configuration-cache --no-build-cache cap4kPlan
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\docs\dogfood\audit-design-contracts.ps1
 ```
 
-该审计只检查 `command` / `query` / `client` 的 application contract。它要求 `*Cmd`、`*Qry`、`*Cli` 的 `Request` / `Response` 结构来自 design 生成产物，而不是稳定保留在 checked-in source 中。
+该审计只检查 `command` / `query` / `client` 的 application contract。它从 `build/cap4k/plan.json` 读取 `cap4kPlan` 的实际 `outputPath`，再校验 `*Cmd`、`*Qry`、`*Cli` 的 `Request` / `Response` 结构是否与 design 生成上下文一致。
 
-当前迁移阶段该命令允许失败，因为失败结果就是待修复的 contract drift 清单。只有当所有 Query/Cmd/Cli contract 都回到 design-generated 边界后，该审计才应该成为通过项。
+当前迁移阶段该命令允许失败，因为失败结果就是待修复的 contract drift 清单。该审计不要求产物必须位于 `build/generated`；如果 plan 决定输出到 `src/main/kotlin`，就按该路径做结构校验。
 
 本轮极限 dogfood 不再使用单一 active `iterate/drawing_board.json` 作为 design 输入。
 

@@ -678,7 +678,7 @@ only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，
 
 凡是 application query/client/command 的 `Request` / `Response` 结构、是否是 `items` 容器、是否是 `page` 容器，都必须由 design 输入和 generator 决定。手动修 contract 只能作为临时 unblock，不应该进入最终 dogfood 基准。
 
-`docs/dogfood/audit-design-contracts.ps1` 已把这条规则固化成脚本：它从 `codegen/design/design.json` 推导所有 `*Cmd`、`*Qry`、`*Cli` 期望产物，并把 checked-in source 中的同名 contract 标记为 `CHECKED_IN_CONTRACT`。
+`docs/dogfood/audit-design-contracts.ps1` 已把这条规则固化成脚本：它从 `codegen/design/design.json` 推导所有 `*Cmd`、`*Qry`、`*Cli` 期望产物，再从 `build/cap4k/plan.json` 读取实际 `outputPath`，校验该路径上的 `Request` / `Response` 结构是否与 plan context 一致。
 
 处理建议：
 

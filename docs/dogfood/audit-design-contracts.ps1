@@ -1,61 +1,39 @@
 $ErrorActionPreference = "Stop"
 
 if ($PSVersionTable.PSVersion.Major -lt 7) {
-    throw "audit-design-contracts.ps1 requires PowerShell 7+ (pwsh) for stable UTF-8 JSON formatting."
+    throw "audit-design-contracts.ps1 requires PowerShell 7+ (pwsh)."
 }
 
-$projectRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+$projectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $designFile = Join-Path $projectRoot "codegen\design\design.json"
-$generatedRoot = Join-Path $projectRoot "only-danmuku-application\build\generated\cap4k\main\kotlin"
-$sourceRoot = Join-Path $projectRoot "only-danmuku-application\src\main\kotlin"
+$planFile = Join-Path $projectRoot "build\cap4k\plan.json"
 $jsonReportFile = Join-Path $projectRoot "docs\dogfood\cap4k-pipeline-contract-audit.json"
 $markdownReportFile = Join-Path $projectRoot "docs\dogfood\cap4k-pipeline-contract-audit.md"
 
-$contractTags = @("command", "query", "client")
-
-$contractLayouts = @{
-    "command" = [pscustomobject]@{
-        RootPackage = "edu.only4.danmuku.application.commands"
-        Suffix = "Cmd"
-    }
-    "query" = [pscustomobject]@{
-        RootPackage = "edu.only4.danmuku.application.queries"
-        Suffix = "Qry"
-    }
-    "client" = [pscustomobject]@{
-        RootPackage = "edu.only4.danmuku.application.distributed.clients"
-        Suffix = "Cli"
-    }
+$contractSpecs = @{
+    command = @{ GeneratorId = "design-command"; Suffix = "Cmd" }
+    query = @{ GeneratorId = "design-query"; Suffix = "Qry" }
+    client = @{ GeneratorId = "design-client"; Suffix = "Cli" }
 }
 
-$generatedBlockingLegacyMarkers = @(
+$blockingLegacyMarkers = @(
     "ListQueryParam<",
     "PageQueryParam<",
     "ListQuery<",
     "PageQuery<"
 )
 
-$sourceDiagnosticLegacyMarkers = $generatedBlockingLegacyMarkers + @(
-    "data class Item",
-    "class Item",
-    ".Item"
-)
-
-function Read-DesignEntries {
-    if (-not (Test-Path -LiteralPath $designFile)) {
-        throw "Design input not found: $designFile"
+function Read-JsonFile([string] $path) {
+    if (-not (Test-Path -LiteralPath $path)) {
+        throw "Required file not found: $path"
     }
-    return @(Get-Content -LiteralPath $designFile -Raw | ConvertFrom-Json -Depth 100)
-}
-
-function Convert-PackageToPath([string] $packageName) {
-    if ([string]::IsNullOrWhiteSpace($packageName)) {
-        return ""
-    }
-    return $packageName.Trim(".").Replace(".", [System.IO.Path]::DirectorySeparatorChar)
+    return Get-Content -LiteralPath $path -Raw | ConvertFrom-Json -Depth 100
 }
 
 function Get-JsonString($obj, [string] $name) {
+    if ($null -eq $obj) {
+        return ""
+    }
     $property = $obj.PSObject.Properties[$name]
     if ($null -eq $property -or $null -eq $property.Value) {
         return ""
@@ -63,133 +41,18 @@ function Get-JsonString($obj, [string] $name) {
     return [string] $property.Value
 }
 
-function Join-Package([string] $rootPackage, [string] $relativePackage) {
-    $root = $rootPackage.Trim(".")
-    $relative = $relativePackage.Trim(".")
-    if ([string]::IsNullOrWhiteSpace($relative)) {
-        return $root
-    }
-    return "$root.$relative"
-}
-
-function Join-KotlinFilePath([string] $root, [string] $packageName, [string] $typeName) {
-    $packagePath = Convert-PackageToPath $packageName
-    if ([string]::IsNullOrWhiteSpace($packagePath)) {
-        return Join-Path $root "$typeName.kt"
-    }
-    return Join-Path (Join-Path $root $packagePath) "$typeName.kt"
-}
-
-function New-ExpectedContract($entry) {
-    $tag = Get-JsonString $entry "tag"
-    $name = Get-JsonString $entry "name"
-    $relativePackage = Get-JsonString $entry "package"
-    $layout = $contractLayouts[$tag]
-    $typeName = "$name$($layout.Suffix)"
-    $packageName = Join-Package $layout.RootPackage $relativePackage
-
-    return [pscustomobject]@{
-        Tag = $tag
-        DesignName = $name
-        PackageName = $packageName
-        TypeName = $typeName
-        GeneratedPath = Join-KotlinFilePath $generatedRoot $packageName $typeName
-        SourcePath = Join-KotlinFilePath $sourceRoot $packageName $typeName
-    }
-}
-
-function Find-LegacyMarkers([string] $path, [string[]] $markers) {
-    if ([string]::IsNullOrWhiteSpace($path) -or -not (Test-Path -LiteralPath $path)) {
-        return @()
-    }
-    $content = Get-Content -LiteralPath $path -Raw
-    return @($markers | Where-Object { $content.Contains($_) })
-}
-
-function Test-GeneratedContractStructure($expected) {
-    if (-not (Test-Path -LiteralPath $expected.GeneratedPath)) {
-        return @()
-    }
-
-    $content = Get-Content -LiteralPath $expected.GeneratedPath -Raw
-    $issues = [System.Collections.Generic.List[string]]::new()
-
-    if (-not $content.Contains("package $($expected.PackageName)")) {
-        $issues.Add("missing package $($expected.PackageName)")
-    }
-
-    if ($content -notmatch "object\s+$([regex]::Escape($expected.TypeName))\b") {
-        $issues.Add("missing object $($expected.TypeName)")
-    }
-
-    if ($content -notmatch "(data\s+class|class)\s+Request\b") {
-        $issues.Add("missing Request type")
-    }
-
-    if ($content -notmatch "(data\s+class|data\s+object)\s+Response\b") {
-        $issues.Add("missing Response type")
-    }
-
-    return @($issues)
-}
-
-function Test-ExpectedContract($expected) {
-    $generatedExists = Test-Path -LiteralPath $expected.GeneratedPath
-    $sourceExists = Test-Path -LiteralPath $expected.SourcePath
-    $generatedLegacyMarkers = Find-LegacyMarkers $expected.GeneratedPath $generatedBlockingLegacyMarkers
-    $sourceLegacyMarkers = Find-LegacyMarkers $expected.SourcePath $sourceDiagnosticLegacyMarkers
-    $generatedStructureIssues = Test-GeneratedContractStructure $expected
-
-    $status = "MISSING_CONTRACT"
-    if (-not $generatedExists -and $sourceExists) {
-        $status = "CHECKED_IN_AND_MISSING_GENERATED"
-    } elseif (-not $generatedExists) {
-        $status = "MISSING_GENERATED"
-    } elseif ($generatedLegacyMarkers.Count -gt 0) {
-        $status = "GENERATED_WITH_LEGACY_MARKER"
-    } elseif ($generatedStructureIssues.Count -gt 0) {
-        $status = "GENERATED_STRUCTURE_MISMATCH"
-    } elseif ($sourceExists) {
-        $status = "GENERATED_WITH_CHECKED_IN_SHADOW"
-    } elseif ($generatedExists) {
-        $status = "GENERATED"
-    }
-
-    return [pscustomobject]@{
-        tag = $expected.Tag
-        designName = $expected.DesignName
-        packageName = $expected.PackageName
-        typeName = $expected.TypeName
-        status = $status
-        generatedPath = $expected.GeneratedPath
-        sourcePath = $expected.SourcePath
-        generatedExists = $generatedExists
-        sourceExists = $sourceExists
-        generatedLegacyMarkers = @($generatedLegacyMarkers)
-        sourceLegacyMarkers = @($sourceLegacyMarkers)
-        generatedStructureIssues = @($generatedStructureIssues)
-    }
-}
-
-function Invoke-ContractAudit {
-    $entries = Read-DesignEntries
-    $contractEntries = @($entries | Where-Object {
-        $tag = Get-JsonString $_ "tag"
-        $contractTags -contains $tag
-    })
-
-    return @($contractEntries | ForEach-Object {
-        Test-ExpectedContract (New-ExpectedContract $_)
-    })
-}
-
 function Convert-ToProjectRelativePath([string] $path) {
     if ([string]::IsNullOrWhiteSpace($path)) {
         return ""
     }
-    $root = [string] $projectRoot
-    if ($path.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
-        return $path.Substring($root.Length).TrimStart("\", "/")
+    $fullPath = if ([System.IO.Path]::IsPathRooted($path)) {
+        [System.IO.Path]::GetFullPath($path)
+    } else {
+        [System.IO.Path]::GetFullPath((Join-Path $projectRoot $path))
+    }
+    $root = [System.IO.Path]::GetFullPath([string] $projectRoot)
+    if ($fullPath.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $fullPath.Substring($root.Length).TrimStart("\", "/")
     }
     return $path
 }
@@ -201,106 +64,236 @@ function Convert-MarkdownCell([string] $text) {
     return $text.Replace("|", "\|")
 }
 
-function New-AuditSummary($results) {
-    $total = @($results).Count
-    $generated = @($results | Where-Object { $_.status -eq "GENERATED" }).Count
-    $checkedIn = @($results | Where-Object { $_.sourceExists }).Count
-    $missingGenerated = @($results | Where-Object { -not $_.generatedExists }).Count
-    $legacy = @($results | Where-Object { $_.generatedLegacyMarkers.Count -gt 0 }).Count
-    $structureMismatch = @($results | Where-Object { $_.generatedStructureIssues.Count -gt 0 }).Count
-    $checkedInAndMissingGenerated = @($results | Where-Object { $_.status -eq "CHECKED_IN_AND_MISSING_GENERATED" }).Count
-    $shadowed = @($results | Where-Object { $_.status -eq "GENERATED_WITH_CHECKED_IN_SHADOW" }).Count
-    $failures = @($results | Where-Object { $_.status -ne "GENERATED" }).Count
-    return [pscustomobject]@{
-        total = $total
-        generated = $generated
-        missingGenerated = $missingGenerated
-        checkedInContract = $checkedIn
-        checkedInAndMissingGenerated = $checkedInAndMissingGenerated
-        generatedWithCheckedInShadow = $shadowed
-        generatedWithLegacyMarker = $legacy
-        generatedStructureMismatch = $structureMismatch
-        failures = $failures
+function Get-PlanTag([string] $generatorId) {
+    switch ($generatorId) {
+        "design-command" { return "command" }
+        "design-query" { return "query" }
+        "design-client" { return "client" }
+        default { return "" }
     }
 }
 
-function Write-AuditJson($report) {
-    $json = $report | ConvertTo-Json -Depth 20
-    Set-Content -LiteralPath $jsonReportFile -Value $json -Encoding utf8NoBOM
+function Convert-ToArray($value) {
+    if ($null -eq $value) {
+        return @()
+    }
+    return @($value)
 }
 
-function Write-AuditMarkdown($report) {
-    $lines = [System.Collections.Generic.List[string]]::new()
-    $lines.Add("# Cap4k Pipeline Contract Audit")
-    $lines.Add("")
-    $lines.Add("Design input: ``$($report.designFile)``")
-    $lines.Add("")
-    $lines.Add("Expected generated root: ``$($report.generatedRoot)``")
-    $lines.Add("")
-    $lines.Add("Checked-in source root: ``$($report.sourceRoot)``")
-    $lines.Add("")
-    $lines.Add("## Summary")
-    $lines.Add("")
-    $lines.Add("| Metric | Count |")
-    $lines.Add("| --- | ---: |")
-    $lines.Add("| Total Query/Cmd/Cli contracts | $($report.summary.total) |")
-    $lines.Add("| Generated contracts | $($report.summary.generated) |")
-    $lines.Add("| Missing generated contracts | $($report.summary.missingGenerated) |")
-    $lines.Add("| Checked-in contract files | $($report.summary.checkedInContract) |")
-    $lines.Add("| Checked-in and missing generated contracts | $($report.summary.checkedInAndMissingGenerated) |")
-    $lines.Add("| Generated contracts shadowed by checked-in files | $($report.summary.generatedWithCheckedInShadow) |")
-    $lines.Add("| Generated files with legacy markers | $($report.summary.generatedWithLegacyMarker) |")
-    $lines.Add("| Generated files with structure mismatch | $($report.summary.generatedStructureMismatch) |")
-    $lines.Add("| Failures | $($report.summary.failures) |")
-    $lines.Add("")
-    $lines.Add("## Failures")
-    $lines.Add("")
+function New-ExpectedContract($entry) {
+    $tag = Get-JsonString $entry "tag"
+    if (-not $contractSpecs.ContainsKey($tag)) {
+        return $null
+    }
+    $name = Get-JsonString $entry "name"
+    $typeName = "$name$($contractSpecs[$tag].Suffix)"
+    return [pscustomobject]@{
+        tag = $tag
+        designName = $name
+        typeName = $typeName
+        key = "$tag|$typeName"
+    }
+}
 
-    $failures = @($report.results | Where-Object { $_.status -ne "GENERATED" } | Sort-Object tag, packageName, typeName)
-    if ($failures.Count -eq 0) {
-        $lines.Add("No contract drift detected.")
-    } else {
-        $lines.Add("| Status | Tag | Type | Generated Path | Source Path | Generated Legacy Markers | Source Legacy Markers | Structure Issues |")
-        $lines.Add("| --- | --- | --- | --- | --- | --- | --- | --- |")
-        foreach ($failure in $failures) {
-            $generatedMarkers = ($failure.generatedLegacyMarkers -join ", ")
-            $sourceMarkers = ($failure.sourceLegacyMarkers -join ", ")
-            $structureIssues = ($failure.generatedStructureIssues -join ", ")
-            $lines.Add("| $(Convert-MarkdownCell $failure.status) | $(Convert-MarkdownCell $failure.tag) | $(Convert-MarkdownCell $failure.typeName) | $(Convert-MarkdownCell $failure.generatedPath) | $(Convert-MarkdownCell $failure.sourcePath) | $(Convert-MarkdownCell $generatedMarkers) | $(Convert-MarkdownCell $sourceMarkers) | $(Convert-MarkdownCell $structureIssues) |")
+function New-PlanIndex($planItems) {
+    $index = @{}
+    foreach ($item in $planItems) {
+        $tag = Get-PlanTag (Get-JsonString $item "generatorId")
+        $typeName = Get-JsonString $item.context "typeName"
+        if (-not [string]::IsNullOrWhiteSpace($tag) -and -not [string]::IsNullOrWhiteSpace($typeName)) {
+            $index["$tag|$typeName"] = $item
+        }
+    }
+    return $index
+}
+
+function Find-LegacyMarkers([string] $content) {
+    return @($blockingLegacyMarkers | Where-Object { $content.Contains($_) })
+}
+
+function Test-PlanContext($item) {
+    $issues = [System.Collections.Generic.List[string]]::new()
+    if ($null -eq $item.context) {
+        $issues.Add("missing context")
+        return @($issues)
+    }
+    foreach ($required in @("packageName", "typeName")) {
+        if ([string]::IsNullOrWhiteSpace((Get-JsonString $item.context $required))) {
+            $issues.Add("missing context.$required")
+        }
+    }
+    return @($issues)
+}
+
+function Test-Fields([string] $content, $fields, [string] $scope, [System.Collections.Generic.List[string]] $issues) {
+    foreach ($field in (Convert-ToArray $fields)) {
+        $name = Get-JsonString $field "name"
+        if (-not [string]::IsNullOrWhiteSpace($name) -and $content -notmatch "(?m)\bval\s+$([regex]::Escape($name))\s*:") {
+            $issues.Add("missing $scope field $name")
+        }
+    }
+}
+
+function Test-NestedTypes([string] $content, $nestedTypes, [string] $scope, [System.Collections.Generic.List[string]] $issues) {
+    foreach ($nested in (Convert-ToArray $nestedTypes)) {
+        $name = Get-JsonString $nested "name"
+        if (-not [string]::IsNullOrWhiteSpace($name) -and $content -notmatch "(?m)^\s*data\s+class\s+$([regex]::Escape($name))\b") {
+            $issues.Add("missing $scope nested type $name")
+        }
+        Test-Fields $content $nested.fields "$scope nested $name" $issues
+    }
+}
+
+function Test-ContractStructure($item, [string] $path) {
+    $content = Get-Content -LiteralPath $path -Raw
+    $context = $item.context
+    $issues = [System.Collections.Generic.List[string]]::new()
+    $packageName = Get-JsonString $context "packageName"
+    $typeName = Get-JsonString $context "typeName"
+
+    if (-not $content.Contains("package $packageName")) {
+        $issues.Add("missing package $packageName")
+    }
+    if ($content -notmatch "(?m)^\s*object\s+$([regex]::Escape($typeName))\b") {
+        $issues.Add("missing object $typeName")
+    }
+    if ($content -notmatch "(?m)^\s*(data\s+class|class)\s+Request\b") {
+        $issues.Add("missing Request type")
+    }
+    if ($content -notmatch "(?m)^\s*(data\s+class|data\s+object)\s+Response\b") {
+        $issues.Add("missing Response type")
+    }
+
+    Test-Fields $content $context.requestFields "request" $issues
+    Test-Fields $content $context.responseFields "response" $issues
+    Test-NestedTypes $content $context.requestNestedTypes "request" $issues
+    Test-NestedTypes $content $context.responseNestedTypes "response" $issues
+
+    if ($context.pageRequest -eq $true) {
+        foreach ($marker in @("PageRequest", "pageNum", "pageSize")) {
+            if (-not $content.Contains($marker)) {
+                $issues.Add("missing page request marker $marker")
+            }
         }
     }
 
-    Set-Content -LiteralPath $markdownReportFile -Value $lines -Encoding utf8NoBOM
+    return [pscustomobject]@{
+        legacyMarkers = Find-LegacyMarkers $content
+        structureIssues = @($issues)
+    }
 }
 
-$results = Invoke-ContractAudit
-$summary = New-AuditSummary $results
-$reportResults = @($results | Sort-Object tag, packageName, typeName | ForEach-Object {
-    [pscustomobject]@{
-        tag = $_.tag
-        designName = $_.designName
-        packageName = $_.packageName
-        typeName = $_.typeName
-        status = $_.status
-        generatedPath = Convert-ToProjectRelativePath $_.generatedPath
-        sourcePath = Convert-ToProjectRelativePath $_.sourcePath
-        generatedExists = $_.generatedExists
-        sourceExists = $_.sourceExists
-        generatedLegacyMarkers = @($_.generatedLegacyMarkers)
-        sourceLegacyMarkers = @($_.sourceLegacyMarkers)
-        generatedStructureIssues = @($_.generatedStructureIssues)
+function Test-ExpectedContract($expected, $planIndex) {
+    if (-not $planIndex.ContainsKey($expected.key)) {
+        return [pscustomobject]@{
+            tag = $expected.tag; designName = $expected.designName; typeName = $expected.typeName
+            status = "MISSING_PLAN_ITEM"; outputPath = ""; outputKind = ""; conflictPolicy = ""
+            legacyMarkers = @(); structureIssues = @("missing plan item $($expected.key)")
+        }
     }
-})
+
+    $item = $planIndex[$expected.key]
+    $contextIssues = Test-PlanContext $item
+    $outputPath = Get-JsonString $item "outputPath"
+    $absoluteOutputPath = Join-Path $projectRoot $outputPath
+    $legacyMarkers = @()
+    $structureIssues = @($contextIssues)
+    $status = "PLANNED_AND_MATCHED"
+
+    if ($contextIssues.Count -gt 0) {
+        $status = "PLAN_CONTEXT_DEFECT"
+    } elseif (-not (Test-Path -LiteralPath $absoluteOutputPath)) {
+        $status = "MISSING_OUTPUT_FILE"
+        $structureIssues += "missing output file"
+    } else {
+        $result = Test-ContractStructure $item $absoluteOutputPath
+        $legacyMarkers = @($result.legacyMarkers)
+        $structureIssues = @($result.structureIssues)
+        if ($legacyMarkers.Count -gt 0) {
+            $status = "LEGACY_CONTRACT_MARKER"
+        } elseif ($structureIssues.Count -gt 0) {
+            $status = "CONTRACT_STRUCTURE_DRIFT"
+        }
+    }
+
+    return [pscustomobject]@{
+        tag = $expected.tag
+        designName = $expected.designName
+        packageName = Get-JsonString $item.context "packageName"
+        typeName = $expected.typeName
+        status = $status
+        outputPath = Convert-ToProjectRelativePath $outputPath
+        outputKind = Get-JsonString $item "outputKind"
+        conflictPolicy = Get-JsonString $item "conflictPolicy"
+        legacyMarkers = @($legacyMarkers)
+        structureIssues = @($structureIssues)
+    }
+}
+
+$designEntries = Convert-ToArray (Read-JsonFile $designFile)
+$planItems = Convert-ToArray ((Read-JsonFile $planFile).items)
+$planIndex = New-PlanIndex $planItems
+$results = @($designEntries | ForEach-Object { New-ExpectedContract $_ } | Where-Object { $null -ne $_ } | ForEach-Object {
+    Test-ExpectedContract $_ $planIndex
+} | Sort-Object tag, packageName, typeName)
+
+$statusCounts = [ordered]@{}
+foreach ($result in $results) {
+    if (-not $statusCounts.Contains($result.status)) {
+        $statusCounts[$result.status] = 0
+    }
+    $statusCounts[$result.status] += 1
+}
+$failures = @($results | Where-Object { $_.status -ne "PLANNED_AND_MATCHED" })
+$summary = [pscustomobject]@{
+    total = $results.Count
+    plannedAndMatched = @($results | Where-Object { $_.status -eq "PLANNED_AND_MATCHED" }).Count
+    failures = $failures.Count
+    statuses = $statusCounts
+}
 $report = [pscustomobject]@{
     designFile = Convert-ToProjectRelativePath $designFile
-    generatedRoot = Convert-ToProjectRelativePath $generatedRoot
-    sourceRoot = Convert-ToProjectRelativePath $sourceRoot
+    planFile = Convert-ToProjectRelativePath $planFile
     summary = $summary
-    results = @($reportResults)
+    results = $results
 }
 
-Write-AuditJson $report
-Write-AuditMarkdown $report
+$report | ConvertTo-Json -Depth 100 | Set-Content -LiteralPath $jsonReportFile -Encoding utf8NoBOM
+
+$lines = [System.Collections.Generic.List[string]]::new()
+$lines.Add("# Cap4k Pipeline Contract Audit")
+$lines.Add("")
+$lines.Add("Design input: ``$($report.designFile)``")
+$lines.Add("")
+$lines.Add("Plan input: ``$($report.planFile)``")
+$lines.Add("")
+$lines.Add('The audit reads planned `outputPath` values from `cap4kPlan`; it does not require contracts to be generated under `build/generated`.')
+$lines.Add("")
+$lines.Add("## Summary")
+$lines.Add("")
+$lines.Add("| Metric | Count |")
+$lines.Add("| --- | ---: |")
+$lines.Add("| Total Query/Cmd/Cli contracts | $($summary.total) |")
+$lines.Add("| Planned and matched contracts | $($summary.plannedAndMatched) |")
+$lines.Add("| Failures | $($summary.failures) |")
+foreach ($status in $statusCounts.Keys) {
+    $lines.Add("| $status | $($statusCounts[$status]) |")
+}
+$lines.Add("")
+$lines.Add("## Failures")
+$lines.Add("")
+if ($failures.Count -eq 0) {
+    $lines.Add("No contract drift detected.")
+} else {
+    $lines.Add("| Status | Tag | Type | Output Path | Output Kind | Legacy Markers | Structure Issues |")
+    $lines.Add("| --- | --- | --- | --- | --- | --- | --- |")
+    foreach ($failure in ($failures | Sort-Object status, tag, packageName, typeName)) {
+        $markers = ($failure.legacyMarkers -join ", ")
+        $issues = ($failure.structureIssues -join ", ")
+        $lines.Add("| $(Convert-MarkdownCell $failure.status) | $(Convert-MarkdownCell $failure.tag) | $(Convert-MarkdownCell $failure.typeName) | $(Convert-MarkdownCell $failure.outputPath) | $(Convert-MarkdownCell $failure.outputKind) | $(Convert-MarkdownCell $markers) | $(Convert-MarkdownCell $issues) |")
+    }
+}
+$lines | Set-Content -LiteralPath $markdownReportFile -Encoding utf8NoBOM
 
 if ($summary.failures -gt 0) {
     Write-Error "Design contract audit failed with $($summary.failures) drift item(s). See $markdownReportFile"
