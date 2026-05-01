@@ -28,11 +28,14 @@ $contractLayouts = @{
     }
 }
 
-$legacyMarkers = @(
+$generatedBlockingLegacyMarkers = @(
     "ListQueryParam<",
     "PageQueryParam<",
     "ListQuery<",
-    "PageQuery<",
+    "PageQuery<"
+)
+
+$sourceDiagnosticLegacyMarkers = $generatedBlockingLegacyMarkers + @(
     "data class Item",
     "class Item",
     ".Item"
@@ -95,31 +98,59 @@ function New-ExpectedContract($entry) {
     }
 }
 
-function Find-LegacyMarkers([string] $path) {
+function Find-LegacyMarkers([string] $path, [string[]] $markers) {
     if ([string]::IsNullOrWhiteSpace($path) -or -not (Test-Path -LiteralPath $path)) {
         return @()
     }
     $content = Get-Content -LiteralPath $path -Raw
-    return @($legacyMarkers | Where-Object { $content.Contains($_) })
+    return @($markers | Where-Object { $content.Contains($_) })
+}
+
+function Test-GeneratedContractStructure($expected) {
+    if (-not (Test-Path -LiteralPath $expected.GeneratedPath)) {
+        return @()
+    }
+
+    $content = Get-Content -LiteralPath $expected.GeneratedPath -Raw
+    $issues = [System.Collections.Generic.List[string]]::new()
+
+    if (-not $content.Contains("package $($expected.PackageName)")) {
+        $issues.Add("missing package $($expected.PackageName)")
+    }
+
+    if ($content -notmatch "object\s+$([regex]::Escape($expected.TypeName))\b") {
+        $issues.Add("missing object $($expected.TypeName)")
+    }
+
+    if ($content -notmatch "(data\s+class|class)\s+Request\b") {
+        $issues.Add("missing Request type")
+    }
+
+    if ($content -notmatch "(data\s+class|data\s+object)\s+Response\b") {
+        $issues.Add("missing Response type")
+    }
+
+    return @($issues)
 }
 
 function Test-ExpectedContract($expected) {
     $generatedExists = Test-Path -LiteralPath $expected.GeneratedPath
     $sourceExists = Test-Path -LiteralPath $expected.SourcePath
-    $scanPath = $null
-    if ($generatedExists) {
-        $scanPath = $expected.GeneratedPath
-    } elseif ($sourceExists) {
-        $scanPath = $expected.SourcePath
-    }
-
-    $legacyMarkersFound = Find-LegacyMarkers $scanPath
+    $generatedLegacyMarkers = Find-LegacyMarkers $expected.GeneratedPath $generatedBlockingLegacyMarkers
+    $sourceLegacyMarkers = Find-LegacyMarkers $expected.SourcePath $sourceDiagnosticLegacyMarkers
+    $generatedStructureIssues = Test-GeneratedContractStructure $expected
 
     $status = "MISSING_CONTRACT"
-    if ($sourceExists) {
-        $status = "CHECKED_IN_CONTRACT"
-    } elseif ($generatedExists -and $legacyMarkersFound.Count -gt 0) {
+    if (-not $generatedExists -and $sourceExists) {
+        $status = "CHECKED_IN_AND_MISSING_GENERATED"
+    } elseif (-not $generatedExists) {
+        $status = "MISSING_GENERATED"
+    } elseif ($generatedLegacyMarkers.Count -gt 0) {
         $status = "GENERATED_WITH_LEGACY_MARKER"
+    } elseif ($generatedStructureIssues.Count -gt 0) {
+        $status = "GENERATED_STRUCTURE_MISMATCH"
+    } elseif ($sourceExists) {
+        $status = "GENERATED_WITH_CHECKED_IN_SHADOW"
     } elseif ($generatedExists) {
         $status = "GENERATED"
     }
@@ -134,7 +165,9 @@ function Test-ExpectedContract($expected) {
         sourcePath = $expected.SourcePath
         generatedExists = $generatedExists
         sourceExists = $sourceExists
-        legacyMarkers = @($legacyMarkersFound)
+        generatedLegacyMarkers = @($generatedLegacyMarkers)
+        sourceLegacyMarkers = @($sourceLegacyMarkers)
+        generatedStructureIssues = @($generatedStructureIssues)
     }
 }
 
@@ -171,16 +204,23 @@ function Convert-MarkdownCell([string] $text) {
 function New-AuditSummary($results) {
     $total = @($results).Count
     $generated = @($results | Where-Object { $_.status -eq "GENERATED" }).Count
-    $checkedIn = @($results | Where-Object { $_.status -eq "CHECKED_IN_CONTRACT" }).Count
-    $missing = @($results | Where-Object { $_.status -eq "MISSING_CONTRACT" }).Count
-    $legacy = @($results | Where-Object { $_.status -eq "GENERATED_WITH_LEGACY_MARKER" }).Count
+    $checkedIn = @($results | Where-Object { $_.sourceExists }).Count
+    $missingGenerated = @($results | Where-Object { -not $_.generatedExists }).Count
+    $legacy = @($results | Where-Object { $_.generatedLegacyMarkers.Count -gt 0 }).Count
+    $structureMismatch = @($results | Where-Object { $_.generatedStructureIssues.Count -gt 0 }).Count
+    $checkedInAndMissingGenerated = @($results | Where-Object { $_.status -eq "CHECKED_IN_AND_MISSING_GENERATED" }).Count
+    $shadowed = @($results | Where-Object { $_.status -eq "GENERATED_WITH_CHECKED_IN_SHADOW" }).Count
+    $failures = @($results | Where-Object { $_.status -ne "GENERATED" }).Count
     return [pscustomobject]@{
         total = $total
         generated = $generated
-        checkedIn = $checkedIn
-        missing = $missing
+        missingGenerated = $missingGenerated
+        checkedInContract = $checkedIn
+        checkedInAndMissingGenerated = $checkedInAndMissingGenerated
+        generatedWithCheckedInShadow = $shadowed
         generatedWithLegacyMarker = $legacy
-        failures = $checkedIn + $missing + $legacy
+        generatedStructureMismatch = $structureMismatch
+        failures = $failures
     }
 }
 
@@ -193,7 +233,11 @@ function Write-AuditMarkdown($report) {
     $lines = [System.Collections.Generic.List[string]]::new()
     $lines.Add("# Cap4k Pipeline Contract Audit")
     $lines.Add("")
-    $lines.Add("Generated at: ``$($report.generatedAt)``")
+    $lines.Add("Design input: ``$($report.designFile)``")
+    $lines.Add("")
+    $lines.Add("Expected generated root: ``$($report.generatedRoot)``")
+    $lines.Add("")
+    $lines.Add("Checked-in source root: ``$($report.sourceRoot)``")
     $lines.Add("")
     $lines.Add("## Summary")
     $lines.Add("")
@@ -201,9 +245,12 @@ function Write-AuditMarkdown($report) {
     $lines.Add("| --- | ---: |")
     $lines.Add("| Total Query/Cmd/Cli contracts | $($report.summary.total) |")
     $lines.Add("| Generated contracts | $($report.summary.generated) |")
-    $lines.Add("| Checked-in contract drift | $($report.summary.checkedIn) |")
-    $lines.Add("| Missing contracts | $($report.summary.missing) |")
+    $lines.Add("| Missing generated contracts | $($report.summary.missingGenerated) |")
+    $lines.Add("| Checked-in contract files | $($report.summary.checkedInContract) |")
+    $lines.Add("| Checked-in and missing generated contracts | $($report.summary.checkedInAndMissingGenerated) |")
+    $lines.Add("| Generated contracts shadowed by checked-in files | $($report.summary.generatedWithCheckedInShadow) |")
     $lines.Add("| Generated files with legacy markers | $($report.summary.generatedWithLegacyMarker) |")
+    $lines.Add("| Generated files with structure mismatch | $($report.summary.generatedStructureMismatch) |")
     $lines.Add("| Failures | $($report.summary.failures) |")
     $lines.Add("")
     $lines.Add("## Failures")
@@ -213,11 +260,13 @@ function Write-AuditMarkdown($report) {
     if ($failures.Count -eq 0) {
         $lines.Add("No contract drift detected.")
     } else {
-        $lines.Add("| Status | Tag | Type | Generated Path | Source Path | Legacy Markers |")
-        $lines.Add("| --- | --- | --- | --- | --- | --- |")
+        $lines.Add("| Status | Tag | Type | Generated Path | Source Path | Generated Legacy Markers | Source Legacy Markers | Structure Issues |")
+        $lines.Add("| --- | --- | --- | --- | --- | --- | --- | --- |")
         foreach ($failure in $failures) {
-            $markers = ($failure.legacyMarkers -join ", ")
-            $lines.Add("| $(Convert-MarkdownCell $failure.status) | $(Convert-MarkdownCell $failure.tag) | $(Convert-MarkdownCell $failure.typeName) | $(Convert-MarkdownCell (Convert-ToProjectRelativePath $failure.generatedPath)) | $(Convert-MarkdownCell (Convert-ToProjectRelativePath $failure.sourcePath)) | $(Convert-MarkdownCell $markers) |")
+            $generatedMarkers = ($failure.generatedLegacyMarkers -join ", ")
+            $sourceMarkers = ($failure.sourceLegacyMarkers -join ", ")
+            $structureIssues = ($failure.generatedStructureIssues -join ", ")
+            $lines.Add("| $(Convert-MarkdownCell $failure.status) | $(Convert-MarkdownCell $failure.tag) | $(Convert-MarkdownCell $failure.typeName) | $(Convert-MarkdownCell $failure.generatedPath) | $(Convert-MarkdownCell $failure.sourcePath) | $(Convert-MarkdownCell $generatedMarkers) | $(Convert-MarkdownCell $sourceMarkers) | $(Convert-MarkdownCell $structureIssues) |")
         }
     }
 
@@ -226,13 +275,28 @@ function Write-AuditMarkdown($report) {
 
 $results = Invoke-ContractAudit
 $summary = New-AuditSummary $results
+$reportResults = @($results | Sort-Object tag, packageName, typeName | ForEach-Object {
+    [pscustomobject]@{
+        tag = $_.tag
+        designName = $_.designName
+        packageName = $_.packageName
+        typeName = $_.typeName
+        status = $_.status
+        generatedPath = Convert-ToProjectRelativePath $_.generatedPath
+        sourcePath = Convert-ToProjectRelativePath $_.sourcePath
+        generatedExists = $_.generatedExists
+        sourceExists = $_.sourceExists
+        generatedLegacyMarkers = @($_.generatedLegacyMarkers)
+        sourceLegacyMarkers = @($_.sourceLegacyMarkers)
+        generatedStructureIssues = @($_.generatedStructureIssues)
+    }
+})
 $report = [pscustomobject]@{
-    generatedAt = (Get-Date).ToString("o")
     designFile = Convert-ToProjectRelativePath $designFile
     generatedRoot = Convert-ToProjectRelativePath $generatedRoot
     sourceRoot = Convert-ToProjectRelativePath $sourceRoot
     summary = $summary
-    results = @($results)
+    results = @($reportResults)
 }
 
 Write-AuditJson $report
