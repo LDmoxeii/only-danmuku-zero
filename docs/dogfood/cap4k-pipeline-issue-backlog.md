@@ -583,19 +583,196 @@ Could not find com.only4:ksp-processor:0.2.0-SNAPSHOT.
 
 短期保持 TODO 骨架，保证完整 dogfood 编译闭环。真实业务实现后续由人工基于新 `Payload.Response` 和 application request/response 契约重写，不能再依赖旧 `Converter`。如果未来希望自动生成 controller 适配层，需要单独设计 `designController` 或 payload mapping 能力，不能把旧 MapStruct 契约重新塞回默认模板。
 
-### [known-gap] [skipped-query-tree] `GetCategoryTreeQryHandler` 保留为递归树查询 TODO 骨架
+### [resolved] [skipped-query-tree] `GetCategoryTreeQryHandler` 递归树查询已迁移为直接读 `Category` 组树
 
 状态：
 
-已保留 `GetCategoryTreeQryHandler`，但移除对旧 Jimmer DTO `CategoryTreeNode` 的依赖，改为显式 TODO 骨架。对应 skipped API payload 的类别树模型也已从 `Item` 命名改为 `Response` 命名。
+已保留 `GetCategoryTreeQryHandler`，但移除对旧 Jimmer DTO `CategoryTreeNode` 的依赖，改为直接查询 `Category` 读模型，并按 `parentId` 在内存中递归组树。对应 skipped API payload 的类别树模型也已从 `Item` 命名改为 `Response` 命名。
 
 判断：
 
-类别树属于当前 nested model / recursive tree 能力缺口。旧实现依赖旧 Jimmer DTO 和递归 `Item` contract，直接保留会让 zero dogfood 编译失败，也会继续暴露旧契约。
+旧实现依赖旧 Jimmer DTO 和递归 `Item` contract，不能原样迁移。当前实现不再依赖旧 DTO，能在新 `Response.CategoryItem` / `Response.Children` contract 下编译通过。
 
 处理建议：
 
-短期保留 TODO。后续如果要生成递归树响应，需要先扩展 nested model 能力和 query-list handler 能力，再恢复真实实现。
+后续如果要由 generator 自动生成递归树查询，仍需要单独扩展 query handler 生成能力；当前 dogfood 先以手写迁移实现闭环。
+
+### [blocker] [design-query-contract] 多个旧列表/分页查询被标准化成单条 `Response`，无法安全迁移旧实现
+
+状态：
+
+adapter query handler 已迁移普通 `Query`、unique/existence 查询、CLI handler，以及部分 Response 自带容器语义的查询，例如分类树、未读消息分组、视频全量列表、视频评论分页、清晰度 JSON 汇总。剩余 TODO 集中在旧语义为 `ListQuery` / `PageQuery`，但当前 `codegen/design/design.json` 生成出的 application query contract 仍是单条 `Response` 的条目。
+
+典型文件：
+
+- `customer_action/GetCollectionPageQryHandler.kt`
+- `customer_action/GetUserActionsByVideoIdQryHandler.kt`
+- `customer_focus/GetFansPageQryHandler.kt`
+- `customer_focus/GetFocusPageQryHandler.kt`
+- `customer_video_series/GetCustomerVideoSeriesListQryHandler.kt`
+- `message/GetMessagePageQryHandler.kt`
+- `statistics/GetSearchKeywordTopListQryHandler.kt`
+- `statistics/GetWeekStatisticsInfoQryHandler.kt`
+- `video/GetHotVideoPageQryHandler.kt`
+- `video/GetRecommendVideosQryHandler.kt`
+- `video/GetVideoPageQryHandler.kt`
+- `video/GetVideoPlayFilesQryHandler.kt`
+- `video_file/GetVideoFilesByVideoIdQryHandler.kt`
+
+判断：
+
+这不是 handler 搬运问题，而是 design 输入标准化问题。旧实现返回多条记录或分页结果；当前 contract 只能返回一条 `Response`，如果硬迁只能丢数据、取第一条或伪造分页，都会把业务语义写坏。
+
+处理建议：
+
+需要把这些 query 的 `responseFields` 调整为明确容器语义，例如 `items: List<Item>` 或 `page: PageData<Item>`，必要时补充 `pageNum/pageSize` 请求字段或 `PageRequest` trait，然后重新生成 application query / payload / handler 骨架。完成 contract 修正后，再按旧实现迁移真实 SQL/Jimmer 查询逻辑。
+
+### [blocker] [aggregate-entity-defaults] 生成实体缺少 Kotlin 构造默认值，导致行为代码和测试构造成本过高
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache cap4kGenerate
+```
+
+实际结果：
+
+生成实体构造函数没有默认值，例如：
+
+```kotlin
+class CustomerVideoSeries(
+    id: Long,
+    customerId: Long,
+    seriesName: String,
+    seriesDescription: String?,
+    sort: Int,
+    createUserId: Long?,
+    createBy: String?,
+    createTime: Long?,
+    updateUserId: Long?,
+    updateBy: String?,
+    updateTime: Long?,
+    deleted: Long
+)
+```
+
+判断：
+
+`cap4k` 的 `aggregate/entity.kt.peb` 已经支持 `field.defaultValue`，但当前 `EntityArtifactPlanner` 主要依赖 DB default，且对 `DEFAULT '0'` 这类被 SQL 引号包住的数字默认值处理不足。更重要的是，实体作为行为友好的 generated-source artifact，应该有稳定的 Kotlin 类型兜底默认值，否则用户很难在 behavior、factory、测试中构造实体。
+
+处理建议：
+
+在生成器侧修复，不在 zero 项目手动改生成实体。规则建议为：DB default 优先；无法从 DB default 归一化时，非空基础类型按 Kotlin 类型兜底，例如 `Long = 0L`、`Int = 0`、`String = ""`、`Boolean = false`；nullable 字段默认为 `null`；集合关系继续使用 `mutableListOf()`。需要补 aggregate planner / renderer / compile-functional 覆盖。
+
+### [blocker] [migration-query-contract] 能由 design/generator 表达的 query contract 不应在迁移中手改源码
+
+复现条件：
+
+only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，部分旧 `Item` / list / page contract 被手动替换为当前新 `Response` 合约以通过编译。
+
+实际结果：
+
+手改可以让 `compileKotlin` 和 `build` 通过，但会让生成器职责边界变模糊：同一个 query contract 一部分来自 `codegen/design/design.json`，一部分来自迁移时对 application query / API payload / handler 的手动修补。
+
+判断：
+
+凡是 application query/client/command 的 `Request` / `Response` 结构、是否是 `items` 容器、是否是 `page` 容器，都应该由 design 输入和 generator 决定。手动修 query contract 只能作为临时 unblock，不应该进入最终 dogfood 基准。
+
+处理建议：
+
+下一轮 zero dogfood 应优先修 `codegen/design/design.json` 或标准化脚本，再重新运行 `cap4kGenerate`。只有 generator 暂时不能表达的 controller 编排、MapStruct converter、translation 注解、前端兼容字段，才允许保留为手写迁移层。
+
+### [medium] [aggregate-unique] 生成 Unique 家族命名无法表达业务命名，软删除字段进入类型名导致噪音
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache cap4kGenerate
+```
+
+实际结果：
+
+DB 唯一约束包含软删除列时，生成类型名会包含 `Deleted`，例如：
+
+```text
+UniqueCategoryCodeDeleted
+UniqueCategoryCodeDeletedQry
+UniqueCategoryCodeDeletedQryHandler
+```
+
+同时 zero 迁移中还存在旧手写版本：
+
+```text
+application/validators/UniqueCategoryCode.kt
+application/queries/category/UniqueCategoryCodeQry.kt
+adapter/application/queries/category/UniqueCategoryCodeQryHandler.kt
+```
+
+判断：
+
+当前生成器按照唯一约束字段拼接类型名，工程上可解释，但用户语义不够好。软删除列通常是唯一性 scope/filter，不是业务唯一键名称的一部分。迁移旧手写 `UniqueCategoryCode` 等文件也会和新生成的 `UniqueCategoryCodeDeleted` 家族形成重复心智负担。
+
+处理建议：
+
+优化 `aggregate unique` 生成能力后，再清理迁移进来的旧 Unique 手写文件。建议能力包括：默认把软删除字段作为 scope/filter 字段，不参与类型名；支持 DSL 或 source metadata 覆盖 unique family 名称；同时保证 query、query handler、validator 三个产物家族命名一致。
+
+### [medium] [design-default-value-projection] IR / drawing-board 默认值投影不能稳定保留枚举常量和空集合表达式
+
+复现条件：
+
+`CaptchaGenCli.Request` 迁移后需要默认值：
+
+```kotlin
+val channel: CaptchaChannel = CaptchaChannel.INLINE
+val targets: List<String> = emptyList()
+val templateCode: String? = null
+```
+
+实际结果：
+
+当前 `codegen/design/design.json` 中 `CaptchaGenCli` 对应字段没有这些默认值，生成后需要手动补：
+
+```kotlin
+val channel: CaptchaChannel = CaptchaChannel.INLINE,
+val targets: List<String> = emptyList(),
+val templateCode: String? = null
+```
+
+判断：
+
+design generator 的 `DefaultValueFormatter` 已支持 `emptyList()`、`null`、以及 `CaptchaChannel.INLINE` 这类常量表达式；如果用户直接在 design 输入中写这些 defaultValue，生成器应能处理。当前问题主要在分析投影 / drawing-board 输入链路：从代码分析或标准化材料重新生成时，这类默认值没有稳定保留下来。
+
+处理建议：
+
+补 analysis projection / drawing-board defaultValue 表达能力。第一版只需要支持稳定、可验证的常见表达式：`null`、基础类型字面量、空集合构造、枚举或常量 FQN / 类型名常量表达式。不能解析的复杂表达式应快速失败或丢入 backlog，不应静默生成缺默认值的契约。
+
+### [low] [migration-format] 迁移进来的旧 command 文件存在 import 多余空行
+
+复现文件：
+
+```text
+only-danmuku-application/src/main/kotlin/edu/only4/danmuku/application/commands/customer_video_series/CreateCustomerVideoSeriesCmd.kt
+```
+
+实际结果：
+
+旧迁移文件中 wildcard import 之间存在多余空行：
+
+```kotlin
+import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
+
+import edu.only4.danmuku.domain.aggregates.video_post_processing.*
+
+import edu.only4.danmuku.domain.aggregates.video_post.*
+```
+
+判断：
+
+这更像旧项目 / 旧模板迁移痕迹，不是当前新 `design/command.kt.peb` 的典型输出。新模板走 `use()` / `imports()` 收集 import，正常不应为每个 import 插入空行。
+
+处理建议：
+
+先作为迁移清理项处理：格式化或手动清理旧迁移文件。只有在 fresh `cap4kGenerate` 后仍复现多余空行，才升级为 renderer/template bug。
 
 ### [known-gap] [design-validator] 复杂业务 validator 暂不能由 designValidator 表达
 
