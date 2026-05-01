@@ -51,3 +51,106 @@ function Convert-PackageToPath([string] $packageName) {
     }
     return $packageName.Trim(".").Replace(".", [System.IO.Path]::DirectorySeparatorChar)
 }
+
+function Get-JsonString($obj, [string] $name) {
+    $property = $obj.PSObject.Properties[$name]
+    if ($null -eq $property -or $null -eq $property.Value) {
+        return ""
+    }
+    return [string] $property.Value
+}
+
+function Join-Package([string] $rootPackage, [string] $relativePackage) {
+    $root = $rootPackage.Trim(".")
+    $relative = $relativePackage.Trim(".")
+    if ([string]::IsNullOrWhiteSpace($relative)) {
+        return $root
+    }
+    return "$root.$relative"
+}
+
+function Join-KotlinFilePath([string] $root, [string] $packageName, [string] $typeName) {
+    $packagePath = Convert-PackageToPath $packageName
+    if ([string]::IsNullOrWhiteSpace($packagePath)) {
+        return Join-Path $root "$typeName.kt"
+    }
+    return Join-Path (Join-Path $root $packagePath) "$typeName.kt"
+}
+
+function New-ExpectedContract($entry) {
+    $tag = Get-JsonString $entry "tag"
+    $name = Get-JsonString $entry "name"
+    $relativePackage = Get-JsonString $entry "package"
+    $layout = $contractLayouts[$tag]
+    $typeName = "$name$($layout.Suffix)"
+    $packageName = Join-Package $layout.RootPackage $relativePackage
+
+    return [pscustomobject]@{
+        Tag = $tag
+        DesignName = $name
+        PackageName = $packageName
+        TypeName = $typeName
+        GeneratedPath = Join-KotlinFilePath $generatedRoot $packageName $typeName
+        SourcePath = Join-KotlinFilePath $sourceRoot $packageName $typeName
+    }
+}
+
+function Find-LegacyMarkers([string] $path) {
+    if ([string]::IsNullOrWhiteSpace($path) -or -not (Test-Path -LiteralPath $path)) {
+        return @()
+    }
+    $content = Get-Content -LiteralPath $path -Raw
+    return @($legacyMarkers | Where-Object { $content.Contains($_) })
+}
+
+function Test-ExpectedContract($expected) {
+    $generatedExists = Test-Path -LiteralPath $expected.GeneratedPath
+    $sourceExists = Test-Path -LiteralPath $expected.SourcePath
+    $scanPath = $null
+    if ($generatedExists) {
+        $scanPath = $expected.GeneratedPath
+    } elseif ($sourceExists) {
+        $scanPath = $expected.SourcePath
+    }
+
+    $legacyMarkersFound = Find-LegacyMarkers $scanPath
+
+    $status = "MISSING_CONTRACT"
+    if ($sourceExists) {
+        $status = "CHECKED_IN_CONTRACT"
+    } elseif ($generatedExists -and $legacyMarkersFound.Count -gt 0) {
+        $status = "GENERATED_WITH_LEGACY_MARKER"
+    } elseif ($generatedExists) {
+        $status = "GENERATED"
+    }
+
+    return [pscustomobject]@{
+        tag = $expected.Tag
+        designName = $expected.DesignName
+        packageName = $expected.PackageName
+        typeName = $expected.TypeName
+        status = $status
+        generatedPath = $expected.GeneratedPath
+        sourcePath = $expected.SourcePath
+        generatedExists = $generatedExists
+        sourceExists = $sourceExists
+        legacyMarkers = @($legacyMarkersFound)
+    }
+}
+
+function Invoke-ContractAudit {
+    $entries = Read-DesignEntries
+    $contractEntries = @($entries | Where-Object {
+        $tag = Get-JsonString $_ "tag"
+        $contractTags -contains $tag
+    })
+
+    return @($contractEntries | ForEach-Object {
+        Test-ExpectedContract (New-ExpectedContract $_)
+    })
+}
+
+$results = Invoke-ContractAudit
+$results | Group-Object status | Sort-Object Name | ForEach-Object {
+    Write-Host "$($_.Name): $($_.Count)"
+}
