@@ -3,11 +3,11 @@
   "planFile": "build\\cap4k\\plan.json",
   "summary": {
     "total": 206,
-    "plannedAndMatched": 174,
-    "failures": 32,
+    "plannedAndMatched": 183,
+    "failures": 23,
     "statuses": {
-      "PLANNED_AND_MATCHED": 174,
-      "CONTRACT_STRUCTURE_DRIFT": 32
+      "PLANNED_AND_MATCHED": 183,
+      "CONTRACT_STRUCTURE_DRIFT": 23
     }
   },
   "results": [
@@ -1538,14 +1538,12 @@
       "designName": "GetCollectionPage",
       "packageName": "edu.only4.danmuku.application.queries.customer_action",
       "typeName": "GetCollectionPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\customer_action\\GetCollectionPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field customerId"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -1600,14 +1598,12 @@
       "designName": "GetFocusPage",
       "packageName": "edu.only4.danmuku.application.queries.customer_focus",
       "typeName": "GetFocusPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\customer_focus\\GetFocusPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field userId"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -1626,15 +1622,12 @@
       "designName": "GetCustomerProfilePage",
       "packageName": "edu.only4.danmuku.application.queries.customer_profile",
       "typeName": "GetCustomerProfilePageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\customer_profile\\GetCustomerProfilePageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field nickNameFuzzy",
-        "missing request field status"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -1965,14 +1958,12 @@
       "designName": "GetHotVideoPage",
       "packageName": "edu.only4.danmuku.application.queries.video",
       "typeName": "GetHotVideoPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video\\GetHotVideoPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field lastPlayHour"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -2027,16 +2018,12 @@
       "designName": "GetVideoPage",
       "packageName": "edu.only4.danmuku.application.queries.video",
       "typeName": "GetVideoPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video\\GetVideoPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field categoryParentId",
-        "missing request field videoNameFuzzy",
-        "missing request field excludeVideoIds"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -2103,14 +2090,12 @@
       "designName": "VideoCommentPage",
       "packageName": "edu.only4.danmuku.application.queries.video_comment",
       "typeName": "VideoCommentPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video_comment\\VideoCommentPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field videoNameFuzzy"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -2153,31 +2138,24 @@
       "designName": "GetVideoDanmukuPage",
       "packageName": "edu.only4.danmuku.application.queries.video_danmuku",
       "typeName": "GetVideoDanmukuPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video_danmuku\\GetVideoDanmukuPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field videoUserId",
-        "missing request field videoNameFuzzy"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
       "designName": "GetUserVideoPost",
       "packageName": "edu.only4.danmuku.application.queries.video_draft",
       "typeName": "GetUserVideoPostQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video_draft\\GetUserVideoPostQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field userId",
-        "missing request field videoNameFuzzy",
-        "missing request field excludeStatusArray"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",
@@ -2208,16 +2186,12 @@
       "designName": "GetVideoPostPage",
       "packageName": "edu.only4.danmuku.application.queries.video_draft",
       "typeName": "GetVideoPostPageQry",
-      "status": "CONTRACT_STRUCTURE_DRIFT",
+      "status": "PLANNED_AND_MATCHED",
       "outputPath": "only-danmuku-application\\src\\main\\kotlin\\edu\\only4\\danmuku\\application\\queries\\video_draft\\GetVideoPostPageQry.kt",
       "outputKind": "CHECKED_IN_SOURCE",
       "conflictPolicy": "SKIP",
       "legacyMarkers": [],
-      "structureIssues": [
-        "missing request field categoryParentId",
-        "missing request field videoNameFuzzy",
-        "missing request field excludeVideoIds"
-      ]
+      "structureIssues": []
     },
     {
       "tag": "query",

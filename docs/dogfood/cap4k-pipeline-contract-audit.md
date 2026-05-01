@@ -11,10 +11,10 @@ The audit reads planned `outputPath` values from `cap4kPlan`; it does not requir
 | Metric | Count |
 | --- | ---: |
 | Total Query/Cmd/Cli contracts | 206 |
-| Planned and matched contracts | 174 |
-| Failures | 32 |
-| PLANNED_AND_MATCHED | 174 |
-| CONTRACT_STRUCTURE_DRIFT | 32 |
+| Planned and matched contracts | 183 |
+| Failures | 23 |
+| PLANNED_AND_MATCHED | 183 |
+| CONTRACT_STRUCTURE_DRIFT | 23 |
 
 ## Failures
 
@@ -43,12 +43,3 @@ The audit reads planned `outputPath` values from `cap4kPlan`; it does not requir
 | CONTRACT_STRUCTURE_DRIFT | command | BatchDeleteDanmukuCmd | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\commands\video_danmuku\BatchDeleteDanmukuCmd.kt | CHECKED_IN_SOURCE |  | missing Response type |
 | CONTRACT_STRUCTURE_DRIFT | command | InitTempAndStartUploadingCmd | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\commands\video_file_upload_session\InitTempAndStartUploadingCmd.kt | CHECKED_IN_SOURCE |  | missing Response type |
 | CONTRACT_STRUCTURE_DRIFT | command | StartVideoPostProcessingCmd | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\commands\video_post_processing\StartVideoPostProcessingCmd.kt | CHECKED_IN_SOURCE |  | missing Response type |
-| CONTRACT_STRUCTURE_DRIFT | query | GetCollectionPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\customer_action\GetCollectionPageQry.kt | CHECKED_IN_SOURCE |  | missing request field customerId |
-| CONTRACT_STRUCTURE_DRIFT | query | GetFocusPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\customer_focus\GetFocusPageQry.kt | CHECKED_IN_SOURCE |  | missing request field userId |
-| CONTRACT_STRUCTURE_DRIFT | query | GetCustomerProfilePageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\customer_profile\GetCustomerProfilePageQry.kt | CHECKED_IN_SOURCE |  | missing request field nickNameFuzzy, missing request field status |
-| CONTRACT_STRUCTURE_DRIFT | query | GetHotVideoPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video\GetHotVideoPageQry.kt | CHECKED_IN_SOURCE |  | missing request field lastPlayHour |
-| CONTRACT_STRUCTURE_DRIFT | query | GetVideoPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video\GetVideoPageQry.kt | CHECKED_IN_SOURCE |  | missing request field categoryParentId, missing request field videoNameFuzzy, missing request field excludeVideoIds |
-| CONTRACT_STRUCTURE_DRIFT | query | VideoCommentPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video_comment\VideoCommentPageQry.kt | CHECKED_IN_SOURCE |  | missing request field videoNameFuzzy |
-| CONTRACT_STRUCTURE_DRIFT | query | GetVideoDanmukuPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video_danmuku\GetVideoDanmukuPageQry.kt | CHECKED_IN_SOURCE |  | missing request field videoUserId, missing request field videoNameFuzzy |
-| CONTRACT_STRUCTURE_DRIFT | query | GetUserVideoPostQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video_draft\GetUserVideoPostQry.kt | CHECKED_IN_SOURCE |  | missing request field userId, missing request field videoNameFuzzy, missing request field excludeStatusArray |
-| CONTRACT_STRUCTURE_DRIFT | query | GetVideoPostPageQry | only-danmuku-application\src\main\kotlin\edu\only4\danmuku\application\queries\video_draft\GetVideoPostPageQry.kt | CHECKED_IN_SOURCE |  | missing request field categoryParentId, missing request field videoNameFuzzy, missing request field excludeVideoIds |

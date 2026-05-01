@@ -128,7 +128,7 @@ function Test-PlanContext($item) {
 function Test-Fields([string] $content, $fields, [string] $scope, [System.Collections.Generic.List[string]] $issues) {
     foreach ($field in (Convert-ToArray $fields)) {
         $name = Get-JsonString $field "name"
-        if (-not [string]::IsNullOrWhiteSpace($name) -and $content -notmatch "(?m)\bval\s+$([regex]::Escape($name))\s*:") {
+        if (-not [string]::IsNullOrWhiteSpace($name) -and $content -notmatch "(?m)\b(val|var)\s+$([regex]::Escape($name))\s*:") {
             $issues.Add("missing $scope field $name")
         }
     }

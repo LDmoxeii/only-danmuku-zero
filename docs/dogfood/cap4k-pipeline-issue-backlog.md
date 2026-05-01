@@ -680,6 +680,8 @@ only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，
 
 `docs/dogfood/audit-design-contracts.ps1` 已把这条规则固化成脚本：它从 `codegen/design/design.json` 推导所有 `*Cmd`、`*Qry`、`*Cli` 期望产物，再从 `build/cap4k/plan.json` 读取实际 `outputPath`，校验该路径上的 `Request` / `Response` 结构是否与 plan context 一致。
 
+当前 drift 清单见 `docs/dogfood/cap4k-pipeline-contract-drift-backlog.md`。
+
 处理建议：
 
 下一轮 zero dogfood 应优先修 `codegen/design/design.json` 或标准化脚本，再重新运行 `cap4kGenerate`。只有 generator 暂时不能表达的 controller 编排、MapStruct converter、translation 注解、前端兼容字段，才允许保留为手写迁移层。
