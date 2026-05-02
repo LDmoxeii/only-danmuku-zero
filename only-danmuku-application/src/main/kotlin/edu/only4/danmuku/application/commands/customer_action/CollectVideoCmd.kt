@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_action
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -87,7 +89,7 @@ object CollectVideoCmd {
                         customerId = request.customerId,
                         videoId = request.videoId,
                         videoOwnerId = video.customerId,
-                        commentId = 0L,
+                        commentId = UUID(0L, 0L),
                         actionType = ActionType.FAVORITE_VIDEO,
                         actionCount = 1
                     )
@@ -104,8 +106,8 @@ object CollectVideoCmd {
 
     data class Request(
         @field:VideoExists
-        val videoId: Long,
-        val customerId: Long
+        val videoId: UUID,
+        val customerId: UUID
     ) : RequestParam<Response>
 
     data class Response(
@@ -113,3 +115,4 @@ object CollectVideoCmd {
         val isCancel: Boolean
     )
 }
+

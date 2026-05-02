@@ -6,6 +6,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.util.UUID
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
@@ -43,14 +44,14 @@ annotation class ValidateDeleteUploadSession(
 
             val props = value::class.memberProperties.associateBy { it.name }
             val customerId = when (val raw = props[customerIdProp]?.getter?.call(value)) {
-                is Number -> raw.toLong()
-                is String -> raw.toLongOrNull()
+                is UUID -> raw
+                is String -> runCatching { UUID.fromString(raw) }.getOrNull()
                 else -> null
             } ?: return violation("用户ID非法")
 
             val uploadId = when (val raw = props[uploadIdProp]?.getter?.call(value)) {
-                is Number -> raw.toLong()
-                is String -> raw.toLongOrNull()
+                is UUID -> raw
+                is String -> runCatching { UUID.fromString(raw) }.getOrNull()
                 else -> null
             } ?: return violation("非法的 uploadId")
 

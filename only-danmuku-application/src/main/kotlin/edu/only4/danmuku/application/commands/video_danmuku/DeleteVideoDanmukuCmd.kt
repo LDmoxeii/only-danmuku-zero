@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_danmuku
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -65,9 +67,10 @@ object DeleteVideoDanmukuCmd {
     @DanmukuDeletePermission
     data class Request(
         @field:DanmukuExists
-        val danmukuId: Long,
-        val operatorId: Long? = null,
+        val danmukuId: UUID,
+        val operatorId: UUID? = null,
     ) : RequestParam<Response>
 
     data object Response
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
 import org.babyfish.jimmer.sql.JoinColumn
@@ -11,10 +13,10 @@ import org.babyfish.jimmer.sql.Table
 interface CustomerFocus : BaseEntity {
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @IdView
-    val focusCustomerId: Long
+    val focusCustomerId: UUID
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -24,3 +26,4 @@ interface CustomerFocus : BaseEntity {
     @JoinColumn(name = "focus_customer_id")
     val focusCustomer: User
 }
+

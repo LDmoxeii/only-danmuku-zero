@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -72,14 +74,15 @@ object RemoveVideoFromSeriesCmd {
     @VideoInSeries(seriesIdField = "seriesId", videoIdField = "videoId")
     data class Request(
         /** 系列ID */
-        val seriesId: Long,
+        val seriesId: UUID,
         /** 视频ID */
-        val videoId: Long,
+        val videoId: UUID,
         /** 操作用户ID */
-        val operatorId: Long,
+        val operatorId: UUID,
     ) : RequestParam<Response>
 
     data class Response(
         val deleted: Boolean,
     )
 }
+

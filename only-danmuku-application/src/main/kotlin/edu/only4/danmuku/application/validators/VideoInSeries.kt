@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesInfoQry
 import jakarta.validation.Constraint
@@ -36,8 +38,8 @@ annotation class VideoInSeries(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val seriesId = (props[seriesField]?.getter?.call(value) as? Long) ?: return true
-            val videoId = (props[videoField]?.getter?.call(value) as? Long) ?: return true
+            val seriesId = (props[seriesField]?.getter?.call(value) as? UUID) ?: return true
+            val videoId = (props[videoField]?.getter?.call(value) as? UUID) ?: return true
 
             val series = runCatching {
                 Mediator.queries.send(GetCustomerVideoSeriesInfoQry.Request(seriesId))
@@ -47,3 +49,4 @@ annotation class VideoInSeries(
         }
     }
 }
+

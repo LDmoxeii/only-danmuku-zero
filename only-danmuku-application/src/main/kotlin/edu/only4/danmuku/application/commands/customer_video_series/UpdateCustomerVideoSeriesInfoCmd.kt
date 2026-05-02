@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -75,8 +77,8 @@ object UpdateCustomerVideoSeriesInfoCmd {
 
     @UniqueSeriesNameForUser(userIdField = "userId", seriesIdField = "seriesId", seriesNameField = "seriesName")
     data class Request(
-        val userId: Long,
-        val seriesId: Long,
+        val userId: UUID,
+        val seriesId: UUID,
         @field:NotBlank(message = "系列名称不能为空")
         @field:Size(max = 100, message = "系列名称长度不能超过100")
         val seriesName: String,
@@ -85,6 +87,7 @@ object UpdateCustomerVideoSeriesInfoCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val seriesId: Long,
+        val seriesId: UUID,
     )
 }
+

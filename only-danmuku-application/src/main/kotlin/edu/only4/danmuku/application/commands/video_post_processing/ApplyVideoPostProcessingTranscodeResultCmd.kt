@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -91,7 +93,7 @@ object ApplyVideoPostProcessingTranscodeResultCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int,
         val success: Boolean,
         val outputPrefix: String?,
@@ -113,7 +115,7 @@ object ApplyVideoPostProcessingTranscodeResultCmd {
         if (payloads.isEmpty()) return emptyList()
         return payloads.map { payload ->
             VideoPostProcessingVariant(
-                id = 0L,
+                id = UUID(0L, 0L),
                 quality = payload.quality,
                 width = payload.width,
                 height = payload.height,
@@ -149,3 +151,4 @@ object ApplyVideoPostProcessingTranscodeResultCmd {
         val segmentDuration: Int? = null,
     )
 }
+

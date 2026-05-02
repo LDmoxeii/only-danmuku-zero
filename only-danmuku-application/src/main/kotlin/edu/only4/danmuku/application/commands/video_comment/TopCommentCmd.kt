@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_comment
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -83,10 +85,11 @@ object TopCommentCmd {
     data class Request(
         /** 评论ID */
         @field:CommentExists
-        val commentId: Long,
+        val commentId: UUID,
         /** 操作用户ID，null 表示后台管理员 */
-        val operatorId: Long? = null,
+        val operatorId: UUID? = null,
     ) : RequestParam<Response>
 
     data object Response
 }
+

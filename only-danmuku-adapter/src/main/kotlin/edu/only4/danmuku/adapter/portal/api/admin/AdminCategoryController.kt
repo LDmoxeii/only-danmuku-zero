@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * 管理员分类管理控制器
@@ -53,7 +54,7 @@ class AdminCategoryController {
     @PostMapping("/changeSort")
     fun changeSort(@RequestBody @Validated request: ChangeCategorySort.Request) {
         val categoryIdList = request.categoryIds.split(",")
-            .map { it.trim().toLong() }
+            .map { UUID.fromString(it.trim()) }
 
         Mediator.commands.send(
             UpdateCategorySortOrderCmd.Request(

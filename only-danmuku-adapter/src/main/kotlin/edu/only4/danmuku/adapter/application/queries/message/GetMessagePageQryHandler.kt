@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.message
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.application.query.Query
 import com.only4.cap4k.ddd.core.share.PageData
@@ -18,6 +20,7 @@ import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 获取消息分页
@@ -28,7 +31,7 @@ class GetMessagePageQryHandler(
 ) : Query<GetMessagePageQry.Request, GetMessagePageQry.Response> {
 
     override fun exec(request: GetMessagePageQry.Request): GetMessagePageQry.Response {
-        val currentUserId = LoginHelper.getUserId()
+        val currentUserId = CurrentUser.id()
             ?: return GetMessagePageQry.Response(
                 page = PageData.empty(request.pageSize, request.pageNum)
             )
@@ -40,7 +43,7 @@ class GetMessagePageQryHandler(
         }.fetchPage(request.pageNum - 1, request.pageSize)
         val sendUserIds = page.rows.mapNotNull { it.sendSubjectId }.toSet()
         val videoIds = page.rows.mapNotNull { it.videoId }.toSet()
-        val profileMap: Map<Long, CustomerProfile> = if (sendUserIds.isNotEmpty()) {
+        val profileMap: Map<UUID, CustomerProfile> = if (sendUserIds.isNotEmpty()) {
             sqlClient.createQuery(CustomerProfile::class) {
                 where(table.userId valueIn sendUserIds)
                 select(table)
@@ -48,7 +51,7 @@ class GetMessagePageQryHandler(
         } else {
             emptyMap()
         }
-        val videoMap: Map<Long, VideoPost> = if (videoIds.isNotEmpty()) {
+        val videoMap: Map<UUID, VideoPost> = if (videoIds.isNotEmpty()) {
             sqlClient.createQuery(VideoPost::class) {
                 where(table.id valueIn videoIds)
                 select(table.fetchBy {

@@ -1,20 +1,22 @@
 
 package edu.only4.danmuku.application.queries.video
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import edu.only4.danmuku.domain._share.enums.PostType
 
 object GetVideoInfoQry {
 
     data class Request(
-        val videoId: Long
+        val videoId: UUID
     ) : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
+        val videoId: UUID,
         val videoCover: String,
         val videoName: String,
-        val userId: Long,
+        val userId: UUID,
         val createTime: Long,
         val postType: PostType,
         val originInfo: String?,
@@ -33,3 +35,4 @@ object GetVideoInfoQry {
     )
 
 }
+

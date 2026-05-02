@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_audit_trace.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -28,7 +30,7 @@ class VideoAuditTraceFactory : AggregateFactory<VideoAuditTraceFactory.Payload, 
 
     override fun create(entityPayload: Payload): VideoAuditTrace {
         return VideoAuditTrace(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoPostId = entityPayload.videoPostId,
             auditStatus = entityPayload.auditStatus,
             reviewerId = entityPayload.reviewerId,
@@ -47,12 +49,13 @@ class VideoAuditTraceFactory : AggregateFactory<VideoAuditTraceFactory.Payload, 
 
     @Aggregate(aggregate = "VideoAuditTrace", name = "VideoAuditTracePayload", type = Aggregate.TYPE_FACTORY_PAYLOAD, description = "")
     data class Payload(
-         val videoPostId: Long,
+         val videoPostId: UUID,
          val auditStatus: AuditStatus,
-         val reviewerId: Long?,
+         val reviewerId: UUID?,
          val reviewerType: UserType,
          val reason: String?,
          val occurTime: Long,
     ) : AggregatePayload<VideoAuditTrace>
 
 }
+

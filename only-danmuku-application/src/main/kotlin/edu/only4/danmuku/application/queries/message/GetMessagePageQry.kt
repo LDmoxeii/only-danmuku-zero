@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.message
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.PageRequest
 import com.only4.cap4k.ddd.core.share.PageData
@@ -18,19 +20,20 @@ object GetMessagePageQry {
         val page: PageData<MessageItem>
     ) {
         data class MessageItem(
-            val id: Long,
+            val id: UUID,
             val messageType: Int,
             val readType: Int,
             val extendJson: UserMessageExtend?,
             val createTime: Long,
-            val videoPostId: Long?,
-            val videoId: Long?,
+            val videoPostId: UUID?,
+            val videoId: UUID?,
             val videoName: String?,
             val videoCover: String?,
-            val sendUserId: Long?,
+            val sendUserId: UUID?,
             val sendUserName: String?,
             val sendUserAvatar: String?
         )
     }
 
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry
 import jakarta.validation.Constraint
@@ -36,7 +38,7 @@ annotation class SufficientCoinBalance(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
             val coinCount = (props[coinCountField]?.getter?.call(value) as? Int) ?: return true
 
             // 查询用户硬币余额
@@ -52,3 +54,4 @@ annotation class SufficientCoinBalance(
         }
     }
 }
+

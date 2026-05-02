@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video_encrypt
 
+import java.util.UUID
+
 import com.only.engine.json.misc.JsonUtils
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.VideoHlsEncryptKey
@@ -50,7 +52,7 @@ class ListVideoHlsEncryptKeysQryHandler(
         )
     }
 
-    private fun resolveLatestKeyVersion(videoPostId: Long, fileIndex: Int): Int? {
+    private fun resolveLatestKeyVersion(videoPostId: UUID, fileIndex: Int): Int? {
         val versions = sqlClient.createQuery(VideoHlsEncryptKey::class) {
             where(table.videoPostId eq videoPostId)
             where(table.fileIndex eq fileIndex)
@@ -77,3 +79,4 @@ class ListVideoHlsEncryptKeysQryHandler(
         private val QUALITY_NUMBER_REGEX = Regex("(\\d+)")
     }
 }
+

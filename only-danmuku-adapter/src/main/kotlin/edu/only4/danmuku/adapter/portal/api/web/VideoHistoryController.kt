@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -26,7 +28,7 @@ class VideoHistoryController {
      */
     @PostMapping("/page")
     fun page(@RequestBody @Validated request: GetHistoryPage.Request): PageData<GetHistoryPage.Response> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(GetHistoryPage.Converter.INSTANCE.toQry(request, currentUserId))
 
@@ -43,7 +45,7 @@ class VideoHistoryController {
      * 清空播放历史
      */
     @PostMapping("/cleanHistory")
-    fun historyClean() = Mediator.commands.send(ClearHistoryCmd.Request(customerId = LoginHelper.getUserId()!!))
+    fun historyClean() = Mediator.commands.send(ClearHistoryCmd.Request(customerId = CurrentUser.requiredId()))
 
     /**
      * 删除指定播放历史
@@ -53,7 +55,7 @@ class VideoHistoryController {
         // 调用命令删除当前用户该视频的播放历史
         Mediator.commands.send(
             DelHistoryCmd.Request(
-                customerId = LoginHelper.getUserId()!!,
+                customerId = CurrentUser.requiredId(),
                 videoId = request.videoId
             )
         )

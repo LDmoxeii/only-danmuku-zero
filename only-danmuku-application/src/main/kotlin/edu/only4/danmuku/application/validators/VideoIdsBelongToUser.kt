@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video.CheckVideosOwnershipQry
 import jakarta.validation.Constraint
@@ -35,9 +37,12 @@ annotation class VideoIdsBelongToUser(
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
             val raw = props[videoIdsField]?.getter?.call(value) as? String? ?: return true
-            val ids = raw.split(',', '，').mapNotNull { it.trim().trim('"').takeIf { s -> s.isNotEmpty() }?.toLongOrNull() }.distinct()
+            val ids = raw.split(',', '，')
+                .mapNotNull { it.trim().trim('"').takeIf { s -> s.isNotEmpty() } }
+                .mapNotNull { runCatching { UUID.fromString(it) }.getOrNull() }
+                .distinct()
             if (ids.isEmpty()) return true
 
             val result = Mediator.queries.send(
@@ -50,4 +55,5 @@ annotation class VideoIdsBelongToUser(
         }
     }
 }
+
 

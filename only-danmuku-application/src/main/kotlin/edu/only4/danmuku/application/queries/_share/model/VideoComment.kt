@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.ForeignKeyType
 import org.babyfish.jimmer.sql.IdView
@@ -12,19 +14,19 @@ import org.babyfish.jimmer.sql.Table
 interface VideoComment : BaseEntity {
 
     @IdView
-    val videoOwnerId: Long
+    val videoOwnerId: UUID
 
     @IdView
-    val videoId: Long
+    val videoId: UUID
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @IdView
-    val replyCustomerId: Long?
+    val replyCustomerId: UUID?
 
     @IdView
-    val parentId: Long?
+    val parentId: UUID?
 
     @OneToOne
     @JoinColumn(name = "video_owner_id")
@@ -61,3 +63,4 @@ interface VideoComment : BaseEntity {
 
     val hateCount: Int?
 }
+

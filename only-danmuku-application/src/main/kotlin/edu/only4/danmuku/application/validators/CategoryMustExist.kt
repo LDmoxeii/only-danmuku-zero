@@ -6,6 +6,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.util.UUID
 import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
@@ -17,10 +18,10 @@ annotation class CategoryMustExist(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<CategoryMustExist, Long> {
-        override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<CategoryMustExist, UUID> {
+        override fun isValid(value: UUID?, context: ConstraintValidatorContext): Boolean {
             val id = value ?: return true
-            if (id == 0L) return true
+            if (id == UUID(0L, 0L)) return true
             val resp = Mediator.queries.send(CategoryExistsByIdQry.Request(categoryId = id))
             return resp.exists
         }

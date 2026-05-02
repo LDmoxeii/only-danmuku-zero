@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.exception.BusinessException
 import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
@@ -25,7 +27,7 @@ class VideoAbrController {
 
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/master.m3u8")
-    fun master(@PathVariable fileId: Long): ResponseEntity<String> {
+    fun master(@PathVariable fileId: UUID): ResponseEntity<String> {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val master = Mediator.queries.send(GetVideoAbrMasterQry.Request(fileId = post.filePostId))
         if (master.status != "SUCCESS") throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "转码未完成: ${master.status}")
@@ -54,7 +56,7 @@ class VideoAbrController {
 
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/index.m3u8")
-    fun playlist(@PathVariable fileId: Long, @PathVariable quality: String): ResponseEntity<String> {
+    fun playlist(@PathVariable fileId: UUID, @PathVariable quality: String): ResponseEntity<String> {
         val post = Mediator.queries.send(GetVideoPostIdByFileIdQry.Request(fileId = fileId))
         val base = post.filePath ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "filePath 为空: $fileId")
         val objectKey = base.trimEnd('/') + "/$quality/index.m3u8"
@@ -70,7 +72,7 @@ class VideoAbrController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/{ts}")
     fun segment(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @PathVariable quality: String,
         @PathVariable ts: String
     ): ResponseEntity<Void> {
@@ -85,3 +87,4 @@ class VideoAbrController {
             .build()
     }
 }
+

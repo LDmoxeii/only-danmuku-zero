@@ -1,17 +1,19 @@
 
 package edu.only4.danmuku.application.queries.customer_video_series
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object GetCustomerVideoSeriesInfoQry {
 
     data class Request(
-        val seriesId: Long
+        val seriesId: UUID
     ) : RequestParam<Response>
 
     data class Response(
-        val seriesId: Long,
-        val userId: Long,
+        val seriesId: UUID,
+        val userId: UUID,
         val seriesName: String?,
         val seriesDescription: String?,
         val sort: Int?,
@@ -20,7 +22,7 @@ object GetCustomerVideoSeriesInfoQry {
         val videoList: List<VideoItem>?
     ) {
         data class VideoItem(
-            val videoId: Long,
+            val videoId: UUID,
             val videoCover: String,
             val videoName: String,
             val playCount: Int,
@@ -30,3 +32,4 @@ object GetCustomerVideoSeriesInfoQry {
     }
 
 }
+

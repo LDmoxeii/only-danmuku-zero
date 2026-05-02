@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_profile.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -26,7 +28,7 @@ class CustomerProfileFactory : AggregateFactory<CustomerProfileFactory.Payload, 
 
     override fun create(entityPayload: Payload): CustomerProfile {
         return CustomerProfile(
-            id = 0L,
+            id = UUID(0L, 0L),
             userId = entityPayload.userid,
             nickName = entityPayload.nickName,
             avatar = null,
@@ -57,10 +59,11 @@ class CustomerProfileFactory : AggregateFactory<CustomerProfileFactory.Payload, 
         description = ""
     )
     data class Payload(
-        val userid: Long,
+        val userid: UUID,
         val nickName: String,
         val email: String,
         val registerCoinCount: Int,
     ) : AggregatePayload<CustomerProfile>
 
 }
+

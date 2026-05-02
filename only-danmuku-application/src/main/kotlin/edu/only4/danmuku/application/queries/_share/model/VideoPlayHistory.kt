@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.*
 
 @Table(name = "video_play_history")
@@ -7,10 +9,10 @@ import org.babyfish.jimmer.sql.*
 interface VideoPlayHistory : BaseEntity {
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @IdView
-    val videoId: Long?
+    val videoId: UUID?
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -25,3 +27,4 @@ interface VideoPlayHistory : BaseEntity {
 
     val fileIndex: Int
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_history
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -40,7 +42,7 @@ object GetHistoryPage {
     interface Converter {
 
         @Mapping(target = "customerId", source = "currentUserId")
-        fun toQry(request: Request, currentUserId: Long): GetUserPlayHistoryQry.Request
+        fun toQry(request: Request, currentUserId: UUID): GetUserPlayHistoryQry.Request
 
         @Mapping(source = "historyId", target = "historyId")
         @Mapping(source = "videoId", target = "videoId")
@@ -49,3 +51,4 @@ object GetHistoryPage {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

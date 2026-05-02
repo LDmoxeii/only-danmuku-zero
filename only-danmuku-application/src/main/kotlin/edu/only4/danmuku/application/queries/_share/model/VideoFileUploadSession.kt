@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.*
 
 @Entity
@@ -7,7 +9,7 @@ import org.babyfish.jimmer.sql.*
 interface VideoFileUploadSession : BaseEntity {
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @OneToOne
     @JoinColumn(name = "customer_id")
@@ -38,3 +40,4 @@ interface VideoFileUploadSession : BaseEntity {
     val expiresAt: Long?
 
 }
+

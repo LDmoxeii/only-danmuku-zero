@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -102,7 +104,7 @@ object UpdateCustomerVideoSeriesVideosCmd {
             return Response
         }
 
-        private fun parseVideoIds(rawVideoIds: String?): List<Long> {
+        private fun parseVideoIds(rawVideoIds: String?): List<UUID> {
             val sanitized = rawVideoIds?.trim() ?: return emptyList()
             if (sanitized.isEmpty()) {
                 return emptyList()
@@ -113,17 +115,15 @@ object UpdateCustomerVideoSeriesVideosCmd {
                 .replace("\n", ",")
                 .replace("\r", ",")
                 .replace("\t", ",")
-            val result = mutableListOf<Long>()
-            val dedupe = LinkedHashSet<Long>()
+            val result = mutableListOf<UUID>()
+            val dedupe = LinkedHashSet<UUID>()
             normalized.split(',', '，').forEach { item ->
                 val trimmed = item.trim().trim('"')
                 if (trimmed.isEmpty()) {
                     return@forEach
                 }
-                val id = trimmed.toLongOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
-                if (id <= 0) {
-                    throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
-                }
+                val id = runCatching { UUID.fromString(trimmed) }
+                    .getOrElse { throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed") }
                 if (dedupe.add(id)) {
                     result.add(id)
                 }
@@ -136,9 +136,9 @@ object UpdateCustomerVideoSeriesVideosCmd {
     @SeriesVideoCountLimit(videoIdsField = "videoIds")
     data class Request(
         /** 用户ID */
-        val userId: Long,
+        val userId: UUID,
         /** 系列ID */
-        val seriesId: Long,
+        val seriesId: UUID,
         /** 视频ID列表(逗号分隔) - 可用于添加或删除 */
         val videoIds: String? = null,
         /** 是否删除操作 */
@@ -147,3 +147,4 @@ object UpdateCustomerVideoSeriesVideosCmd {
 
     data object Response
 }
+

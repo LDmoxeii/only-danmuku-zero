@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_comment
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -59,7 +61,7 @@ object DeleteVideoCommentCmd {
 
             Mediator.uow.remove(comment)
 
-            if (comment.parentId == 0L) {
+            if (comment.parentId == UUID(0L, 0L)) {
                 Mediator.repositories.remove(
                     SVideoComment.predicate { schema ->
                         schema.parentId eq comment.id
@@ -76,9 +78,10 @@ object DeleteVideoCommentCmd {
     @CommentDeletePermission
     data class Request(
         @field:CommentExists
-        val commentId: Long,
-        val operatorId: Long? = null,
+        val commentId: UUID,
+        val operatorId: UUID? = null,
     ) : RequestParam<Response>
 
     data object Response
 }
+

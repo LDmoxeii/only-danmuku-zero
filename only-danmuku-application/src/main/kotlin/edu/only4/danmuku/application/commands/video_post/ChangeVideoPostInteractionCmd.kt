@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -68,10 +70,11 @@ object ChangeVideoPostInteractionCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
-        val userId: Long,
+        val videoPostId: UUID,
+        val userId: UUID,
         val interaction: String?,
     ) : RequestParam<Response>
 
     data object Response
 }
+

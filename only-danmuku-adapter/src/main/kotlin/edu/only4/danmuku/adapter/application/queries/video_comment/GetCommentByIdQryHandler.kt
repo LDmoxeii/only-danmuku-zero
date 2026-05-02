@@ -7,6 +7,7 @@ import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 根据ID获取评论
@@ -31,7 +32,7 @@ class GetCommentByIdQryHandler(
             videoId = item.video.id,
             videoOwnerId = item.videoOwner.id,
             userId = item.customer.id,
-            parentId = item.parentId ?: 0L,
+            parentId = item.parentId ?: UUID(0L, 0L),
             content = item.content,
         )
     }

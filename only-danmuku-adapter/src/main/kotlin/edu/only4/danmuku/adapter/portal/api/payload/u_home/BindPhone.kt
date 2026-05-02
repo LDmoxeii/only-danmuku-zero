@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_home
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.commands.customer_profile.BindPhoneCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -31,10 +33,11 @@ object BindPhone {
 
     @Mapper(componentModel = "default")
     interface Converter {
-        fun toCmd(request: Request, userId: Long): BindPhoneCmd.Request
+        fun toCmd(request: Request, userId: UUID): BindPhoneCmd.Request
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
         }
     }
 }
+

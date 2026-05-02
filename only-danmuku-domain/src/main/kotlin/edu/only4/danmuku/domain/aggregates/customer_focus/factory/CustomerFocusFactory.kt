@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_focus.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -20,7 +22,7 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
 
     override fun create(payload: Payload): CustomerFocus {
         val entity = CustomerFocus(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = payload.customerId,
             focusCustomerId = payload.focusCustomerId,
             createUserId = null,
@@ -41,8 +43,9 @@ class CustomerFocusFactory : AggregateFactory<CustomerFocusFactory.Payload, Cust
         description = ""
     )
     data class Payload(
-         val customerId: Long,
-         val focusCustomerId: Long,
+         val customerId: UUID,
+         val focusCustomerId: UUID,
      ) : AggregatePayload<CustomerFocus>
 
 }
+

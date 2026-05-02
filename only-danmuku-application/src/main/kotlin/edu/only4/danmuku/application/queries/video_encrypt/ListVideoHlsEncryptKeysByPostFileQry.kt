@@ -1,12 +1,14 @@
 
 package edu.only4.danmuku.application.queries.video_encrypt
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object ListVideoHlsEncryptKeysByPostFileQry {
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int
     ) : RequestParam<Response>
 
@@ -14,8 +16,9 @@ object ListVideoHlsEncryptKeysByPostFileQry {
         val items: List<EncryptKeyItem>
     ) {
         data class EncryptKeyItem(
-            val encryptKeyId: Long
+            val encryptKeyId: UUID
         )
     }
 
 }
+

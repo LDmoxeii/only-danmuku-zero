@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -89,7 +91,7 @@ object PrepareVideoPostProcessingEncryptContextCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int,
         val encryptMethod: String = "HLS_AES_128"
     ) : RequestParam<Response>
@@ -100,7 +102,7 @@ object PrepareVideoPostProcessingEncryptContextCmd {
         val encryptOutputDir: String?
     )
 
-    private fun nextKeyVersion(videoPostId: Long, fileIndex: Int): Int {
+    private fun nextKeyVersion(videoPostId: UUID, fileIndex: Int): Int {
         val keys = Mediator.repositories.find(
             SVideoHlsEncryptKey.predicate { schema ->
                 schema.all(
@@ -113,3 +115,4 @@ object PrepareVideoPostProcessingEncryptContextCmd {
         return maxVersion + 1
     }
 }
+

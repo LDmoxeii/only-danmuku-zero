@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_message
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -69,10 +71,11 @@ object SendVideoAuditFailedMessageCmd {
     }
 
     data class Request(
-        val videoId: Long,
-        val operatorId: Long? = null,
+        val videoId: UUID,
+        val operatorId: UUID? = null,
         val messageContent: String? = null,
     ) : RequestParam<Response>
 
     data object Response
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_danmuku.CheckDanmukuExistsQry
 import jakarta.validation.Constraint
@@ -18,8 +20,8 @@ annotation class DanmukuExists(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<DanmukuExists, Long> {
-        override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<DanmukuExists, UUID> {
+        override fun isValid(value: UUID?, context: ConstraintValidatorContext): Boolean {
             val danmukuId = value ?: return true
             val resp = runCatching {
                 Mediator.queries.send(CheckDanmukuExistsQry.Request(danmukuId = danmukuId))
@@ -28,3 +30,4 @@ annotation class DanmukuExists(
         }
     }
 }
+

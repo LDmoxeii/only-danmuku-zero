@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -71,9 +73,10 @@ object BindPhoneCmd {
     }
 
     class Request(
-        val customerProfileId: Long,
+        val customerProfileId: UUID,
         val phone: String,
     ) : RequestParam<Response>
 
     data object Response
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.exception.BusinessException
@@ -91,7 +93,7 @@ class VideoEncryptController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/master.m3u8")
     fun master(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @RequestParam token: String
     ): ResponseEntity<String> {
         val status = encryptStatus(fileId)
@@ -115,7 +117,7 @@ class VideoEncryptController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/index.m3u8")
     fun playlist(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @PathVariable quality: String,
         @RequestParam token: String
     ): ResponseEntity<String> {
@@ -135,7 +137,7 @@ class VideoEncryptController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/{ts}")
     fun segment(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @PathVariable quality: String,
         @PathVariable ts: String
     ): ResponseEntity<Void> {
@@ -175,7 +177,7 @@ class VideoEncryptController {
             .body(resource)
     }
 
-    private fun encryptStatus(videoFileId: Long): GetVideoEncryptStatusQry.Response {
+    private fun encryptStatus(videoFileId: UUID): GetVideoEncryptStatusQry.Response {
         val context = resolveFileContext(videoFileId)
         return Mediator.queries.send(
             GetVideoEncryptStatusQry.Request(
@@ -190,7 +192,7 @@ class VideoEncryptController {
         return hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
     }
 
-    private fun loadQualityPolicies(videoFileId: Long): List<PolicyPayload> {
+    private fun loadQualityPolicies(videoFileId: UUID): List<PolicyPayload> {
         val policiesJson = Mediator.queries.send(
             ListVideoQualityAuthQry.Request(videoFilePostId = null, videoFileId = videoFileId)
         ).policiesJson
@@ -198,16 +200,16 @@ class VideoEncryptController {
         return JsonUtils.parseArray(policiesJson, PolicyPayload::class.java)
     }
 
-    private fun loadAbrQualities(videoFileId: Long): List<String> {
+    private fun loadAbrQualities(videoFileId: UUID): List<String> {
         return Mediator.queries.send(ListVideoFileVariantsQry.Request(fileId = videoFileId))
             .qualities
     }
 
-    private fun resolveFileContext(videoFileId: Long): GetVideoFileContextByIdQry.Response {
+    private fun resolveFileContext(videoFileId: UUID): GetVideoFileContextByIdQry.Response {
         return Mediator.queries.send(GetVideoFileContextByIdQry.Request(fileId = videoFileId))
     }
 
-    private fun resolveAllowedQualities(videoFileId: Long): List<String> {
+    private fun resolveAllowedQualities(videoFileId: UUID): List<String> {
         val policies = loadQualityPolicies(videoFileId)
         if (policies.isEmpty()) return emptyList()
         val allowLogin = StpUtil.isLogin()
@@ -298,7 +300,7 @@ class VideoEncryptController {
         }
     }
 
-    private fun computeAllowedQualities(videoFileId: Long): String? {
+    private fun computeAllowedQualities(videoFileId: UUID): String? {
         val policies = loadQualityPolicies(videoFileId)
         if (policies.isEmpty()) return null
         val allowLogin = StpUtil.isLogin()
@@ -320,3 +322,4 @@ class VideoEncryptController {
         private val QUALITY_NUMBER_REGEX = Regex("(\\d+)")
     }
 }
+

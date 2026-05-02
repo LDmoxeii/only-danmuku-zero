@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -14,7 +16,7 @@ import org.babyfish.jimmer.sql.Table
 interface CustomerProfile : BaseEntity {
 
     @IdView
-    val userId: Long
+    val userId: UUID
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -62,3 +64,4 @@ interface CustomerProfile : BaseEntity {
     @Column(name = "theme")
     val theme: ThemeType
 }
+

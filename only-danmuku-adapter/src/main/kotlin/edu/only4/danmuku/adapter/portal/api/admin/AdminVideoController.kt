@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -47,7 +49,7 @@ class AdminVideoController {
 
     @PostMapping("/auditVideo")
     fun auditVideo(@RequestBody @Validated request: AuditVideo.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         val currentUserType = UserType.valueOfOrNull(LoginHelper.getUserInfo()!!.userType) ?: UserType.UNKNOW
         val auditStatus = when (request.status) {
             VideoStatus.REVIEW_PASSED.value -> AuditStatus.PASSED

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -70,7 +72,7 @@ object RewardUserForVideoCmd {
     }
 
     data class Request(
-        val customerId: Long,
+        val customerId: UUID,
     ) : RequestParam<Response>
 
     data class Response(
@@ -78,3 +80,4 @@ object RewardUserForVideoCmd {
         val coinAmount: Int,
     )
 }
+

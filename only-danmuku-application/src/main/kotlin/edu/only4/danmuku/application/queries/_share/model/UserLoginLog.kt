@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain._share.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginResult
 import edu.only4.danmuku.domain.aggregates.user_login_log.enums.LoginType
@@ -12,7 +14,7 @@ import org.babyfish.jimmer.sql.Table
 interface UserLoginLog : BaseEntity {
 
     @Column(name = "user_id")
-    val userId: Long?
+    val userId: UUID?
 
     @Column(name = "user_type")
     val userType: UserType
@@ -38,3 +40,4 @@ interface UserLoginLog : BaseEntity {
     @Column(name = "occur_time")
     val occurTime: Long
 }
+

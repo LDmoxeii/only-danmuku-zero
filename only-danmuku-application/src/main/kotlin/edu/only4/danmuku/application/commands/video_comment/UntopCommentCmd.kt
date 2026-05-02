@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_comment
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -69,10 +71,11 @@ object UntopCommentCmd {
     @VideoCommentOwner
     data class Request(
         /** 评论ID */
-        val commentId: Long,
+        val commentId: UUID,
         /** 操作者ID */
-        val operatorId: Long
+        val operatorId: UUID
     ) : RequestParam<Response>
 
     data object Response
 }
+

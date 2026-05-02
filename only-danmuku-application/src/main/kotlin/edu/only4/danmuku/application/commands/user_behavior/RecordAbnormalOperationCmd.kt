@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.user_behavior
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -77,7 +79,7 @@ object RecordAbnormalOperationCmd {
     }
 
     data class Request(
-        val userId: Long,
+        val userId: UUID,
         val userType: UserType,
         val opType: AbnormalOpType,
         val ip: String,
@@ -87,6 +89,7 @@ object RecordAbnormalOperationCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val abnormalOperationLogId: Long
+        val abnormalOperationLogId: UUID
     )
 }
+

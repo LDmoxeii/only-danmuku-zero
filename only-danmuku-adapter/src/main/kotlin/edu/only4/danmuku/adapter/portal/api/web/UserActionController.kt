@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.user_action.DoAction
@@ -17,7 +19,7 @@ class UserActionController {
 
     @PostMapping("/doAction")
     fun doAction(@RequestBody @Validated request: DoAction.Request) {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         when (ActionType.valueOfOrNull(request.actionType)) {
             ActionType.LIKE_VIDEO -> Mediator.commands.send(

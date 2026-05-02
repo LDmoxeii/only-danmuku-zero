@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -133,12 +135,12 @@ object UpdateVideoPostCmd {
     @VideoPostExists(videoIdField = "videoPostId")
     @VideoPostEditableStatus(videoIdField = "videoPostId")
     data class Request(
-        val videoPostId: Long,
-        val customerId: Long,
+        val videoPostId: UUID,
+        val customerId: UUID,
         val videoName: String? = null,
         val videoCover: String? = null,
-        val pCategoryId: Long? = null,
-        val categoryId: Long? = null,
+        val pCategoryId: UUID? = null,
+        val categoryId: UUID? = null,
         val postType: PostType? = null,
         val originInfo: String? = null,
         val tags: String? = null,
@@ -148,14 +150,15 @@ object UpdateVideoPostCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
+        val videoId: UUID,
     )
 
     data class VideoPostFileSpec(
-        val uploadId: Long,
+        val uploadId: UUID,
         val fileIndex: Int,
         val fileName: String,
         val fileSize: Long?,
         val duration: Int?,
     )
 }
+

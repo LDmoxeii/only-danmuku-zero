@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -22,12 +24,12 @@ class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
 
     override fun create(entityPayload: Payload): Video {
         return Video(
-            id = 0L,
-            videoPostId = 0L,
-            customerId = 0L,
+            id = UUID(0L, 0L),
+            videoPostId = UUID(0L, 0L),
+            customerId = UUID(0L, 0L),
             videoCover = "",
             videoName = "",
-            pCategoryId = 0L,
+            pCategoryId = UUID(0L, 0L),
             categoryId = null,
             postType = edu.only4.danmuku.domain._share.enums.PostType.UNKNOW,
             originInfo = null,
@@ -76,12 +78,12 @@ class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
         description = "创建成品视频的基础字段载荷"
     )
     data class Payload(
-        val videoPostId: Long,
-        val customerId: Long,
+        val videoPostId: UUID,
+        val customerId: UUID,
         val videoCover: String,
         val videoName: String,
-        val parentCategoryId: Long,
-        val categoryId: Long?,
+        val parentCategoryId: UUID,
+        val categoryId: UUID?,
         val postType: Int,
         val originInfo: String?,
         val tags: String?,
@@ -91,4 +93,5 @@ class VideoFactory : AggregateFactory<VideoFactory.Payload, Video> {
         val files: List<VideoSyncFileArgs>,
     ) : AggregatePayload<Video>
 }
+
 

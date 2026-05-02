@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain._share.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.enums.AbnormalOpType
 import org.babyfish.jimmer.sql.Column
@@ -11,7 +13,7 @@ import org.babyfish.jimmer.sql.Table
 interface UserAbnormalOperationLog : BaseEntity {
 
     @Column(name = "user_id")
-    val userId: Long
+    val userId: UUID
 
     @Column(name = "user_type")
     val userType: UserType
@@ -31,3 +33,4 @@ interface UserAbnormalOperationLog : BaseEntity {
     @Column(name = "extra")
     val extra: String?
 }
+

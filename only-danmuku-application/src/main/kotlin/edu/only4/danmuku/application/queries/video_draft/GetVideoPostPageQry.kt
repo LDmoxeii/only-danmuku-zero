@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.video_draft
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.PageRequest
 import com.only4.cap4k.ddd.core.share.PageData
@@ -13,26 +15,26 @@ object GetVideoPostPageQry {
     data class Request(
         override var pageNum: Int = 1,
         override var pageSize: Int = 10,
-        var userId: Long? = null,
-        var categoryParentId: Long? = null,
-        var categoryId: Long? = null,
+        var userId: UUID? = null,
+        var categoryParentId: UUID? = null,
+        var categoryId: UUID? = null,
         var videoNameFuzzy: String? = null,
         var recommendType: RecommendType? = null,
-        var excludeVideoIds: List<Long>? = null
+        var excludeVideoIds: List<UUID>? = null
     ) : PageRequest, RequestParam<Response>
 
     data class Response(
         val page: PageData<VideoPostItem>
     ) {
         data class VideoPostItem(
-            val videoId: Long,
+            val videoId: UUID,
             val videoCover: String?,
             val videoName: String?,
-            val userId: Long?,
+            val userId: UUID?,
             val createTime: Long,
             val lastUpdateTime: Long?,
-            val parentCategoryId: Long,
-            val categoryId: Long?,
+            val parentCategoryId: UUID,
+            val categoryId: UUID?,
             val postType: PostType,
             val originInfo: String?,
             val tags: String?,
@@ -54,3 +56,4 @@ object GetVideoPostPageQry {
     }
 
 }
+

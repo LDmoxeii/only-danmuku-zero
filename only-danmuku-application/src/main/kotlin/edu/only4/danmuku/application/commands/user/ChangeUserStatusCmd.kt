@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.user
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -66,9 +68,10 @@ object ChangeUserStatusCmd {
     }
 
     data class Request(
-        val userId: Long,
+        val userId: UUID,
         val status: Boolean,
     ) : RequestParam<Response>
 
     data object Response
 }
+

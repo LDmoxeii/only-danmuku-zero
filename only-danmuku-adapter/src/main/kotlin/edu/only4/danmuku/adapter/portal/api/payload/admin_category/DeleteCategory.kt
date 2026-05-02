@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_category
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -9,7 +11,7 @@ import org.mapstruct.factory.Mappers
 object DeleteCategory {
 
     data class Request(
-        val categoryId: Long
+        val categoryId: UUID
     )
 
     class Response
@@ -21,3 +23,4 @@ object DeleteCategory {
         }
     }
 }
+

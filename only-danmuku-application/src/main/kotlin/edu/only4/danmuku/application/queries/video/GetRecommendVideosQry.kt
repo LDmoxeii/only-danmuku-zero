@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.video
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object GetRecommendVideosQry {
@@ -11,10 +13,10 @@ object GetRecommendVideosQry {
         val items: List<VideoItem>
     ) {
         data class VideoItem(
-            val videoId: Long,
+            val videoId: UUID,
             val videoCover: String?,
             val videoName: String?,
-            val userId: Long,
+            val userId: UUID,
             val nickName: String?,
             val avatar: String?,
             val playCount: Int?,
@@ -24,3 +26,4 @@ object GetRecommendVideosQry {
     }
 
 }
+

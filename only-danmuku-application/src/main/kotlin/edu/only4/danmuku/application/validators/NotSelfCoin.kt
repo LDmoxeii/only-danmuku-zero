@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import jakarta.validation.Constraint
@@ -36,8 +38,8 @@ annotation class NotSelfCoin(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
-            val videoId = (props[videoIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
+            val videoId = (props[videoIdField]?.getter?.call(value) as? UUID) ?: return true
 
             // 查询视频信息，获取UP主ID
             val video = runCatching {
@@ -49,3 +51,4 @@ annotation class NotSelfCoin(
         }
     }
 }
+

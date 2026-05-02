@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_action.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -25,7 +27,7 @@ class CustomerActionFactory : AggregateFactory<CustomerActionFactory.Payload, Cu
 
     override fun create(entityPayload: Payload): CustomerAction {
         val entity = CustomerAction(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = entityPayload.customerId,
             videoId = entityPayload.videoId,
             videoOwnerId = entityPayload.videoOwnerId,
@@ -51,12 +53,14 @@ class CustomerActionFactory : AggregateFactory<CustomerActionFactory.Payload, Cu
         description = ""
     )
     data class Payload(
-         var customerId: Long = 0L,
-         var videoId: Long = 0L,
-         var videoOwnerId: Long = 0L,
-         var commentId: Long = 0L,
+         var customerId: UUID = UUID(0L, 0L),
+         var videoId: UUID = UUID(0L, 0L),
+         var videoOwnerId: UUID = UUID(0L, 0L),
+         var commentId: UUID = UUID(0L, 0L),
          var actionType: ActionType = (ActionType.valueOfOrNull(0) ?: ActionType.UNKNOW),
          var actionCount: Int = 0,
     ) : AggregatePayload<CustomerAction>
 
 }
+
+

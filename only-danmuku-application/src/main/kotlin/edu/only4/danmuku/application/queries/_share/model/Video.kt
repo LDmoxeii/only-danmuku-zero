@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
 import edu.only4.danmuku.domain._share.enums.PostType
 import org.babyfish.jimmer.sql.*
@@ -12,13 +14,13 @@ import org.babyfish.jimmer.sql.*
 interface Video : BaseEntity {
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @IdView
-    val parentCategoryId: Long
+    val parentCategoryId: UUID
 
     @IdView
-    val categoryId: Long?
+    val categoryId: UUID?
 
     @OneToOne
     @JoinColumn(name = "video_post_id")
@@ -90,3 +92,4 @@ interface Video : BaseEntity {
     @Column(name = "last_play_time")
     val lastPlayTime: Long?
 }
+

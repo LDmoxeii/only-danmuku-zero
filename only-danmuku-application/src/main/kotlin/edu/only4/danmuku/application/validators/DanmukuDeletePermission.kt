@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_danmuku.GetDanmukuOwnerQry
 import jakarta.validation.Constraint
@@ -34,8 +36,8 @@ annotation class DanmukuDeletePermission(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val danmukuId = (props[danmukuIdField]?.getter?.call(value) as? Long) ?: return true
-            val operatorId = props[operatorIdField]?.getter?.call(value) as? Long?
+            val danmukuId = (props[danmukuIdField]?.getter?.call(value) as? UUID) ?: return true
+            val operatorId = props[operatorIdField]?.getter?.call(value) as? UUID?
 
             // 管理员（operatorId == null）直接通过
             if (operatorId == null) return true
@@ -48,3 +50,4 @@ annotation class DanmukuDeletePermission(
         }
     }
 }
+

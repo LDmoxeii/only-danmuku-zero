@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.category
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.Aggregate
 import edu.only4.danmuku.domain.aggregates.category.Category
 import edu.only4.danmuku.domain.aggregates.category.factory.CategoryFactory
@@ -14,5 +16,6 @@ class AggCategory(
 
     val id by lazy { root.id }
 
-    class Id(key: Long) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggCategory, Long>(key)
+    class Id(key: UUID) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggCategory, UUID>(key)
 }
+

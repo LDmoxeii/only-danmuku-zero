@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_danmuku
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -74,9 +76,9 @@ object PostDanmukuCmd {
     data class Request(
         @field:VideoExists
         @field:DanmukuInteractionAllowed
-        val videoId: Long,
-        val fileId: Long,
-        val customerId: Long,
+        val videoId: UUID,
+        val fileId: UUID,
+        val customerId: UUID,
         val text: String,
         val mode: Int,
         val color: String,
@@ -85,3 +87,4 @@ object PostDanmukuCmd {
 
     data object Response
 }
+

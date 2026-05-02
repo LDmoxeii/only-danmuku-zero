@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video.enums.RecommendType
@@ -84,12 +86,12 @@ fun Video.applyCollectCountDelta(delta: Int): Int {
 }
 
 fun Video.syncFromBasics(
-    videoPostId: Long,
-    customerId: Long,
+    videoPostId: UUID,
+    customerId: UUID,
     videoCover: String,
     videoName: String,
-    parentCategoryId: Long,
-    categoryId: Long?,
+    parentCategoryId: UUID,
+    categoryId: UUID?,
     postType: Int,
     originInfo: String?,
     tags: String?,
@@ -115,7 +117,7 @@ fun Video.syncFromBasics(
     this.files.clear()
     files.sortedBy { it.fileIndex }.forEach { fileArgs ->
         val file = VideoFile(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = fileArgs.customerId,
             videoId = this.id,
             videoFilePostId = fileArgs.videoFilePostId,
@@ -135,7 +137,7 @@ fun Video.syncFromBasics(
         file.variants.addAll(
             fileArgs.variants.map { variant ->
                 VideoFileVariant(
-                    id = 0L,
+                    id = UUID(0L, 0L),
                     quality = variant.quality,
                     width = variant.width,
                     height = variant.height,
@@ -162,8 +164,8 @@ fun Video.syncFromBasics(
 }
 
 data class VideoSyncFileArgs(
-    val videoFilePostId: Long,
-    val customerId: Long,
+    val videoFilePostId: UUID,
+    val customerId: UUID,
     val fileName: String?,
     val fileIndex: Int,
     val fileSize: Long?,
@@ -183,3 +185,4 @@ data class VideoSyncFileVariantArgs(
     val segmentPrefix: String?,
     val segmentDuration: Int?,
 )
+

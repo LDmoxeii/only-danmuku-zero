@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_comment.GetCommentByIdQry
 import jakarta.validation.Constraint
@@ -36,8 +38,8 @@ annotation class VideoCommentOwner(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val commentId = (props[commentIdField]?.getter?.call(value) as? Long) ?: return true
-            val operatorId = props[operatorIdField]?.getter?.call(value) as? Long?
+            val commentId = (props[commentIdField]?.getter?.call(value) as? UUID) ?: return true
+            val operatorId = props[operatorIdField]?.getter?.call(value) as? UUID?
 
             // 后台管理员（operatorId = null）默认通过
             val expectedOwner = runCatching {
@@ -48,4 +50,5 @@ annotation class VideoCommentOwner(
         }
     }
 }
+
 

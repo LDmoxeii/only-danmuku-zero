@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_message
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -77,10 +79,11 @@ object SendCommentMessageCmd {
     }
 
     data class Request(
-        val videoId: Long,
-        val sendUserId: Long,
+        val videoId: UUID,
+        val sendUserId: UUID,
         val content: String?,
     ) : RequestParam<Response>
 
     data object Response
 }
+

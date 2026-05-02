@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_quality_policy
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -102,7 +104,7 @@ object SetVideoQualityPolicyCmd {
     }
 
     data class Request(
-        val videoId: Long,
+        val videoId: UUID,
         val fileIndex: Int,
         val quality: String,
         val authPolicy: QualityAuthPolicy,
@@ -113,3 +115,4 @@ object SetVideoQualityPolicyCmd {
         val success: Boolean = true
     )
 }
+

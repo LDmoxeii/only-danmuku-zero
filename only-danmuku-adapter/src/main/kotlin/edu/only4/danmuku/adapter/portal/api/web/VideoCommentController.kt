@@ -1,5 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -39,7 +43,7 @@ class VideoCommentController {
 
         val queryResult = Mediator.queries.send(queryRequest)
 
-        val currentUserId = LoginHelper.getUserId()
+        val currentUserId = CurrentUser.id()
 
         val actionList = if (currentUserId != null) {
             Mediator.queries.send(
@@ -50,7 +54,7 @@ class VideoCommentController {
             ).items
         } else emptyList()
 
-        val likedCommentIds: Set<Long> = actionList
+        val likedCommentIds: Set<UUID> = actionList
             .filter { it.actionType == ActionType.LIKE_COMMENT && it.commentId != null }
             .mapNotNull { it.commentId }
             .toSet()
@@ -87,7 +91,7 @@ class VideoCommentController {
 
     private fun coverToCommentItem(
         comment: VideoCommentPageQry.Response.CommentItem,
-        likedCommentIds: Set<Long>
+        likedCommentIds: Set<UUID>
     ): GetCommentPage.Response {
         return GetCommentPage.Response(
             commentId = comment.commentId.toString(),
@@ -116,7 +120,7 @@ class VideoCommentController {
 
     private fun coverToCommentItem(
         comment: VideoCommentPageQry.Response.Children,
-        likedCommentIds: Set<Long>
+        likedCommentIds: Set<UUID>
     ): GetCommentPage.Response {
         return GetCommentPage.Response(
             commentId = comment.commentId.toString(),
@@ -146,8 +150,8 @@ class VideoCommentController {
     @PostMapping("/post")
     fun post(@RequestBody @Validated request: PostComment.Request) {
         // 调用命令发表评论
-        val currentUserId = LoginHelper.getUserId()!!
-        var replyCustomerId = 0L
+        val currentUserId = CurrentUser.requiredId()
+        var replyCustomerId = UUID(0L, 0L)
         request.replyCommentId?.let {
             replyCustomerId = Mediator.queries.send(
                 GetCommentByIdQry.Request(
@@ -173,7 +177,7 @@ class VideoCommentController {
         Mediator.commands.send(
             DeleteVideoCommentCmd.Request(
                 commentId = request.commentId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 
@@ -182,7 +186,7 @@ class VideoCommentController {
         Mediator.commands.send(
             TopCommentCmd.Request(
                 commentId = request.commentId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 
@@ -191,8 +195,9 @@ class VideoCommentController {
         Mediator.commands.send(
             UntopCommentCmd.Request(
                 commentId = request.commentId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 
 }
+

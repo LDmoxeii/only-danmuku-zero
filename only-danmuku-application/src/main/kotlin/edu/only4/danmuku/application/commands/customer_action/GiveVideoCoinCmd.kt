@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_action
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -76,7 +78,7 @@ object GiveVideoCoinCmd {
                     customerId = request.customerId,
                     videoId = request.videoId,
                     videoOwnerId = video.customerId,
-                    commentId = 0L,
+                    commentId = UUID(0L, 0L),
                     actionType = ActionType.COIN_VIDEO,
                     actionCount = request.coinCount
                 )
@@ -93,8 +95,8 @@ object GiveVideoCoinCmd {
     @SufficientCoinBalance(userIdField = "customerId", coinCountField = "coinCount")
     data class Request(
         @field:VideoExists
-        val videoId: Long,
-        val customerId: Long,
+        val videoId: UUID,
+        val customerId: UUID,
         @field:Min(1, message = "投币数量至少为1")
         @field:Max(2, message = "投币数量最多为2")
         val coinCount: Int,
@@ -106,3 +108,4 @@ object GiveVideoCoinCmd {
         val coinCount: Int
     )
 }
+

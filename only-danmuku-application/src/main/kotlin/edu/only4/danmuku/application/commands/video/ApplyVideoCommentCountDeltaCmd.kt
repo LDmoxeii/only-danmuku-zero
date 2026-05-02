@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -74,13 +76,14 @@ object ApplyVideoCommentCountDeltaCmd {
     }
 
     data class Request(
-        val videoId: Long,
+        val videoId: UUID,
         val delta: Int = 1
     ) : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
+        val videoId: UUID,
         val commentCount: Int,
         val appliedDelta: Int
     )
 }
+

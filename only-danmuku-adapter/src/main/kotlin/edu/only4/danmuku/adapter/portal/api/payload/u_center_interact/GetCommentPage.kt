@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_interact
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -14,7 +16,7 @@ import org.mapstruct.factory.Mappers
 object GetCommentPage {
 
     data class Request(
-        val videoId: Long? = null
+        val videoId: UUID? = null
     ) : PageParam()
 
     data class Response(
@@ -36,7 +38,7 @@ object GetCommentPage {
     interface Converter {
 
         @Mapping(source = "currentUserId", target = "videoUserId")
-        fun toQry(req: Request, currentUserId: Long): VideoCommentPageQry.Request
+        fun toQry(req: Request, currentUserId: UUID): VideoCommentPageQry.Request
 
         @Mapping(source = "commentId", target = "commentId")
         @Mapping(source = "videoId", target = "videoId")
@@ -51,3 +53,4 @@ object GetCommentPage {
         }
     }
 }
+

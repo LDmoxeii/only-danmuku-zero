@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -58,10 +60,11 @@ object TransferCoinCmd {
     }
 
     data class Request(
-        val senderUserId: Long,
-        val receiverUserId: Long,
+        val senderUserId: UUID,
+        val receiverUserId: UUID,
         val amount: Int,
     ) : RequestParam<Response>
 
     data object Response
 }
+

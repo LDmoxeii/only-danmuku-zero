@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_danmuku
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.Aggregate
 import edu.only4.danmuku.domain.aggregates.video_danmuku.VideoDanmuku
 import edu.only4.danmuku.domain.aggregates.video_danmuku.factory.VideoDanmukuFactory
@@ -14,5 +16,6 @@ class AggVideoDanmuku(
 
     val id by lazy { root.id }
 
-    class Id(key: Long) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggVideoDanmuku, Long>(key)
+    class Id(key: UUID) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggVideoDanmuku, UUID>(key)
 }
+

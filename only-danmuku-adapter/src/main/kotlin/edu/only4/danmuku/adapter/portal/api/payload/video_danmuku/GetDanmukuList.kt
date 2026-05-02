@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_danmuku
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import jakarta.validation.constraints.NotEmpty
@@ -12,10 +14,10 @@ object GetDanmukuList {
     data class Request(
         /** 文件ID */
         @param:NotEmpty(message = "文件ID不能为空")
-        val fileId: Long,
+        val fileId: UUID,
         /** 视频ID */
         @param:NotEmpty(message = "视频ID不能为空")
-        val videoId: Long
+        val videoId: UUID
     )
 
     /**
@@ -51,3 +53,4 @@ object GetDanmukuList {
 
     // 弹幕无用户行为附加返回
 }
+

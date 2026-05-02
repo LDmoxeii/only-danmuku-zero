@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.user_abnormal_operation_log.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -28,7 +30,7 @@ class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLo
 
     override fun create(payload: Payload): UserAbnormalOperationLog {
         return UserAbnormalOperationLog(
-            id = 0L,
+            id = UUID(0L, 0L),
             userId = payload.userId,
             userType = payload.userType,
             opType = payload.opType,
@@ -53,7 +55,7 @@ class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLo
         description = ""
     )
     data class Payload(
-        val userId: Long,
+        val userId: UUID,
         val userType: UserType,
         val opType: AbnormalOpType,
         val ip: String,
@@ -63,3 +65,4 @@ class UserAbnormalOperationLogFactory : AggregateFactory<UserAbnormalOperationLo
     ) : AggregatePayload<UserAbnormalOperationLog>
 
 }
+

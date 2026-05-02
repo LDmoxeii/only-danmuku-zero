@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -76,15 +78,16 @@ object RecordVideoAuditTraceCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val auditStatus: AuditStatus,
-        val reviewerId: Long?,
+        val reviewerId: UUID?,
         val reviewerType: UserType,
         val reason: String? = null,
         val occurTime: Long? = null,
     ) : RequestParam<Response>
 
     data class Response(
-        val traceId: Long
+        val traceId: UUID
     )
 }
+

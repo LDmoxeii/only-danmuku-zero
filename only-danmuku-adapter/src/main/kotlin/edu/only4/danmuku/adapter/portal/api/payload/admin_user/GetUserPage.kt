@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_user
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -23,7 +25,7 @@ object GetUserPage {
      * 用户项
      */
     data class Response(
-        var userId: Long,
+        var userId: UUID,
         var avatar: String?,
         var nickName: String?,
         var email: String?,
@@ -50,3 +52,4 @@ object GetUserPage {
         }
     }
 }
+

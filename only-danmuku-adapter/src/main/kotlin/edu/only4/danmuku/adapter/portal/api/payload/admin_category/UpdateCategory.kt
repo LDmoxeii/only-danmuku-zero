@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_category
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.commands.category.UpdateCategoryInfoCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.PositiveOrZero
@@ -15,10 +17,10 @@ object UpdateCategory {
     data class Request(
         /** 父分类ID */
         @field:PositiveOrZero(message = "父分类ID必须大于等于0")
-        val pCategoryId: Long,
+        val pCategoryId: UUID,
 
         /** 分类ID(更新时传) */
-        val categoryId: Long,
+        val categoryId: UUID,
 
         /** 分类编码 */
         @field:NotEmpty(message = "分类编码不能为空")
@@ -49,3 +51,4 @@ object UpdateCategory {
         }
     }
 }
+

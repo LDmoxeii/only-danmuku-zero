@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -46,7 +48,7 @@ class UserMessageController {
     fun readAll(@RequestBody @Validated request: ReadAllMessage.Request) =
         Mediator.commands.send(
             MarkAllAsReadCmd.Request(
-                customerId = LoginHelper.getUserId()!!,
+                customerId = CurrentUser.requiredId(),
                 messageType = request.messageType
             )
         )
@@ -65,7 +67,7 @@ class UserMessageController {
     fun delete(@RequestBody @Validated request: DeleteMessage.Request) =
         Mediator.commands.send(
             DeleteMessageCmd.Request(
-                customerId = LoginHelper.getUserId()!!,
+                customerId = CurrentUser.requiredId(),
                 messageId = request.messageId
             )
         )

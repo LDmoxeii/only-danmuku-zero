@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_hls_key_token
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.enums.EncryptTokenStatus
 
 fun VideoHlsKeyToken.markExpired() {
@@ -17,7 +19,8 @@ fun VideoHlsKeyToken.consumeOnce() {
     }
 }
 
-fun VideoHlsKeyToken.bindVideoId(videoId: Long) {
+fun VideoHlsKeyToken.bindVideoId(videoId: UUID) {
     if (this.videoId == videoId) return
     this.videoId = videoId
 }
+

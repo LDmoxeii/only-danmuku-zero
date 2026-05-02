@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.queries.video_draft.GetVideoPostInfoQry
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -12,7 +14,7 @@ object GetVideoByVideoId {
 
     data class Request(
         /** 视频ID */
-        val videoId: Long
+        val videoId: UUID
     )
 
     data class Response(
@@ -33,9 +35,9 @@ object GetVideoByVideoId {
         /** 视频名称 */
         var videoName: String? = null,
         /** 父分类ID */
-        var parentCategoryId: Long? = null,
+        var parentCategoryId: UUID? = null,
         /** 分类ID */
-        var categoryId: Long? = null,
+        var categoryId: UUID? = null,
         /** 上传类型(0自制/1转载) */
         var postType: Int? = null,
         /** 原资源说明 */
@@ -87,3 +89,4 @@ object GetVideoByVideoId {
         }
     }
 }
+

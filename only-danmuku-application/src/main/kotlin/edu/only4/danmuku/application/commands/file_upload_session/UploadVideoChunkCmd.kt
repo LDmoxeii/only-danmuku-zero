@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.file_upload_session
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -81,12 +83,13 @@ object UploadVideoChunkCmd {
 
     @ValidateUploadChunk
     data class Request(
-        val customerId: Long,
-        val uploadId: Long,
+        val customerId: UUID,
+        val uploadId: UUID,
         val chunkIndex: Int,
         val chunkSize: Long,
     ) : RequestParam<Response>
 
     data object Response
 }
+
 

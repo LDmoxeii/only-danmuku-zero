@@ -7,6 +7,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.util.UUID
 import kotlin.reflect.KClass
 
 /**
@@ -29,7 +30,7 @@ annotation class VideoDeletePermission(
         override fun isValid(value: DeleteVideoPostCmd.Request?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val operatorId = value.operatorId ?: return true
-            if (value.videoId <= 0) return true
+            if (value.videoId == UUID(0L, 0L)) return true
 
             val video = runCatching {
                 Mediator.queries.send(GetVideoInfoQry.Request(value.videoId))

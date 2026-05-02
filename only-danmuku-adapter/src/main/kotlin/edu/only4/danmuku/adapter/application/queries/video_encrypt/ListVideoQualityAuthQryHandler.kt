@@ -14,6 +14,7 @@ import edu.only4.danmuku.application.queries.video_encrypt.ListVideoQualityAuthQ
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 查询清晰度授权策略列表
@@ -41,7 +42,7 @@ class ListVideoQualityAuthQryHandler(
         )
     }
 
-    private fun resolveTarget(request: ListVideoQualityAuthQry.Request): Pair<Long, Int>? {
+    private fun resolveTarget(request: ListVideoQualityAuthQry.Request): Pair<UUID, Int>? {
         val videoFileId = request.videoFileId ?: return null
         return sqlClient.createQuery(VideoFile::class) {
             where(table.id eq videoFileId)

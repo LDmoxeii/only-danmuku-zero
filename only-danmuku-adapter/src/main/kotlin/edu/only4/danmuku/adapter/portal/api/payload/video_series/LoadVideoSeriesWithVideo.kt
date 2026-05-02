@@ -1,9 +1,11 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
+import java.util.UUID
+
 object LoadVideoSeriesWithVideo {
 
     data class Request(
-        val userId: Long?
+        val userId: UUID?
     )
 
     data class Response(
@@ -25,3 +27,4 @@ object LoadVideoSeriesWithVideo {
         var playCount: Int? = null,
     )
 }
+

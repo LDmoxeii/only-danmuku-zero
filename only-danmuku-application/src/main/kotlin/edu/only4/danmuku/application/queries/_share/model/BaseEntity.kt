@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.Id
 import org.babyfish.jimmer.sql.LogicalDeleted
 import org.babyfish.jimmer.sql.MappedSuperclass
@@ -7,15 +9,15 @@ import org.babyfish.jimmer.sql.MappedSuperclass
 @MappedSuperclass
 interface BaseEntity {
     @Id
-    val id: Long
+    val id: UUID
 
-    val createUserId: Long?
+    val createUserId: UUID?
 
     val createBy: String?
 
     val createTime: Long?
 
-    val updateUserId: Long?
+    val updateUserId: UUID?
 
     val updateBy: String?
 
@@ -24,3 +26,4 @@ interface BaseEntity {
     @LogicalDeleted
     val deleted: Long
 }
+

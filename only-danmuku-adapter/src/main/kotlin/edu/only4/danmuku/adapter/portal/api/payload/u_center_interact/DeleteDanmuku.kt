@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_interact
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -9,7 +11,7 @@ import org.mapstruct.factory.Mappers
 object DeleteDanmuku {
 
     class Request(
-        val danmukuId: Long
+        val danmukuId: UUID
     )
 
     class Response
@@ -22,3 +24,4 @@ object DeleteDanmuku {
         }
     }
 }
+

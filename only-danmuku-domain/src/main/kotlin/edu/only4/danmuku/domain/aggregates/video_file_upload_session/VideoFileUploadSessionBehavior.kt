@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
+import java.util.UUID
+
 import com.only.engine.error.CommonErrors
 import com.only.engine.exception.BusinessException
 import com.only.engine.exception.RequestException
@@ -10,7 +12,7 @@ import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.Vide
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.events.VideoFileUploadSessionMarkedDoneDomainEvent
 import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 
-fun VideoFileUploadSession.ensureOwnedBy(userId: Long) {
+fun VideoFileUploadSession.ensureOwnedBy(userId: UUID) {
     if (customerId != userId) {
         throw BusinessException(DanmukuBusinessErrors.OPERATION_FORBIDDEN, "没有权限操作该上传")
     }
@@ -63,3 +65,4 @@ fun VideoFileUploadSession.initTempAndStartUploading(tempDir: String, now: Long)
     }
     updateTime = now
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post_processing
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -88,12 +90,12 @@ object StartVideoPostProcessingCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileList: List<VideoPostProcessingFileSpec>
     ) : RequestParam<Response>
 
     data class VideoPostProcessingFileSpec(
-        val uploadId: Long,
+        val uploadId: UUID,
         val fileIndex: Int,
         val fileName: String?,
         val fileSize: Long?,
@@ -102,14 +104,15 @@ object StartVideoPostProcessingCmd {
 
     data object Response
 
-    private fun resolveOutputDir(videoPostId: Long, fileIndex: Int): String {
+    private fun resolveOutputDir(videoPostId: UUID, fileIndex: Int): String {
         val base = System.getProperty("java.io.tmpdir").trimEnd('/', '\\')
         val token = UUID.randomUUID().toString().replace("-", "")
         return Paths.get(base, "vpp", videoPostId.toString(), fileIndex.toString(), token).toString()
     }
 
-    private fun resolveObjectPrefix(videoPostId: Long, fileIndex: Int): String {
+    private fun resolveObjectPrefix(videoPostId: UUID, fileIndex: Int): String {
         val token = UUID.randomUUID().toString().replace("-", "")
         return "video-post/${videoPostId}/${fileIndex}/${token}"
     }
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.statistics
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.Aggregate
 import edu.only4.danmuku.domain.aggregates.statistics.Statistics
 import edu.only4.danmuku.domain.aggregates.statistics.factory.StatisticsFactory
@@ -14,5 +16,6 @@ class AggStatistics(
 
     val id by lazy { root.id }
 
-    class Id(key: Long) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggStatistics, Long>(key)
+    class Id(key: UUID) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggStatistics, UUID>(key)
 }
+

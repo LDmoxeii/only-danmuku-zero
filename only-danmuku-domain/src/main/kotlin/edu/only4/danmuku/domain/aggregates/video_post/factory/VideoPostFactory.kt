@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -29,7 +31,7 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
 
     override fun create(entityPayload: Payload): VideoPost {
         return VideoPost(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoCover = entityPayload.videoCover ?: "",
             videoName = entityPayload.videoName,
             customerId = entityPayload.customerId,
@@ -59,11 +61,11 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
         description = ""
     )
     data class Payload(
-         val customerId: Long,
+         val customerId: UUID,
          val videoName: String,
          val videoCover: String? = null,
-         val pCategoryId: Long,
-         val categoryId: Long? = null,
+         val pCategoryId: UUID,
+         val categoryId: UUID? = null,
          val postType: PostType? = null,
          val originInfo: String? = null,
          val tags: String? = null,
@@ -73,3 +75,4 @@ class VideoPostFactory : AggregateFactory<VideoPostFactory.Payload, VideoPost> {
      ) : AggregatePayload<VideoPost>
 
 }
+

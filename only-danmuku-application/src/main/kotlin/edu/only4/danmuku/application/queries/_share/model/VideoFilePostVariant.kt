@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.IdView
@@ -12,7 +14,7 @@ import org.babyfish.jimmer.sql.Table
 interface VideoFilePostVariant : BaseEntity {
 
     @IdView
-    val filePostId: Long
+    val filePostId: UUID
 
     @ManyToOne
     @JoinColumn(name = "file_post_id")
@@ -45,3 +47,4 @@ interface VideoFilePostVariant : BaseEntity {
     @Column(name = "segment_duration")
     val segmentDuration: Int?
 }
+

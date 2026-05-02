@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_category
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.commands.category.CreateCategoryCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.PositiveOrZero
@@ -15,7 +17,7 @@ object SaveCategory {
     data class Request(
         /** 父分类ID */
         @field:PositiveOrZero(message = "父分类ID必须大于等于0")
-        val pCategoryId: Long,
+        val pCategoryId: UUID,
 
         /** 分类编码 */
         @field:NotEmpty(message = "分类编码不能为空")
@@ -46,3 +48,4 @@ object SaveCategory {
         }
     }
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_video
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.queries.video.GetVideoPlayFilesQry
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
@@ -11,7 +13,7 @@ object GetVideoPList {
 
     data class Request(
         /** 视频ID */
-        val videoId: Long
+        val videoId: UUID
     )
 
     /**
@@ -43,3 +45,4 @@ object GetVideoPList {
         }
     }
 }
+

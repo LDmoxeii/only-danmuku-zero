@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_home
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.share.PageParam
 import edu.only4.danmuku.application.queries.customer_focus.GetFocusPageQry
 import org.mapstruct.Mapper
@@ -25,7 +27,7 @@ object GetFocusPage {
     @Mapper(componentModel = "default")
     interface Converter {
 
-        fun toQry(request: Request, userId: Long): GetFocusPageQry.Request
+        fun toQry(request: Request, userId: UUID): GetFocusPageQry.Request
 
         @Mapping(source = "focusUserId", target = "otherUserId")
         @Mapping(source = "nickName", target = "otherNickName")
@@ -38,3 +40,4 @@ object GetFocusPage {
         }
     }
 }
+

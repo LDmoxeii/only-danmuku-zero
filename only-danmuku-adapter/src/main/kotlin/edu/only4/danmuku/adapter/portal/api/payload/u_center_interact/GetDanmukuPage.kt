@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_interact
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -15,18 +17,18 @@ import org.mapstruct.factory.Mappers
 object GetDanmukuPage {
 
     data class Request(
-        val videoId: Long? = null
+        val videoId: UUID? = null
     ) : PageParam()
 
     /**
      * 弹幕项
      */
     data class DanmukuItem(
-        var danmukuId: Long,
-        var videoId: Long,
+        var danmukuId: UUID,
+        var videoId: UUID,
         var videoName: String,
         var text: String,
-        var userId: Long,
+        var userId: UUID,
         var nickName: String,
         var mode: Int,
         var color: String,
@@ -39,7 +41,7 @@ object GetDanmukuPage {
     interface Converter {
 
         @Mapping(source = "currentUserId", target = "videoUserId")
-        fun toQry(req: Request, currentUserId: Long): GetVideoDanmukuPageQry.Request
+        fun toQry(req: Request, currentUserId: UUID): GetVideoDanmukuPageQry.Request
 
         @Mapping(source = "customerId", target = "userId")
         @Mapping(source = "customerNickname", target = "nickName")
@@ -50,3 +52,4 @@ object GetDanmukuPage {
         }
     }
 }
+

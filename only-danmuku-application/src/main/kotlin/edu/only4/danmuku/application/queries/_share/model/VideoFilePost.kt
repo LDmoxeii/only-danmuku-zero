@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain._share.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post.enums.EncryptStatus
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
@@ -16,13 +18,13 @@ import org.babyfish.jimmer.sql.Table
 interface VideoFilePost : BaseEntity {
 
     @IdView
-    val customerId: Long
+    val customerId: UUID
 
     @IdView
-    val uploadId: Long
+    val uploadId: UUID
 
     @IdView
-    val videoPostId: Long
+    val videoPostId: UUID
 
     @OneToOne
     @JoinColumn(name = "upload_id")
@@ -75,3 +77,4 @@ interface VideoFilePost : BaseEntity {
     @Column(name = "encrypt_key_version")
     val encryptKeyVersion: Int?
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -46,7 +48,7 @@ class UHomeController {
             GetTotalStatisticsInfoQry.Request(userId = request.userId)
         )
 
-        val haveFocus = LoginHelper.getUserId()?.let {
+        val haveFocus = CurrentUser.id()?.let {
             if (it != request.userId) {
                 Mediator.queries.send(
                     CheckFocusStatusQry.Request(
@@ -81,7 +83,7 @@ class UHomeController {
     fun update(@RequestBody @Validated request: UpdateCustomerProfile.Request) =
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
-                customerId = LoginHelper.getUserId()!!,
+                customerId = CurrentUser.requiredId(),
                 nickName = request.nickName,
                 avatar = request.avatar,
                 sex = request.sex,
@@ -96,7 +98,7 @@ class UHomeController {
     fun saveTheme(@RequestBody @Validated request: SaveTheme.Request) =
         Mediator.commands.send(
             UpdateCustomerProfileCmd.Request(
-                customerId = LoginHelper.getUserId()!!,
+                customerId = CurrentUser.requiredId(),
                 theme = request.theme
             )
         )
@@ -105,7 +107,7 @@ class UHomeController {
     fun focus(@RequestBody @Validated  request: Focus.Request) =
         Mediator.commands.send(
             FocusCmd.Request(
-                userId = LoginHelper.getUserId()!!,
+                userId = CurrentUser.requiredId(),
                 focusUserId = request.focusUserId
             )
         )
@@ -114,14 +116,14 @@ class UHomeController {
     fun cancelFocus(@RequestBody @Validated  request: CancelFocus.Request) =
         Mediator.commands.send(
             UnFocusCmd.Request(
-                userId = LoginHelper.getUserId()!!,
+                userId = CurrentUser.requiredId(),
                 focusUserId = request.focusUserId
             )
         )
 
     @PostMapping("/getFocusPage")
     fun getFocusPage(@RequestBody @Validated request: GetFocusPage.Request): PageData<GetFocusPage.Response> {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(GetFocusPage.Converter.INSTANCE.toQry(request, userId))
 
@@ -136,7 +138,7 @@ class UHomeController {
 
     @PostMapping("/getFansPage")
     fun getFansPage(@RequestBody @Validated request: GetFansPage.Request): PageData<GetFansPage.Response> {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(GetFansPage.Converter.INSTANCE.toQry(request, userId))
 
@@ -164,7 +166,7 @@ class UHomeController {
     @SaIgnore
     @PostMapping("/getCollectionPage")
     fun getCollectionPage(@RequestBody @Validated request: GetCollectionPage.Request): PageData<GetCollectionPage.Response> {
-        val currentUserId = request.userId ?: LoginHelper.getUserId()!!
+        val currentUserId = request.userId ?: CurrentUser.requiredId()
 
         val collectedActions = Mediator.queries.send(GetCollectionPage.Converter.INSTANCE.toQry(request, currentUserId))
 
@@ -190,7 +192,8 @@ class UHomeController {
 //        )
 //        require(smsCheck.result) { "短信验证码错误" }
 
-        val customerProfileId = LoginHelper.getUserInfo()!!.extra.getValue(SUser.props.relatedId) as Long
+        val customerProfileId = CurrentUser.extraUuid(SUser.props.relatedId)
+            ?: error("Current login related customer profile id is not a UUID")
 
         Mediator.commands.send(
             BindPhoneCmd.Request(

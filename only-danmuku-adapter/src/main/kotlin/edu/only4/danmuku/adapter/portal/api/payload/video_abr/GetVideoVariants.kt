@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_abr
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -13,7 +15,7 @@ import org.mapstruct.factory.Mappers
 object GetVideoVariants {
 
     data class Request(
-        val fileId: Long
+        val fileId: UUID
     )
 
     data class Response(
@@ -28,3 +30,4 @@ object GetVideoVariants {
         }
     }
 }
+

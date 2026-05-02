@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.user_message
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.AnyToJsonStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -19,18 +21,18 @@ object GetMessagePage {
     ): PageParam()
 
     data class Response(
-        val messageId: Long,
+        val messageId: UUID,
         val messageType: Int,
         val readType: Int,
         @get:Translation(type = AnyToJsonStringTranslation.TYPE)
         val extendDto: UserMessageExtend?,
         val createTime: Long,
         // 扩展显示字段
-        val videoPostId: Long?,
-        val videoId: Long?,
+        val videoPostId: UUID?,
+        val videoId: UUID?,
         val videoName: String?,
         val videoCover: String?,
-        val sendUserId: Long?,
+        val sendUserId: UUID?,
         val sendUserName: String?,
         val sendUserAvatar: String?,
     )
@@ -46,3 +48,4 @@ object GetMessagePage {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

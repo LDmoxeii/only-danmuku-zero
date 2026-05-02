@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.category
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -69,8 +71,9 @@ object DeleteCategoryCmd {
     data class Request(
         @field:CategoryMustExist
         @field:CategoryDeletionAllowed
-        val categoryId: Long,
+        val categoryId: UUID,
     ) : RequestParam<Response>
 
     data object Response
 }
+

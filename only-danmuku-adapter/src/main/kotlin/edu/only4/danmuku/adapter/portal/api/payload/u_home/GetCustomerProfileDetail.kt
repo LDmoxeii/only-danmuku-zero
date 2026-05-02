@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_home
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.customer_profile.enums.ThemeType
 
 /**
@@ -9,11 +11,11 @@ object GetCustomerProfileDetail {
 
     data class Request(
         /** 用户ID */
-        val userId: Long
+        val userId: UUID
     )
 
     data class Response(
-        var userId: Long? = null,
+        var userId: UUID? = null,
         var nickName: String? = null,
         var avatar: String? = null,
         var sex: Int? = null,
@@ -31,3 +33,4 @@ object GetCustomerProfileDetail {
         var haveFocus: Boolean? = null,
     )
 }
+

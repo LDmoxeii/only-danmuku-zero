@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.category
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -91,10 +93,11 @@ object UpdateCategorySortOrderCmd {
 
     data class Request(
         @field:CategoryMustExist
-        val parentId: Long = 0L,
+        val parentId: UUID = UUID(0L, 0L),
         @field:NotEmpty(message = "分类ID列表不能为空")
-        val categoryIds: List<Long>,
+        val categoryIds: List<UUID>,
     ) : RequestParam<Response>
 
     data object Response
 }
+

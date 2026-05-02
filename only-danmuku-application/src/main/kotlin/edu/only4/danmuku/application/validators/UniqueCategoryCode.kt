@@ -6,6 +6,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.util.UUID
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
@@ -43,7 +44,7 @@ annotation class UniqueCategoryCode(
             val codeTrimmed = code?.trim()
 
             // 读取排除 ID
-            val excludeId = props[categoryIdProperty]?.getter?.call(value) as? Long
+            val excludeId = props[categoryIdProperty]?.getter?.call(value) as? UUID
 
             // 所有参数均有值（字符串非空）才进行校验
             val allPresent =

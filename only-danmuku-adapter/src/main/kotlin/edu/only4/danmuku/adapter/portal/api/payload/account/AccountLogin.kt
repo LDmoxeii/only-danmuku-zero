@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.account
 
+import java.util.UUID
+
 import edu.only4.danmuku.adapter.portal.api.payload.admin_user.ChangeStatus
 import edu.only4.danmuku.application.commands.user.ChangeUserStatusCmd
 import edu.only4.danmuku.application.queries.authorize.AutoLoginQry
@@ -22,7 +24,7 @@ object AccountLogin {
 
     data class Response(
 
-        var userId: Long,
+        var userId: UUID,
 
         var nickName: String,
 
@@ -43,3 +45,4 @@ object AccountLogin {
         }
     }
 }
+

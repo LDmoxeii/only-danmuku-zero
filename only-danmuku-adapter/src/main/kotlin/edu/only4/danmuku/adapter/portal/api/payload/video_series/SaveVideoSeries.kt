@@ -1,12 +1,14 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
+import java.util.UUID
+
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Size
 
 object SaveVideoSeries {
 
     data class Request(
-        val seriesId: Long?,
+        val seriesId: UUID?,
         @field:NotEmpty
         @field:Size(max = 100)
         val seriesName: String,
@@ -16,6 +18,7 @@ object SaveVideoSeries {
     )
 
     data class Response(
-        var seriesId: Long? = null
+        var seriesId: UUID? = null
     )
 }
+

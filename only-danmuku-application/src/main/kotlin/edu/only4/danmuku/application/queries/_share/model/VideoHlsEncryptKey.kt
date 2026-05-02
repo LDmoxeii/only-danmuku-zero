@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain._share.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.enums.EncryptKeyStatus
 import org.babyfish.jimmer.sql.Column
@@ -11,10 +13,10 @@ import org.babyfish.jimmer.sql.Table
 interface VideoHlsEncryptKey : BaseEntity {
 
     @Column(name = "video_post_id")
-    val videoPostId: Long
+    val videoPostId: UUID
 
     @Column(name = "video_id")
-    val videoId: Long?
+    val videoId: UUID?
 
     @Column(name = "file_index")
     val fileIndex: Int
@@ -49,3 +51,4 @@ interface VideoHlsEncryptKey : BaseEntity {
     @Column(name = "remark")
     val remark: String?
 }
+

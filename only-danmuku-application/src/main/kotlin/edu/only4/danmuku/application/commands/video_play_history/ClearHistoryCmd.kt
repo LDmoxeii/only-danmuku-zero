@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_play_history
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -59,8 +61,9 @@ object ClearHistoryCmd {
 
     data class Request(
         /** 用户ID */
-        val customerId: Long,
+        val customerId: UUID,
     ) : RequestParam<Response>
 
     data object Response
 }
+

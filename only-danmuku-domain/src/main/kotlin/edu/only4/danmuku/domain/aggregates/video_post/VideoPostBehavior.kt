@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.enums.EncryptMethod
 import edu.only4.danmuku.domain._share.enums.PostType
@@ -81,8 +83,8 @@ fun VideoPost.updateDuration(duration: Int) {
 fun VideoPost.applyBasicInfo(
     videoName: String? = null,
     videoCover: String? = null,
-    pCategoryId: Long? = null,
-    categoryId: Long? = null,
+    pCategoryId: UUID? = null,
+    categoryId: UUID? = null,
     postType: PostType? = null,
     originInfo: String? = null,
     tags: String? = null,
@@ -116,12 +118,12 @@ fun VideoPost.changeInteraction(interaction: String?) {
 }
 
 fun videoFilePostFromSpec(
-    videoPostId: Long,
-    customerId: Long,
+    videoPostId: UUID,
+    customerId: UUID,
     spec: VideoPostTranscodeFileSpec,
 ): VideoFilePost {
     return VideoFilePost(
-        id = 0L,
+        id = UUID(0L, 0L),
         videoPostId = videoPostId,
         uploadId = spec.uploadId,
         customerId = customerId,
@@ -146,7 +148,7 @@ fun videoFilePostFromSpec(
 }
 
 data class VideoPostTranscodeFileSpec(
-    val uploadId: Long,
+    val uploadId: UUID,
     val fileIndex: Int,
     val fileName: String?,
     val fileSize: Long?,
@@ -192,3 +194,4 @@ fun VideoFilePost.syncVariants(variants: List<VideoFilePostVariant>) {
     this.variants.clear()
     this.variants.addAll(variants)
 }
+

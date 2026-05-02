@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.*
 
 @Entity
@@ -7,7 +9,7 @@ import org.babyfish.jimmer.sql.*
 interface VideoDanmuku : BaseEntity {
 
     @IdView
-    val videoId: Long
+    val videoId: UUID
 
     @OneToOne
     @JoinColumn(name = "video_id")
@@ -18,7 +20,7 @@ interface VideoDanmuku : BaseEntity {
     val customer: User
 
     @Column(name = "file_id")
-    val fileId: Long
+    val fileId: UUID
 
     @Column(name = "post_time")
     val postTime: Long?
@@ -35,3 +37,4 @@ interface VideoDanmuku : BaseEntity {
     @Column(name = "time")
     val time: Int?
 }
+

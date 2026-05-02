@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.user.CheckNicknameExistsQry
 import jakarta.validation.Constraint
@@ -50,15 +52,15 @@ annotation class UniqueUserNickname(
                     val nickname = props[nicknameProperty]?.getter?.call(value) as? String?
                     val excludeUserId = userIdProperty
                         .takeIf { it.isNotBlank() }
-                        ?.let { props[it]?.getter?.call(value) as? Long? }
-                        ?.takeIf { it != 0L }
+                        ?.let { props[it]?.getter?.call(value) as? UUID? }
+                        ?.takeIf { it != UUID(0L, 0L) }
 
                     isNicknameUnique(nickname, excludeUserId)
                 }
             }
         }
 
-        private fun isNicknameUnique(nickname: String?, excludeUserId: Long?): Boolean {
+        private fun isNicknameUnique(nickname: String?, excludeUserId: UUID?): Boolean {
             val normalizedNickname = nickname?.trim().orEmpty()
             if (normalizedNickname.isBlank()) {
                 return true
@@ -77,3 +79,5 @@ annotation class UniqueUserNickname(
         }
     }
 }
+
+

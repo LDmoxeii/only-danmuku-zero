@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.adapter.portal.api.payload.u_center_statistics.GetActualTimeStatistics
@@ -21,7 +23,7 @@ class UCenterStatisticsController {
 
     @PostMapping("/getActualTimeStatistics")
     fun getActualTimeStatistics(): GetActualTimeStatistics.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         val preDayData = Mediator.queries.send(GetPreviousDayStatisticsInfoQry.Request(currentUserId))
         val totalData = Mediator.queries.send(GetTotalStatisticsInfoQry.Request(currentUserId))
 
@@ -53,7 +55,7 @@ class UCenterStatisticsController {
 
     @PostMapping("/getWeekStatisticsInfo")
     fun getWeekStatisticsInfo(@RequestBody @Validated request: GetWeekStatisticsInfo.Request): List<GetWeekStatisticsInfo.Response> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val weekData = Mediator.queries.send(
             GetWeekStatisticsInfoQry.Request(

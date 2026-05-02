@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -56,7 +58,7 @@ class VideoDanmukuController {
         PostDanmukuCmd.Request(
             videoId = request.videoId,
             fileId = request.fileId,
-            customerId = LoginHelper.getUserId()!!,
+            customerId = CurrentUser.requiredId(),
             text = request.text,
             mode = request.mode,
             color = request.color,

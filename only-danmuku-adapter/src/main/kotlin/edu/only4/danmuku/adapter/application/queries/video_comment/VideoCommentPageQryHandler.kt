@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.video_comment
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.query.Query
 import com.only4.cap4k.ddd.core.share.PageData
 import edu.only4.danmuku.application.queries._share.model.VideoComment
@@ -80,7 +82,7 @@ class VideoCommentPageQryHandler(
         val children = if (loadChildren) loadChildComments(item.id) else emptyList()
         return VideoCommentPageQry.Response.CommentItem(
             commentId = item.id,
-            parentCommentId = item.parentId ?: 0,
+            parentCommentId = item.parentId ?: UUID(0L, 0L),
             videoId = item.video.id,
             videoUserId = item.video.customerId,
             videoName = item.video.videoName,
@@ -105,7 +107,7 @@ class VideoCommentPageQryHandler(
         val children = if (loadChildren) loadChildComments(item.id) else emptyList()
         return VideoCommentPageQry.Response.Children(
             commentId = item.id,
-            parentCommentId = item.parentId ?: 0,
+            parentCommentId = item.parentId ?: UUID(0L, 0L),
             videoId = item.video.id,
             videoUserId = item.video.customerId,
             videoName = item.video.videoName,
@@ -126,7 +128,7 @@ class VideoCommentPageQryHandler(
         )
     }
 
-    private fun loadChildComments(parentCommentId: Long): List<VideoCommentPageQry.Response.Children> {
+    private fun loadChildComments(parentCommentId: UUID): List<VideoCommentPageQry.Response.Children> {
         val childComments = sqlClient.createQuery(VideoComment::class) {
             where(table.parentId eq parentCommentId)
             orderBy(table.postTime.asc())
@@ -157,3 +159,4 @@ class VideoCommentPageQryHandler(
         return childComments.map { toChild(it, loadChildren = true) }
     }
 }
+

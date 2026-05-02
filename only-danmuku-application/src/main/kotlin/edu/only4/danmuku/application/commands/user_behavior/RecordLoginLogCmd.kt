@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.user_behavior
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -80,7 +82,7 @@ object RecordLoginLogCmd {
     }
 
     data class Request(
-        val userId: Long?,
+        val userId: UUID?,
         val userType: UserType,
         val loginName: String,
         val loginType: LoginType,
@@ -92,6 +94,7 @@ object RecordLoginLogCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val logId: Long
+        val logId: UUID
     )
 }
+

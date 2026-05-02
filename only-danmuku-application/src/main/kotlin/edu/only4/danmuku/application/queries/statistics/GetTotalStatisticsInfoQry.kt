@@ -1,12 +1,14 @@
 
 package edu.only4.danmuku.application.queries.statistics
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object GetTotalStatisticsInfoQry {
 
     data class Request(
-        val userId: Long? = null
+        val userId: UUID? = null
     ) : RequestParam<Response>
 
     data class Response(
@@ -20,3 +22,4 @@ object GetTotalStatisticsInfoQry {
     )
 
 }
+

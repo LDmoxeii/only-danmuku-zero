@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_message.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -29,7 +31,7 @@ class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, 
 
     override fun create(payload: Payload): CustomerMessage {
         return CustomerMessage(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = payload.customerId,
             videoId = payload.videoId,
             messageType = payload.messageType,
@@ -53,12 +55,13 @@ class CustomerMessageFactory : AggregateFactory<CustomerMessageFactory.Payload, 
         description = ""
     )
     data class Payload(
-        val customerId: Long,
-        val videoId: Long? = null,
+        val customerId: UUID,
+        val videoId: UUID? = null,
         val messageType: MessageType,
-        val sendSubjectId: Long? = null,
+        val sendSubjectId: UUID? = null,
         val readType: ReadType = ReadType.UNREAD,
         val extendJson: UserMessageExtend? = null,
     ) : AggregatePayload<CustomerMessage>
 
 }
+

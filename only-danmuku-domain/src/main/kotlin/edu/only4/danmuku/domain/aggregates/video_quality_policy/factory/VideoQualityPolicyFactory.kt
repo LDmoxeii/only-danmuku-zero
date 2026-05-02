@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_quality_policy.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -27,7 +29,7 @@ class VideoQualityPolicyFactory : AggregateFactory<VideoQualityPolicyFactory.Pay
 
     override fun create(payload: Payload): VideoQualityPolicy {
         return VideoQualityPolicy(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoId = payload.videoId,
             fileIndex = payload.fileIndex,
             quality = payload.quality,
@@ -50,7 +52,7 @@ class VideoQualityPolicyFactory : AggregateFactory<VideoQualityPolicyFactory.Pay
         description = ""
     )
     data class Payload(
-        val videoId: Long,
+        val videoId: UUID,
         val fileIndex: Int,
         val quality: String,
         val authPolicy: QualityAuthPolicy,
@@ -58,3 +60,4 @@ class VideoQualityPolicyFactory : AggregateFactory<VideoQualityPolicyFactory.Pay
     ) : AggregatePayload<VideoQualityPolicy>
 
 }
+

@@ -1,14 +1,16 @@
 
 package edu.only4.danmuku.application.queries.video_post
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object UniqueVideoFilePostUploadIdQry {
 
     data class Request(
-        val uploadId: Long,
-        val customerId: Long,
-        val excludeVideoFilePostId: Long?
+        val uploadId: UUID,
+        val customerId: UUID,
+        val excludeVideoFilePostId: UUID?
     ) : RequestParam<Response>
 
     data class Response(
@@ -16,3 +18,4 @@ object UniqueVideoFilePostUploadIdQry {
     )
 
 }
+

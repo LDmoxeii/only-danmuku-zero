@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_comment.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -22,7 +24,7 @@ class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoC
 
     override fun create(entityPayload: Payload): VideoComment {
         return VideoComment(
-            id = 0L,
+            id = UUID(0L, 0L),
             parentId = entityPayload.parentId,
             videoId = entityPayload.videoId,
             videoOwnerId = entityPayload.videoOwnerId,
@@ -51,14 +53,16 @@ class VideoCommentFactory : AggregateFactory<VideoCommentFactory.Payload, VideoC
         description = ""
     )
     data class Payload(
-         val parentId: Long = 0L,
-         val videoId: Long,
-         val videoOwnerId: Long,
+         val parentId: UUID = UUID(0L, 0L),
+         val videoId: UUID,
+         val videoOwnerId: UUID,
          val content: String,
          val imgPath: String?,
-         val customerId: Long,
-         val replyCustomerId: Long?,
+         val customerId: UUID,
+         val replyCustomerId: UUID?,
          val postTime: Long,
     ) : AggregatePayload<VideoComment>
 
 }
+
+

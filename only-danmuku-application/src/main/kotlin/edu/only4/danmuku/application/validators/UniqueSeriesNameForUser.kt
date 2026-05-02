@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesNameExistsQry
 import jakarta.validation.Constraint
@@ -38,8 +40,8 @@ annotation class UniqueSeriesNameForUser(
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
-            val seriesId = (props[seriesIdField]?.getter?.call(value) as? Long?)
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
+            val seriesId = (props[seriesIdField]?.getter?.call(value) as? UUID?)
             val seriesName = (props[seriesNameField]?.getter?.call(value) as? String?)?.trim().orEmpty()
             if (seriesName.isBlank()) return true
 
@@ -55,4 +57,5 @@ annotation class UniqueSeriesNameForUser(
         }
     }
 }
+
 

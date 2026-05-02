@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_interact
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -18,7 +20,7 @@ object GetDanmukuPage {
     ) : PageParam()
 
     class Response(
-        var danmukuId: Long? = null,
+        var danmukuId: UUID? = null,
         var videoId: String? = null,
         var videoName: String? = null,
         var videoCover: String? = null,
@@ -46,3 +48,4 @@ object GetDanmukuPage {
         }
     }
 }
+

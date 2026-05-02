@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_center_video_post
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -18,8 +20,8 @@ object GetVideoPostPage {
     ) : PageParam()
 
     data class Response(
-        val videoPostId: Long,
-        var videoId: Long?,
+        val videoPostId: UUID,
+        var videoId: UUID?,
         var videoCover: String? = null,
         var videoName: String? = null,
         var duration: Int? = null,
@@ -48,7 +50,7 @@ object GetVideoPostPage {
         @Mapping(target = "status", expression = "java(request.getStatus().equals(VideoStatus.UNKNOW) ? null : request.getStatus())")
         @Mapping(target = "excludeStatusArray", expression = "java(request.getStatus().equals(VideoStatus.UNKNOW) ? List.of(VideoStatus.REVIEW_PASSED, VideoStatus.REVIEW_FAILED) : null)")
         @Mapping(target = "pageSize", constant = "999")
-        fun toQry(request: Request, currentUserId: Long): GetUserVideoPostQry.Request
+        fun toQry(request: Request, currentUserId: UUID): GetUserVideoPostQry.Request
 
         fun fromQry(resp: GetUserVideoPostQry.Response.VideoPostItem): Response
 
@@ -57,3 +59,4 @@ object GetVideoPostPage {
         }
     }
 }
+

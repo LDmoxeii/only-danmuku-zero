@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_comment
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -63,7 +65,7 @@ object PostCommentCmd {
                 persist = false
             ) ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "视频不存在：${request.videoId}")
 
-            val parentId = request.replyCommentId ?: 0L
+            val parentId = request.replyCommentId ?: UUID(0L, 0L)
             val now = System.currentTimeMillis() / 1000
 
             val comment = Mediator.factories.create(
@@ -89,15 +91,16 @@ object PostCommentCmd {
     data class Request(
         @field:VideoExists
         @field:CommentNotClosed
-        val videoId: Long,
-        val replyCommentId: Long? = null,
-        val customerId: Long,
-        val replyCustomerId: Long,
+        val videoId: UUID,
+        val replyCommentId: UUID? = null,
+        val customerId: UUID,
+        val replyCustomerId: UUID,
         val content: String,
         val imgPath: String? = null,
     ) : RequestParam<Response>
 
     data class Response(
-        val commentId: Long
+        val commentId: UUID
     )
 }
+

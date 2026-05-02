@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.account
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.commands.user.ChangePasswordCmd
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
@@ -50,10 +52,11 @@ object ChangePassword {
     interface Converter {
 
         @Mapping(target = "userId", source = "userId")
-        fun toCmd(request: Request, userId: Long): ChangePasswordCmd.Request
+        fun toCmd(request: Request, userId: UUID): ChangePasswordCmd.Request
 
         companion object {
             val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
         }
     }
 }
+

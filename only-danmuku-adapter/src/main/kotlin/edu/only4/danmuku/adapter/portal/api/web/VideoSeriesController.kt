@@ -1,5 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -32,7 +36,7 @@ class VideoSeriesController {
     @PostMapping("/getVideoSeries")
     fun getVideoSeries(@RequestBody @Validated request: VideoSeriesLoad.Request): VideoSeriesLoad.Response {
         // 调用查询获取用户所有系列
-        val actualUserId = request.userId ?: LoginHelper.getUserId()!!
+        val actualUserId = request.userId ?: CurrentUser.requiredId()
 
         val seriesList = Mediator.queries.send(
             GetCustomerVideoSeriesListQry.Request(userId = actualUserId)
@@ -77,7 +81,7 @@ class VideoSeriesController {
 
     @PostMapping("/getAllVideoList")
     fun getAllVideoList(@RequestBody @Validated request: GetAllSeriesVideoList.Request): GetAllSeriesVideoList.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         // 查询当前用户的所有视频
         val allVideos = Mediator.queries.send(
@@ -87,7 +91,7 @@ class VideoSeriesController {
         )
 
         // 如果传了系列ID，则需要把该系列下已存在的视频排除
-        val excludeVideoIds: Set<Long> = if (request.seriesId != null) {
+        val excludeVideoIds: Set<UUID> = if (request.seriesId != null) {
             val seriesWithVideos = Mediator.queries.send(
                 GetCustomerVideoSeriesVideoQry.Request(userId = currentUserId)
             )
@@ -108,7 +112,7 @@ class VideoSeriesController {
 
     @PostMapping("/saveVideoSeries")
     fun saveVideoSeries(@RequestBody @Validated request: SaveVideoSeries.Request): SaveVideoSeries.Response {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         val createdOrUpdatedSeriesId = if (request.seriesId == null) {
             val resp = Mediator.commands.send(
@@ -153,7 +157,7 @@ class VideoSeriesController {
     fun loadVideoSeriesWithVideo(
         @RequestBody @Validated request: LoadVideoSeriesWithVideo.Request
     ): LoadVideoSeriesWithVideo.Response {
-        val actualUserId = request.userId ?: LoginHelper.getUserId()!!
+        val actualUserId = request.userId ?: CurrentUser.requiredId()
 
         val seriesWithVideos = Mediator.queries.send(
             GetCustomerVideoSeriesVideoQry.Request(userId = actualUserId)
@@ -182,7 +186,7 @@ class VideoSeriesController {
 
     @PostMapping("/saveSeriesVideo")
     fun saveSeriesVideo(@RequestBody @Validated request: SaveSeriesVideo.Request): SaveSeriesVideo.Response {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         Mediator.commands.send(
             UpdateCustomerVideoSeriesVideosCmd.Request(
@@ -198,7 +202,7 @@ class VideoSeriesController {
 
     @PostMapping("/delSeriesVideo")
     fun deleteSeriesVideo(@RequestBody @Validated request: DeleteSeriesVideo.Request): DeleteSeriesVideo.Response {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         Mediator.commands.send(
             RemoveVideoFromSeriesCmd.Request(
@@ -213,7 +217,7 @@ class VideoSeriesController {
 
     @PostMapping("/delVideoSeries")
     fun deleteVideoSeries(@RequestBody @Validated request: DeleteVideoSeries.Request): DeleteVideoSeries.Response {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         Mediator.commands.send(
             DeleteVideoSeriesCmd.Request(
@@ -227,10 +231,10 @@ class VideoSeriesController {
 
     @PostMapping("/changeSort")
     fun changeSort(@RequestBody @Validated request: ChangeVideoSeriesSort.Request): ChangeVideoSeriesSort.Response {
-        val userId = LoginHelper.getUserId()!!
+        val userId = CurrentUser.requiredId()
 
         val seriesIdList = request.seriesIds.split(",")
-            .map { it.trim().toLong() }
+            .map { UUID.fromString(it.trim()) }
 
         Mediator.commands.send(
             UpdateVideoSeriesSortCmd.Request(
@@ -242,5 +246,6 @@ class VideoSeriesController {
         return ChangeVideoSeriesSort.Response()
     }
 }
+
 
 

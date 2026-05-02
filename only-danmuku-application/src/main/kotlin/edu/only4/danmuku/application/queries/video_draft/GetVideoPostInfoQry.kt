@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.video_draft
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import edu.only4.danmuku.domain._share.enums.PostType
 import edu.only4.danmuku.domain.aggregates.video_post.enums.TransferResult
@@ -9,8 +11,8 @@ import edu.only4.danmuku.domain.aggregates.video_post.enums.VideoStatus
 object GetVideoPostInfoQry {
 
     data class Request(
-        val videoPostId: Long,
-        val userId: Long
+        val videoPostId: UUID,
+        val userId: UUID
     ) : RequestParam<Response>
 
     data class Response(
@@ -18,11 +20,11 @@ object GetVideoPostInfoQry {
         val videoFileList: List<VideoFileItem>
     ) {
         data class VideoInfo(
-            val videoId: Long,
+            val videoId: UUID,
             val videoCover: String?,
             val videoName: String?,
-            val parentCategoryId: Long?,
-            val categoryId: Long?,
+            val parentCategoryId: UUID?,
+            val categoryId: UUID?,
             val postType: PostType?,
             val originInfo: String?,
             val tags: String?,
@@ -31,7 +33,7 @@ object GetVideoPostInfoQry {
             val status: VideoStatus
         )
         data class VideoFileItem(
-            val fileId: Long,
+            val fileId: UUID,
             val uploadId: String,
             val fileIndex: Int,
             val fileName: String,
@@ -43,3 +45,4 @@ object GetVideoPostInfoQry {
     }
 
 }
+

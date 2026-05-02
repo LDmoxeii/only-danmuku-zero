@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.authorize
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.application.query.Query
@@ -18,7 +20,8 @@ import org.springframework.stereotype.Service
 class AutoLoginQryHandler : Query<AutoLoginQry.Request, AutoLoginQry.Response> {
 
     override fun exec(request: AutoLoginQry.Request): AutoLoginQry.Response {
-        if (!LoginHelper.isLogin()) {
+        val currentUserId = CurrentUser.id()
+        if (currentUserId == null) {
             return AutoLoginQry.Response(
                 userId = null,
                 nickName = null,
@@ -28,7 +31,7 @@ class AutoLoginQryHandler : Query<AutoLoginQry.Request, AutoLoginQry.Response> {
             )
         }
         return AutoLoginQry.Response(
-            userId = LoginHelper.getUserId()!!,
+            userId = currentUserId,
             nickName = LoginHelper.getUserInfo()!!.username,
             avatar = LoginHelper.getUserInfo()!!.extra[SCustomerProfile.props.avatar] as String,
             expireAt = StpUtil.getTokenTimeout(),

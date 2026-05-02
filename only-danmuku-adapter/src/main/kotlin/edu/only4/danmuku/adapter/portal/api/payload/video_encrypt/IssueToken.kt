@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_encrypt
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -13,7 +15,7 @@ import org.mapstruct.factory.Mappers
 object IssueToken {
 
     data class Request(
-        val fileId: Long
+        val fileId: UUID
     )
 
     data class Response(
@@ -29,3 +31,4 @@ object IssueToken {
         }
     }
 }
+

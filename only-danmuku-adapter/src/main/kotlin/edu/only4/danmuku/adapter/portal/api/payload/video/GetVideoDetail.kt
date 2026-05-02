@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import edu.only4.danmuku.application.queries.customer_action.GetUserActionsByVideoIdQry
@@ -11,7 +13,7 @@ import org.mapstruct.factory.Mappers
 object GetVideoDetail {
 
     data class Request(
-        var videoId: Long
+        var videoId: UUID
     )
 
     data class Response(
@@ -20,10 +22,10 @@ object GetVideoDetail {
     )
 
     data class VideoInfo(
-        var videoId: Long,
+        var videoId: UUID,
         var videoCover: String,
         var videoName: String,
-        var userId: Long,
+        var userId: UUID,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var createTime: Long,
         var postType: Int,
@@ -40,13 +42,13 @@ object GetVideoDetail {
     )
 
     data class UserAction(
-        var actionId: Long,
-        var userId: Long,
-        var videoId: Long,
+        var actionId: UUID,
+        var userId: UUID,
+        var videoId: UUID,
         var videoName: String,
         var videoCover: String,
-        var videoUserId: Long,
-        var commentId: Long?,
+        var videoUserId: UUID,
+        var commentId: UUID?,
         var actionType: Int? = null,
         var actionCount: Int? = null,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
@@ -63,3 +65,4 @@ object GetVideoDetail {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

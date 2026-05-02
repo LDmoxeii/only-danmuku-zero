@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.ForeignKeyType
@@ -14,7 +16,7 @@ import org.babyfish.jimmer.sql.Table
 interface Category : BaseEntity {
 
     @IdView
-    val parentId: Long?
+    val parentId: UUID?
 
     @ManyToOne
     @JoinColumn(
@@ -44,3 +46,4 @@ interface Category : BaseEntity {
     @Column(name = "background")
     val background: String?
 }
+

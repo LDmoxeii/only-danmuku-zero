@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.application.queries.message
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.application.query.Query
 import edu.only4.danmuku.application.queries._share.model.CustomerMessage
@@ -20,7 +22,7 @@ class GetNoReadMessageCountGroupQryHandler(
 ) : Query<GetNoReadMessageCountGroupQry.Request, GetNoReadMessageCountGroupQry.Response> {
 
     override fun exec(request: GetNoReadMessageCountGroupQry.Request): GetNoReadMessageCountGroupQry.Response {
-        val currentUserId = LoginHelper.getUserId()
+        val currentUserId = CurrentUser.id()
             ?: return GetNoReadMessageCountGroupQry.Response(list = emptyList())
         val types = sqlClient.createQuery(CustomerMessage::class) {
             where(table.customerId eq currentUserId)

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.Aggregate
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.VideoFileUploadSession
 import edu.only4.danmuku.domain.aggregates.video_file_upload_session.factory.VideoFileUploadSessionFactory
@@ -14,5 +16,6 @@ class AggVideoFileUploadSession(
 
     val id by lazy { root.id }
 
-    class Id(key: Long) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggVideoFileUploadSession, Long>(key)
+    class Id(key: UUID) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggVideoFileUploadSession, UUID>(key)
 }
+

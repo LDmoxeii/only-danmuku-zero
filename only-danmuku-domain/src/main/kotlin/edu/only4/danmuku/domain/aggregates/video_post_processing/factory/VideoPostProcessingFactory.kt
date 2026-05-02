@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post_processing.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -25,7 +27,7 @@ class VideoPostProcessingFactory : AggregateFactory<VideoPostProcessingFactory.P
 
     override fun create(payload: Payload): VideoPostProcessing {
         val processing = VideoPostProcessing(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoPostId = payload.videoPostId,
             totalFiles = payload.fileSize,
             transcodeStatus = ProcessStatus.PROCESSING,
@@ -53,8 +55,9 @@ class VideoPostProcessingFactory : AggregateFactory<VideoPostProcessingFactory.P
         description = ""
     )
     data class Payload(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileSize: Int,
     ) : AggregatePayload<VideoPostProcessing>
 
 }
+

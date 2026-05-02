@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_danmuku.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -22,7 +24,7 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
 
     override fun create(entityPayload: Payload): VideoDanmuku {
         return VideoDanmuku(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoId = entityPayload.videoId,
             fileId = entityPayload.fileId,
             customerId = entityPayload.customerId,
@@ -48,9 +50,9 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
         description = ""
     )
     data class Payload(
-         val videoId: Long,
-         val fileId: Long,
-         val customerId: Long,
+         val videoId: UUID,
+         val fileId: UUID,
+         val customerId: UUID,
          val postTime: Long,
          val text: String?,
          val mode: Boolean?,
@@ -59,3 +61,4 @@ class VideoDanmukuFactory : AggregateFactory<VideoDanmukuFactory.Payload, VideoD
     ) : AggregatePayload<VideoDanmuku>
 
 }
+

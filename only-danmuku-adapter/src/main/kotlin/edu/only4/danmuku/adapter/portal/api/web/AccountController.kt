@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.enums.CaptchaChannel
@@ -155,7 +157,7 @@ class AccountController {
     @PostMapping("/logout")
     fun logout() {
         val userInfo = LoginHelper.getUserInfo()
-        val userId = LoginHelper.getUserId()
+        val userId = CurrentUser.id()
         val ip = getClientIP().orEmpty()
         Mediator.requests.send(LogoutCli.Request())
         Mediator.commands.send(
@@ -174,7 +176,7 @@ class AccountController {
 
     @PostMapping("/getUserCountInfo")
     fun getUserCountInfo(): GetUserCountInfo.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val userCountInfo = Mediator.queries.send(
             GetUserCountInfoQry.Request(
@@ -252,7 +254,7 @@ class AccountController {
 
     @PostMapping("/changePassword")
     fun changePassword(@RequestBody @Validated request: ChangePassword.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         Mediator.commands.send(
             ChangePassword.Converter.INSTANCE.toCmd(request, currentUserId)

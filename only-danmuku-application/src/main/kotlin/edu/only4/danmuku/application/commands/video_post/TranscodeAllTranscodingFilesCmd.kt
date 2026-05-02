@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -63,7 +65,7 @@ object TranscodeAllTranscodingFilesCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
     ) : RequestParam<Response>
 
     data class Response(
@@ -72,3 +74,4 @@ object TranscodeAllTranscodingFilesCmd {
         val failed: Int,
     )
 }
+

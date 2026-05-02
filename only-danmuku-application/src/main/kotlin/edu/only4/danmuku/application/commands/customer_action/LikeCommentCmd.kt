@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_action
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -118,10 +120,10 @@ object LikeCommentCmd {
 
     data class Request(
         @field:VideoExists
-        val videoId: Long,
+        val videoId: UUID,
         @field:CommentExists
-        val commentId: Long,
-        val customerId: Long,
+        val commentId: UUID,
+        val customerId: UUID,
     ) : RequestParam<Response>
 
     data class Response(
@@ -129,4 +131,5 @@ object LikeCommentCmd {
         val hadOpposite: Boolean,
     )
 }
+
 

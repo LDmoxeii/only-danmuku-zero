@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.customer_video_series.CheckSeriesExistsQry
 import jakarta.validation.Constraint
@@ -36,14 +38,14 @@ annotation class SeriesBelongToUser(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
             val seriesIds = props[seriesIdsField]?.getter?.call(value) as? List<*> ?: return true
 
             if (seriesIds.isEmpty()) return true
 
             // 验证每个 seriesId 是否属于当前用户
             for (seriesId in seriesIds) {
-                if (seriesId !is Long) continue
+                if (seriesId !is UUID) continue
 
                 val result = Mediator.queries.send(
                     CheckSeriesExistsQry.Request(
@@ -62,3 +64,4 @@ annotation class SeriesBelongToUser(
         }
     }
 }
+

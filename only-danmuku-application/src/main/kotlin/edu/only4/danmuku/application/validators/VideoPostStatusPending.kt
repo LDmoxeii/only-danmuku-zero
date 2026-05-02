@@ -7,6 +7,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import java.util.UUID
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
@@ -47,7 +48,7 @@ annotation class VideoPostStatusPending(
             return statusEnum == VideoStatus.PENDING_REVIEW
         }
 
-        private fun extractIds(source: Any?): Pair<Long, Long>? {
+        private fun extractIds(source: Any?): Pair<UUID, UUID>? {
             if (source == null) return null
             return when (source) {
                 is Number, is String -> null
@@ -55,19 +56,17 @@ annotation class VideoPostStatusPending(
                     val props = source::class.memberProperties.associateBy { it.name }
                     val vRaw = props[videoIdProperty]?.getter?.call(source)
                     val uRaw = props[userIdProperty]?.getter?.call(source)
-                    val vId = when (vRaw) {
-                        is Number -> vRaw.toLong()
-                        is String -> vRaw.toLongOrNull()
-                        else -> null
-                    }
-                    val uId = when (uRaw) {
-                        is Number -> uRaw.toLong()
-                        is String -> uRaw.toLongOrNull()
-                        else -> null
-                    }
-                    if (vId != null && vId > 0 && uId != null && uId > 0) vId to uId else null
+                    val vId = toUuid(vRaw)
+                    val uId = toUuid(uRaw)
+                    if (vId != null && uId != null) vId to uId else null
                 }
             }
+        }
+
+        private fun toUuid(raw: Any?): UUID? = when (raw) {
+            is UUID -> raw
+            is String -> runCatching { UUID.fromString(raw) }.getOrNull()
+            else -> null
         }
     }
 }

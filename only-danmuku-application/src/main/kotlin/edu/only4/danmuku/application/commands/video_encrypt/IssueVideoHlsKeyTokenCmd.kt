@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_encrypt
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -93,8 +95,8 @@ object IssueVideoHlsKeyTokenCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
-        val videoId: Long,
+        val videoPostId: UUID,
+        val videoId: UUID,
         val fileIndex: Int,
         val keyVersion: Int,
         val audience: String?,
@@ -110,3 +112,4 @@ object IssueVideoHlsKeyTokenCmd {
         val allowedQualities: String?
     )
 }
+

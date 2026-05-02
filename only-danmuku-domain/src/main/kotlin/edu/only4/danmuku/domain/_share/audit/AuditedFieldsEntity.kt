@@ -2,6 +2,7 @@ package edu.only4.danmuku.domain._share.audit
 
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
+import java.util.UUID
 
 /**
  * MappedSuperclass that declares common auditing fields so concrete entities
@@ -13,7 +14,7 @@ open class AuditedFieldsEntity : AuditedEntity() {
 
     // 创建人ID（由 AuditorAware<Long> 提供）
     @Column(name = "`create_user_id`", updatable = false)
-    open var createUserId: Long? = null
+    open var createUserId: UUID? = null
 
     // 创建人名称（标准审计不提供，基类回调填充）
     @Column(name = "`create_by`", length = 32)
@@ -25,7 +26,7 @@ open class AuditedFieldsEntity : AuditedEntity() {
 
     // 更新人ID（由 AuditorAware<Long> 提供）
     @Column(name = "`update_user_id`")
-    open var updateUserId: Long? = null
+    open var updateUserId: UUID? = null
 
     // 更新人名称（标准审计不提供，基类回调填充）
     @Column(name = "`update_by`", length = 32)

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
@@ -31,10 +33,11 @@ annotation class NotSelf(
         override fun isValid(value: Any?, context: ConstraintValidatorContext): Boolean {
             if (value == null) return true
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
-            val targetId = (props[targetIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
+            val targetId = (props[targetIdField]?.getter?.call(value) as? UUID) ?: return true
             return userId != targetId
         }
     }
 }
+
 

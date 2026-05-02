@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.u_home
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -14,14 +16,14 @@ import org.mapstruct.factory.Mappers
 object GetCollectionPage {
 
     data class Request(
-        val userId: Long?
+        val userId: UUID?
     ) : PageParam()
 
     data class Response(
-        var actionId: Long,
+        var actionId: UUID,
         var videoId: String,
         var videoUserId: String,
-        var commentId: Long,
+        var commentId: UUID?,
         var actionType: Int,
         var actionCount: Int,
         var userId: String,
@@ -35,14 +37,14 @@ object GetCollectionPage {
     interface Converter {
 
         @Mapping(source = "currentUserId", target = "customerId")
-        fun toQry(req: Request, currentUserId: Long): GetCollectionPageQry.Request
+        fun toQry(req: Request, currentUserId: UUID): GetCollectionPageQry.Request
 
         @Mapping(source = "videoId", target = "videoId")
         @Mapping(source = "videoUserId", target = "videoUserId")
         @Mapping(source = "userId", target = "userId")
-        @Mapping(target = "commentId", expression = "java(resp.getCommentId() == null ? 0L : resp.getCommentId())")
         fun fromApp(resp: GetCollectionPageQry.Response.ActionItem): Response
 
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_category
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -11,10 +13,10 @@ import org.mapstruct.factory.Mappers
 object GetCategoryTree {
 
     data class Response(
-        var categoryId: Long,
+        var categoryId: UUID,
         var categoryCode: String,
         var categoryName: String,
-        var parentId: Long?,
+        var parentId: UUID?,
         var icon: String?,
         var background: String?,
         var sort: Int,
@@ -32,3 +34,4 @@ object GetCategoryTree {
         }
     }
 }
+

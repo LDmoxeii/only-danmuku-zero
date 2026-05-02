@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -103,7 +105,7 @@ object CreateCustomerVideoSeriesCmd {
             return Response(seriesId = targetSeries.id)
         }
 
-        private fun determineNextSort(userId: Long): Byte {
+        private fun determineNextSort(userId: UUID): Byte {
             val currentMax = Mediator.repositories.findFirst(
                 SCustomerVideoSeries.predicate(
                     { schema -> schema.customerId eq userId },
@@ -118,19 +120,17 @@ object CreateCustomerVideoSeriesCmd {
             return next.toByte()
         }
 
-        private fun parseVideoIds(rawVideoIds: String?): List<Long>? {
+        private fun parseVideoIds(rawVideoIds: String?): List<UUID>? {
             rawVideoIds ?: return null
-            val result = mutableListOf<Long>()
-            val dedupe = mutableSetOf<Long>()
+            val result = mutableListOf<UUID>()
+            val dedupe = mutableSetOf<UUID>()
             rawVideoIds.split(',').forEach { part ->
                 val trimmed = part.trim()
                 if (trimmed.isEmpty()) {
                     return@forEach
                 }
-                val id = trimmed.toLongOrNull() ?: throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
-                if (id <= 0) {
-                    throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed")
-                }
+                val id = runCatching { UUID.fromString(trimmed) }
+                    .getOrElse { throw RequestException(CommonErrors.PARAM_INVALID, "无效的视频ID: $trimmed") }
                 if (dedupe.add(id)) {
                     result.add(id)
                 }
@@ -144,9 +144,9 @@ object CreateCustomerVideoSeriesCmd {
     @SeriesVideoCountLimit(videoIdsField = "videoIds")
     data class Request(
         /** 用户ID */
-        val userId: Long,
+        val userId: UUID,
         /** 系列ID(编辑时用) */
-        val seriesId: Long? = null,
+        val seriesId: UUID? = null,
         /** 系列名称 */
         @field:NotBlank(message = "系列名称不能为空")
         @field:Size(max = 100, message = "系列名称长度不能超过100个字符")
@@ -160,6 +160,7 @@ object CreateCustomerVideoSeriesCmd {
 
     data class Response(
         /** 系列ID */
-        val seriesId: Long,
+        val seriesId: UUID,
     )
 }
+

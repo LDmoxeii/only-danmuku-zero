@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_account
 
+import java.util.UUID
+
 import jakarta.validation.constraints.NotEmpty
 
 /**
@@ -30,7 +32,7 @@ object Login {
         /**
          * 用户ID
          */
-        var userId: Long,
+        var userId: UUID,
 
         /** 管理员账号 */
         var account: String? = null,
@@ -51,3 +53,4 @@ object Login {
         var token: String
     )
 }
+

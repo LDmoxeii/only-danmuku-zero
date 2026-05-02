@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_video_series.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -26,7 +28,7 @@ class CustomerVideoSeriesFactory : AggregateFactory<CustomerVideoSeriesFactory.P
 
     override fun create(payload: Payload): CustomerVideoSeries {
         return CustomerVideoSeries(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = payload.customerId,
             seriesName = payload.seriesName,
             seriesDescription = payload.seriesDescription,
@@ -48,10 +50,11 @@ class CustomerVideoSeriesFactory : AggregateFactory<CustomerVideoSeriesFactory.P
         description = ""
     )
     data class Payload(
-         val customerId: Long,
+         val customerId: UUID,
          val seriesName: String,
          val seriesDescription: String? = null,
          val sort: Byte = 0,
      ) : AggregatePayload<CustomerVideoSeries>
 
 }
+

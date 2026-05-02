@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -67,7 +69,7 @@ object AdjustAuthorCoinAfterDeleteCmd {
     }
 
     data class Request(
-        val authorId: Long,
+        val authorId: UUID,
     ) : RequestParam<Response>
 
     data class Response(
@@ -75,4 +77,5 @@ object AdjustAuthorCoinAfterDeleteCmd {
         val coinAmount: Int,
     )
 }
+
 

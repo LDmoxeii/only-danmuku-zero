@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import edu.only4.danmuku.application.queries.customer_video_series.GetCustomerVideoSeriesListQry
@@ -14,7 +16,7 @@ object VideoSeriesLoad {
 
     data class Request(
         /** 用户ID */
-        val userId: Long?
+        val userId: UUID?
     )
 
     data class Response(
@@ -43,3 +45,4 @@ object VideoSeriesLoad {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

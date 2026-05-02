@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.customer_video_series
 
+import java.util.UUID
+
 fun CustomerVideoSeries.updateBasicInfo(
     newName: String,
     newDescription: String?,
@@ -9,14 +11,14 @@ fun CustomerVideoSeries.updateBasicInfo(
 }
 
 fun CustomerVideoSeries.replaceVideos(
-    ownerId: Long,
-    videoIds: List<Long>,
+    ownerId: UUID,
+    videoIds: List<UUID>,
 ) {
     videos.clear()
     videoIds.forEachIndexed { index, videoId ->
         videos.add(
             CustomerVideoSeriesVideo(
-                id = 0L,
+                id = UUID(0L, 0L),
                 customerId = ownerId,
                 videoId = videoId,
                 sort = index + 1,
@@ -32,7 +34,7 @@ fun CustomerVideoSeries.replaceVideos(
     }
 }
 
-fun CustomerVideoSeries.removeVideo(videoId: Long): Boolean {
+fun CustomerVideoSeries.removeVideo(videoId: UUID): Boolean {
     val removed = videos.removeIf { it.videoId == videoId }
     if (removed) {
         videos.sortBy { it.sort }
@@ -44,3 +46,4 @@ fun CustomerVideoSeries.removeVideo(videoId: Long): Boolean {
 fun CustomerVideoSeries.updateSort(newSort: Int) {
     sort = newSort
 }
+

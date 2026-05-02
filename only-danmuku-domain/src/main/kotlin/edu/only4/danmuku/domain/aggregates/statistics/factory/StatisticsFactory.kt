@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.statistics.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -27,7 +29,7 @@ class StatisticsFactory : AggregateFactory<StatisticsFactory.Payload, Statistics
 
     override fun create(payload: Payload): Statistics {
         return Statistics(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = payload.customerId,
             dataType = payload.dataType,
             statisticsCount = payload.statisticsCount,
@@ -49,10 +51,11 @@ class StatisticsFactory : AggregateFactory<StatisticsFactory.Payload, Statistics
         description = ""
     )
     data class Payload(
-        val customerId: Long,
+        val customerId: UUID,
         val dataType: StatisticsDataType,
         val statisticsCount: Int,
         val statisticsDate: Long
     ) : AggregatePayload<Statistics>
 
 }
+

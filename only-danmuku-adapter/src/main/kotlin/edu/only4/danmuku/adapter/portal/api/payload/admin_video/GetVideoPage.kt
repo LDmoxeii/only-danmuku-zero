@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.admin_video
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -18,9 +20,9 @@ object GetVideoPage {
         /** 视频名称模糊查询 */
         val videoNameFuzzy: String?,
         /** 父分类Id */
-        val categoryParentId: Long?,
+        val categoryParentId: UUID?,
         /** 分类Id */
-        val categoryId: Long?,
+        val categoryId: UUID?,
         /** 视频状态 */
         val recommendType: Int?,
     ) : PageParam()
@@ -69,3 +71,4 @@ object GetVideoPage {
         }
     }
 }
+

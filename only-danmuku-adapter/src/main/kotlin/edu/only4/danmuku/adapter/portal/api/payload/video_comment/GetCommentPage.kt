@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_comment
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageData
@@ -12,7 +14,7 @@ import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
 object GetCommentPage {
 
     data class Request(
-        val videoId: Long,
+        val videoId: UUID,
     ) : PageParam()
 
     /**
@@ -76,16 +78,17 @@ object GetCommentPage {
      * 用户行为（该请求专用）
      */
     data class UserAction(
-        var actionId: Long,
-        var userId: Long,
-        var videoId: Long,
+        var actionId: UUID,
+        var userId: UUID,
+        var videoId: UUID,
         var videoName: String,
         var videoCover: String,
-        var videoUserId: Long,
-        var commentId: Long?,
+        var videoUserId: UUID,
+        var commentId: UUID?,
         var actionType: ActionType?,
         var actionCount: Int?,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var cationTime: Long,
     )
 }
+

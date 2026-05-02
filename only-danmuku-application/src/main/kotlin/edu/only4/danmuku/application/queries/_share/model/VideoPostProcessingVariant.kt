@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -13,7 +15,7 @@ import org.babyfish.jimmer.sql.Table
 interface VideoPostProcessingVariant : BaseEntity {
 
     @IdView
-    val parentId: Long
+    val parentId: UUID
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -55,3 +57,4 @@ interface VideoPostProcessingVariant : BaseEntity {
     @Column(name = "encrypt_fail_reason")
     val encryptFailReason: String?
 }
+

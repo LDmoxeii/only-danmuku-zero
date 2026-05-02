@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -85,11 +87,11 @@ object CreateVideoPostCmd {
 
     @MaxVideoPCount(countField = "uploadFileList", videoIdField = "videoId")
     data class Request(
-        val customerId: Long,
+        val customerId: UUID,
         val videoName: String,
         val videoCover: String? = null,
-        val parentCategoryId: Long,
-        val categoryId: Long? = null,
+        val parentCategoryId: UUID,
+        val categoryId: UUID? = null,
         val postType: PostType = PostType.ORIGINAL,
         val originInfo: String? = null,
         val tags: String? = null,
@@ -99,14 +101,15 @@ object CreateVideoPostCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
+        val videoId: UUID,
     )
 
     data class VideoPostFileSpec(
-        val uploadId: Long,
+        val uploadId: UUID,
         val fileIndex: Int,
         val fileName: String,
         val fileSize: Long?,
         val duration: Int?,
     )
 }
+

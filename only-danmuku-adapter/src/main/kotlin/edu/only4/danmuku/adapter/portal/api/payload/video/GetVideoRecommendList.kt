@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.queries.video.GetVideoPageQry
 import jakarta.validation.constraints.NotEmpty
 import org.mapstruct.Mapper
@@ -19,7 +21,7 @@ object GetVideoRecommendList {
         @field:NotEmpty(message = "关键词不能为空")
         val keyword: String = "",
         /** 当前视频ID(排除) */
-        val videoId: Long
+        val videoId: UUID
     )
 
     /**
@@ -31,14 +33,14 @@ object GetVideoRecommendList {
     )
 
     data class Item(
-        var videoId: Long,
+        var videoId: UUID,
         var videoCover: String?,
         var videoName: String?,
-        var userId: Long?,
+        var userId: UUID?,
         var createTime: Long,
         var lastUpdateTime: Long?,
-        var parentCategoryId: Long,
-        var categoryId: Long?,
+        var parentCategoryId: UUID,
+        var categoryId: UUID?,
         var postType: Int,
         var originInfo: String?,
         var tags: String?,
@@ -74,3 +76,4 @@ object GetVideoRecommendList {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

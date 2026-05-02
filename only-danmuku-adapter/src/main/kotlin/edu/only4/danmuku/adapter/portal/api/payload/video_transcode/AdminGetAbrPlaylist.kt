@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_transcode
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -13,7 +15,7 @@ import org.mapstruct.factory.Mappers
 object AdminGetAbrPlaylist {
 
     data class Request(
-        val filePostId: Long,
+        val filePostId: UUID,
         val quality: String
     )
 
@@ -28,4 +30,5 @@ object AdminGetAbrPlaylist {
         }
     }
 }
+
 

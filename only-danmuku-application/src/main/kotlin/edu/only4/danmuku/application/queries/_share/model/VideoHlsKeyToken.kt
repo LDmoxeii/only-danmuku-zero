@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_hls_key_token.enums.EncryptTokenStatus
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -10,10 +12,10 @@ import org.babyfish.jimmer.sql.Table
 interface VideoHlsKeyToken : BaseEntity {
 
     @Column(name = "video_post_id")
-    val videoPostId: Long
+    val videoPostId: UUID
 
     @Column(name = "video_id")
-    val videoId: Long?
+    val videoId: UUID?
 
     @Column(name = "file_index")
     val fileIndex: Int
@@ -45,3 +47,4 @@ interface VideoHlsKeyToken : BaseEntity {
     @Column(name = "issue_ip")
     val issueIp: String?
 }
+

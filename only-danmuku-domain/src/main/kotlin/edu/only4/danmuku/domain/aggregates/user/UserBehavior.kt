@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.user
 
+import java.util.UUID
+
 import cn.hutool.crypto.digest.BCrypt
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.user.events.AccountDisabledDomainEvent
@@ -26,7 +28,7 @@ fun User.updateLoginInfo(loginTime: Long, loginIp: String) {
     events().attach(this) { LoginInfoUpdatedDomainEvent(this) }
 }
 
-fun User.bindingRelationship(relatedId: Long) {
+fun User.bindingRelationship(relatedId: UUID) {
     this.relatedId = relatedId
     events().attach(this) { RelationshipBoundDomainEvent(entity = this) }
 }
@@ -46,3 +48,4 @@ fun User.bindPhone(phone: String) {
     this.phone = phone
     events().attach(this) { UserPhoneChangedDomainEvent(this) }
 }
+

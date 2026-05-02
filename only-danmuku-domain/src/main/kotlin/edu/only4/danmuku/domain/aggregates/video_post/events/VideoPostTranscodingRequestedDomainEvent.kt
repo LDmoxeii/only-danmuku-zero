@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post.events
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
 import com.only4.cap4k.ddd.core.domain.event.annotation.DomainEvent
 import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
@@ -16,14 +18,15 @@ import edu.only4.danmuku.domain.aggregates.video_post.VideoPost
 )
 class VideoPostTranscodingRequestedDomainEvent(
     val entity: VideoPost,
-    val videoPostId: Long,
+    val videoPostId: UUID,
     val fileList: List<FileItem>
 ) {
     data class FileItem(
-        val uploadId: Long,
+        val uploadId: UUID,
         val fileIndex: Int,
         val fileName: String?,
         val fileSize: Long?,
         val duration: Int?
     )
 }
+

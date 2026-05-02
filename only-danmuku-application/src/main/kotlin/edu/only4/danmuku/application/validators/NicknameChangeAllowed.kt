@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application._share.config.properties.SysSettingProperties
 import edu.only4.danmuku.application.queries.customer_profile.CheckUserCoinBalanceQry
@@ -39,7 +41,7 @@ annotation class NicknameChangeAllowed(
             if (value == null) return true
 
             val props = value::class.memberProperties.associateBy { it.name }
-            val userId = (props[userIdField]?.getter?.call(value) as? Long) ?: return true
+            val userId = (props[userIdField]?.getter?.call(value) as? UUID) ?: return true
             val newNickname = (props[nicknameField]?.getter?.call(value) as? String?)?.trim().orEmpty()
             if (newNickname.isBlank()) return true
 
@@ -64,4 +66,5 @@ annotation class NicknameChangeAllowed(
         }
     }
 }
+
 

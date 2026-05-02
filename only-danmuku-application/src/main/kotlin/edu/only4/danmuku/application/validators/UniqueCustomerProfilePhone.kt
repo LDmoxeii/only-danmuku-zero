@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.customer_profile.UniqueCustomerProfilePhoneQry
 import jakarta.validation.Constraint
@@ -43,7 +45,7 @@ annotation class UniqueCustomerProfilePhone(
             val phoneTrimmed = phone?.trim()
 
             // 读取排除 ID
-            val excludeId = props[customerProfileIdProperty]?.getter?.call(value) as? Long
+            val excludeId = props[customerProfileIdProperty]?.getter?.call(value) as? UUID
 
             // 所有参数均有值（字符串非空）才进行校验
             val allPresent =
@@ -63,3 +65,4 @@ annotation class UniqueCustomerProfilePhone(
         }
     }
 }
+

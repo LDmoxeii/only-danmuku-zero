@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -132,12 +134,12 @@ object TransferVideoToProductionCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
-        val customerId: Long,
+        val videoPostId: UUID,
+        val customerId: UUID,
         val videoCover: String,
         val videoName: String,
-        val parentCategoryId: Long,
-        val categoryId: Long?,
+        val parentCategoryId: UUID,
+        val categoryId: UUID?,
         val postType: Int,
         val originInfo: String?,
         val tags: String?,
@@ -147,7 +149,7 @@ object TransferVideoToProductionCmd {
     ) : RequestParam<Response>
 
     data class Response(
-        val videoId: Long,
+        val videoId: UUID,
     )
 
     private fun resolveFilePath(file: VideoFilePost): String? {
@@ -158,3 +160,4 @@ object TransferVideoToProductionCmd {
         }
     }
 }
+

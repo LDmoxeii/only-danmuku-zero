@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video.GetVideoInfoQry
 import jakarta.validation.Constraint
@@ -20,8 +22,8 @@ annotation class CommentNotClosed(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<CommentNotClosed, Long> {
-        override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<CommentNotClosed, UUID> {
+        override fun isValid(value: UUID?, context: ConstraintValidatorContext): Boolean {
             val videoId = value ?: return true
             val response = runCatching {
                 Mediator.queries.send(GetVideoInfoQry.Request(videoId))
@@ -33,4 +35,5 @@ annotation class CommentNotClosed(
         }
     }
 }
+
 

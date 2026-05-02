@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.user.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -25,7 +27,7 @@ class UserFactory : AggregateFactory<UserFactory.Payload, User> {
 
     override fun create(entityPayload: Payload): User {
         return User(
-            id = 0L,
+            id = UUID(0L, 0L),
             type = entityPayload.type,
             nickName = entityPayload.nickName,
             email = entityPayload.email,
@@ -60,3 +62,4 @@ class UserFactory : AggregateFactory<UserFactory.Payload, User> {
     ) : AggregatePayload<User>
 
 }
+

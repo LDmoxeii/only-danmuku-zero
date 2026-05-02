@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.statistics
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -86,7 +88,7 @@ object UpdateStatisticsInfoCmd {
     }
 
     data class Request(
-        val customerId: Long,
+        val customerId: UUID,
         val dataType: StatisticsDataType,
         val countDelta: Int = 1
     ) : RequestParam<Response>
@@ -94,3 +96,4 @@ object UpdateStatisticsInfoCmd {
 
     data object Response
 }
+

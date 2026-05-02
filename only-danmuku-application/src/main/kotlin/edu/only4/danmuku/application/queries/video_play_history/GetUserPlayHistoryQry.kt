@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.video_play_history
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.PageRequest
 import com.only4.cap4k.ddd.core.share.PageData
@@ -8,7 +10,7 @@ import com.only4.cap4k.ddd.core.share.PageData
 object GetUserPlayHistoryQry {
 
     data class Request(
-        var customerId: Long,
+        var customerId: UUID,
         override var pageNum: Int = 1,
         override var pageSize: Int = 10
     ) : PageRequest, RequestParam<Response>
@@ -17,9 +19,9 @@ object GetUserPlayHistoryQry {
         val page: PageData<HistoryItem>
     ) {
         data class HistoryItem(
-            val historyId: Long,
-            val customerId: Long,
-            val videoId: Long?,
+            val historyId: UUID,
+            val customerId: UUID,
+            val videoId: UUID?,
             val videoName: String?,
             val videoCover: String?,
             val fileIndex: Int,
@@ -28,3 +30,4 @@ object GetUserPlayHistoryQry {
     }
 
 }
+

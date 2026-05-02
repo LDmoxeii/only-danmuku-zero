@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.share.PageData
@@ -25,7 +27,7 @@ class UCenterInteractController {
 
     @PostMapping("/getAllVideoList")
     fun getAllVideoList(): List<GetAllVideoList.Response> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         // 调用查询获取当前用户的所有视频
         val queryResult = Mediator.queries.send(
@@ -40,7 +42,7 @@ class UCenterInteractController {
 
     @PostMapping("/getCommentPage")
     fun getCommentPage(@RequestBody @Validated request: GetCommentPage.Request): PageData<GetCommentPage.Response> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(
             GetCommentPage.Converter.INSTANCE.toQry(request, currentUserId)
@@ -59,13 +61,13 @@ class UCenterInteractController {
         Mediator.commands.send(
             DeleteVideoCommentCmd.Request(
                 commentId = request.commentId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 
     @PostMapping("/getDanmukuPage")
     fun getDanmukuPage(@RequestBody @Validated request: GetDanmukuPage.Request): PageData<GetDanmukuPage.DanmukuItem> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(
             GetDanmukuPage.Converter.INSTANCE.toQry(request, currentUserId)
@@ -84,7 +86,7 @@ class UCenterInteractController {
         Mediator.commands.send(
             DeleteVideoDanmukuCmd.Request(
                 danmukuId = request.danmukuId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 }

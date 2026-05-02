@@ -102,7 +102,7 @@ object GenerateVideoPostQualityKeyCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int,
         val quality: String,
         val keyVersion: Int,
@@ -119,3 +119,4 @@ object GenerateVideoPostQualityKeyCmd {
         return ByteArray(length).also { SecureRandom().nextBytes(it) }
     }
 }
+

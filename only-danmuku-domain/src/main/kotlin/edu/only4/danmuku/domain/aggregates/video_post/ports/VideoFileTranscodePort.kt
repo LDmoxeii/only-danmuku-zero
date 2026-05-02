@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post.ports
 
+import java.util.UUID
+
 import java.io.File
 
 /**
@@ -8,13 +10,13 @@ import java.io.File
  */
 interface VideoFileTranscodePort {
     /** 根据上传会话ID解析分片临时目录（绝对路径） */
-    fun resolveTempDir(uploadId: Long): File
+    fun resolveTempDir(uploadId: UUID): File
 
     /**
      * 解析目标输出目录（绝对路径）与相对存储路径
      * relativePath 例：video/{customerId}/{videoId}/{fileIndex}
      */
-    fun resolveTargetDir(customerId: Long, videoId: Long, fileIndex: Int): Pair<File, String>
+    fun resolveTargetDir(customerId: UUID, videoId: UUID, fileIndex: Int): Pair<File, String>
 
     /** 在目标目录下创建/返回用于分片合并的临时 MP4 文件 */
     fun newMergedOutputFile(targetDir: File): File
@@ -43,3 +45,4 @@ interface VideoFileTranscodePort {
     /** 是否 HEVC 编码 */
     fun isHevc(codec: String): Boolean
 }
+

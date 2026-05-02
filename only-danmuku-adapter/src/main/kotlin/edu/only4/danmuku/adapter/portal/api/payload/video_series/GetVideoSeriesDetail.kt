@@ -1,12 +1,14 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_series
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 
 object GetVideoSeriesDetail {
 
     data class Request(
-        val seriesId: Long
+        val seriesId: UUID
     )
 
     data class Response(
@@ -33,3 +35,4 @@ object GetVideoSeriesDetail {
         var createTime: Long? = null,
     )
 }
+

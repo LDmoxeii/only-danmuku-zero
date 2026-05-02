@@ -1,13 +1,15 @@
 
 package edu.only4.danmuku.application.queries.statistics
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import edu.only4.danmuku.domain.aggregates.statistics.enums.StatisticsDataType
 
 object GetWeekStatisticsInfoQry {
 
     data class Request(
-        val userId: Long? = null,
+        val userId: UUID? = null,
         val dataType: StatisticsDataType = StatisticsDataType.UNKNOW
     ) : RequestParam<Response>
 
@@ -21,3 +23,4 @@ object GetWeekStatisticsInfoQry {
     }
 
 }
+

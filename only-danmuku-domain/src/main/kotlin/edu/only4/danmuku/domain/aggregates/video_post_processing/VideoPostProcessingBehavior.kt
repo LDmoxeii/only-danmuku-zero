@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_post_processing
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain._share.enums.EncryptMethod
 import edu.only4.danmuku.domain.aggregates.video_post_processing.enums.ProcessStatus
@@ -15,7 +17,7 @@ fun VideoPostProcessing.appendFiles(fileList: List<VideoPostProcessingAppendFile
     val existing = files.map { it.fileIndex }.toMutableSet()
     val appended = fileList.filter { existing.add(it.fileIndex) }.map { spec ->
         VideoPostProcessingFile(
-            id = 0L,
+            id = UUID(0L, 0L),
             fileIndex = spec.fileIndex,
             uploadId = spec.uploadId,
             transcodeStatus = ProcessStatus.PROCESSING,
@@ -249,7 +251,7 @@ data class VideoPostProcessingEncryptContext(
 )
 
 data class VideoPostProcessingAppendFileSpec(
-    val uploadId: Long,
+    val uploadId: UUID,
     val fileIndex: Int,
     val transcodeOutputPath: String,
     val transcodeOutputPrefix: String,
@@ -257,3 +259,4 @@ data class VideoPostProcessingAppendFileSpec(
     val duration: Int?,
     val fileSize: Long?,
 )
+

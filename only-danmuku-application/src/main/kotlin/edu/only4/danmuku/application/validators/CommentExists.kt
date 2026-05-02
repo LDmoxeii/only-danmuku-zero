@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video_comment.CommentExistsByIdQry
 import jakarta.validation.Constraint
@@ -20,11 +22,12 @@ annotation class CommentExists(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<CommentExists, Long> {
-        override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<CommentExists, UUID> {
+        override fun isValid(value: UUID?, context: ConstraintValidatorContext): Boolean {
             val id = value ?: return true
             val resp = Mediator.queries.send(CommentExistsByIdQry.Request(commentId = id))
             return resp.exists
         }
     }
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.account
 
+import java.util.UUID
+
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
 import org.mapstruct.Mapper
@@ -27,7 +29,7 @@ object LoginBySms {
     )
 
     data class Response(
-        val userId: Long,
+        val userId: UUID,
         val nickName: String,
         val avatar: String?,
         val token: String,
@@ -41,3 +43,4 @@ object LoginBySms {
         }
     }
 }
+

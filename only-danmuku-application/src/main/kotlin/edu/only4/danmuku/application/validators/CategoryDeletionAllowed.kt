@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.validators
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.Mediator
 import edu.only4.danmuku.application.queries.video.CountVideosUnderCategoriesQry
 import jakarta.validation.Constraint
@@ -20,10 +22,10 @@ annotation class CategoryDeletionAllowed(
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 ) {
-    class Validator : ConstraintValidator<CategoryDeletionAllowed, Long> {
-        override fun isValid(value: Long?, context: ConstraintValidatorContext): Boolean {
+    class Validator : ConstraintValidator<CategoryDeletionAllowed, UUID> {
+        override fun isValid(value: UUID?, context: ConstraintValidatorContext): Boolean {
             val id = value ?: return true
-            if (id <= 0L) return true
+            if (id == UUID(0L, 0L)) return true
             val total = Mediator.queries.send(
                 CountVideosUnderCategoriesQry.Request(categoryIds = listOf(id))
             ).totalCount
@@ -31,4 +33,5 @@ annotation class CategoryDeletionAllowed(
         }
     }
 }
+
 

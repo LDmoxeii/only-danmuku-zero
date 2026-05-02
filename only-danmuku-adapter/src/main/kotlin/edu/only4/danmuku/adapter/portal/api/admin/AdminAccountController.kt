@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import com.only.engine.exception.BusinessException
@@ -110,7 +112,7 @@ class AdminAccountController {
     @PostMapping("/logout")
     fun logout() {
         val userInfo = LoginHelper.getUserInfo()
-        val userId = LoginHelper.getUserId()
+        val userId = CurrentUser.id()
         val ip = getClientIP().orEmpty()
         Mediator.requests.send(
             LogoutCli.Request()

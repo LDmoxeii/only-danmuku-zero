@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.admin
 
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.exception.BusinessException
 import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
@@ -25,7 +27,7 @@ class AdminVideoAbrController {
 
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/master.m3u8")
-    fun master(@PathVariable fileId: Long): ResponseEntity<String> {
+    fun master(@PathVariable fileId: UUID): ResponseEntity<String> {
         val outputPrefix = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
             ?: throw BusinessException(DanmukuBusinessErrors.RESOURCE_NOT_FOUND, "播放路径为空")
         val master = Mediator.queries.send(GetVideoAbrMasterQry.Request(fileId = fileId))
@@ -51,7 +53,7 @@ class AdminVideoAbrController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/index.m3u8")
     fun playlist(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @PathVariable quality: String,
     ): ResponseEntity<String> {
         val outputPrefix = Mediator.queries.send(GetVideoFilePostPathQry.Request(filePostId = fileId)).filePath
@@ -69,7 +71,7 @@ class AdminVideoAbrController {
     @IgnoreResultWrapper
     @GetMapping("/videoResource/{fileId}/{quality}/{ts}")
     fun segment(
-        @PathVariable fileId: Long,
+        @PathVariable fileId: UUID,
         @PathVariable quality: String,
         @PathVariable ts: String,
     ): ResponseEntity<Void> {
@@ -88,3 +90,4 @@ class AdminVideoAbrController {
         ).url
     }
 }
+

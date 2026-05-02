@@ -1,12 +1,14 @@
 
 package edu.only4.danmuku.application.queries.user
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object GetUserCountInfoQry {
 
     data class Request(
-        val customerId: Long
+        val customerId: UUID
     ) : RequestParam<Response>
 
     data class Response(
@@ -16,3 +18,4 @@ object GetUserCountInfoQry {
     )
 
 }
+

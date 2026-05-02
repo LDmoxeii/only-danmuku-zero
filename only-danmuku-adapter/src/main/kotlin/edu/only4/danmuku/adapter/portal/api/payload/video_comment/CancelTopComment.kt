@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video_comment
 
+import java.util.UUID
+
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -9,7 +11,7 @@ import org.mapstruct.factory.Mappers
 object CancelTopComment {
 
     class Request(
-        val commentId: Long
+        val commentId: UUID
     )
 
     class Response
@@ -22,3 +24,4 @@ object CancelTopComment {
         }
     }
 }
+

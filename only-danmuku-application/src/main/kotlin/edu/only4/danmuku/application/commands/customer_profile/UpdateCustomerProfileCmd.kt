@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_profile
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -82,7 +84,7 @@ object UpdateCustomerProfileCmd {
     @NicknameChangeAllowed(userIdField = "customerId", nicknameField = "nickName")
     data class Request(
         /** 用户ID */
-        val customerId: Long,
+        val customerId: UUID,
         /** 昵称 */
         val nickName: String? = null,
         /** 头像 */
@@ -103,3 +105,4 @@ object UpdateCustomerProfileCmd {
 
     data object Response
 }
+

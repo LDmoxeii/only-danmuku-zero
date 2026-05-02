@@ -1,12 +1,14 @@
 
 package edu.only4.danmuku.application.queries.video_storage
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 
 object GetVideoHlsResourceUrlQry {
 
     data class Request(
-        val videoFileId: Long,
+        val videoFileId: UUID,
         val relativePath: String
     ) : RequestParam<Response>
 
@@ -16,3 +18,4 @@ object GetVideoHlsResourceUrlQry {
     )
 
 }
+

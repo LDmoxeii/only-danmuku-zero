@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_file_upload_session.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -27,7 +29,7 @@ class VideoFileUploadSessionFactory : AggregateFactory<VideoFileUploadSessionFac
 
     override fun create(payload: Payload): VideoFileUploadSession {
         return VideoFileUploadSession(
-            id = 0L,
+            id = UUID(0L, 0L),
             customerId = payload.customerId,
             fileName = payload.fileName,
             chunks = payload.chunks,
@@ -54,10 +56,11 @@ class VideoFileUploadSessionFactory : AggregateFactory<VideoFileUploadSessionFac
         description = ""
     )
     data class Payload(
-        val customerId: Long,
+        val customerId: UUID,
         val fileName: String,
         val chunks: Int,
         val expiresAt: Long,
     ) : AggregatePayload<VideoFileUploadSession>
 
 }
+

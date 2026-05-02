@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.customer_video_series
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -86,12 +88,13 @@ object UpdateVideoSeriesSortCmd {
     @SeriesBelongToUser(userIdField = "userId", seriesIdsField = "seriesIds")
     data class Request(
         /** 用户ID */
-        val userId: Long,
+        val userId: UUID,
 
         /** 系列ID列表（按新的排序顺序） */
         @field:NotEmpty(message = "系列ID列表不能为空")
-        val seriesIds: List<Long>
+        val seriesIds: List<UUID>
     ) : RequestParam<Response>
 
     data object Response
 }
+

@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import com.only.engine.exception.BusinessException
 import edu.only4.danmuku.domain.shared.error.DanmukuBusinessErrors
 import com.only.engine.json.misc.JsonUtils
@@ -32,7 +34,7 @@ class UCenterVideoPostController {
 
     @PostMapping("/videoPost/save")
     fun save(@RequestBody @Validated request: SaveVideoPost.Request): SaveVideoPost.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         val seenIndex = mutableSetOf<Int>()
         val uploadFiles = JsonUtils.parseArray(request.uploadFileList, SaveVideoPost.PostFileItem::class.java)
             .mapIndexed { index, item ->
@@ -68,7 +70,7 @@ class UCenterVideoPostController {
 
     @PostMapping("/videoPost//update")
     fun update(@RequestBody @Validated request: UpdateVideoPost.Request): UpdateVideoPost.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         val seenIndex = mutableSetOf<Int>()
         val uploadFiles = JsonUtils.parseArray(request.uploadFileList, UpdateVideoPost.PostFileItem::class.java)
             .mapIndexed { index, item ->
@@ -105,7 +107,7 @@ class UCenterVideoPostController {
 
     @PostMapping("/videoPost/getPage")
     fun getPage(@RequestBody @Validated request: GetVideoPostPage.Request): PageData<GetVideoPostPage.Response> {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(GetVideoPostPage.Converter.INSTANCE.toQry(request, currentUserId))
 
@@ -119,7 +121,7 @@ class UCenterVideoPostController {
 
     @PostMapping("/videoPost/getCountInfo")
     fun getCountInfo(): GetVideoPostCountInfo.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         // 查询审核通过的数量 (status = 4)
         val auditPassCount = Mediator.queries.send(
@@ -154,7 +156,7 @@ class UCenterVideoPostController {
 
     @PostMapping("/getVideoByVideoId")
     fun getVideoByVideoId(@RequestBody @Validated request: GetVideoByVideoId.Request): GetVideoByVideoId.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
 
         val queryResult = Mediator.queries.send(
             GetVideoPostInfoQry.Request(
@@ -171,7 +173,7 @@ class UCenterVideoPostController {
         Mediator.commands.send(
             ChangeVideoPostInteractionCmd.Request(
                 videoPostId = request.videoPostId,
-                userId = LoginHelper.getUserId()!!,
+                userId = CurrentUser.requiredId(),
                 interaction = request.interaction
             )
         )
@@ -181,7 +183,7 @@ class UCenterVideoPostController {
         Mediator.commands.send(
             DeleteVideoPostCmd.Request(
                 videoId = request.videoId,
-                operatorId = LoginHelper.getUserId()!!
+                operatorId = CurrentUser.requiredId()
             )
         )
 }

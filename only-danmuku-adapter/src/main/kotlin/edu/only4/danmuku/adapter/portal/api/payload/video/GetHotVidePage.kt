@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video
 
+import java.util.UUID
+
 import com.only.engine.translation.annotation.Translation
 import com.only.engine.translation.translation.EpochSecondToDateStringTranslation
 import com.only4.cap4k.ddd.core.share.PageParam
@@ -16,16 +18,16 @@ object GetHotVidePage {
     class Request: PageParam()
 
     data class Response(
-        var videoId: Long,
+        var videoId: UUID,
         var videoCover: String?,
         var videoName: String?,
-        var userId: Long?,
+        var userId: UUID?,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var createTime: Long,
         @get:Translation(type = EpochSecondToDateStringTranslation.TYPE, other = "yyyy-MM-dd HH:mm:ss")
         var lastUpdateTime: Long?,
-        var parentCategoryId: Long,
-        var categoryId: Long?,
+        var parentCategoryId: UUID,
+        var categoryId: UUID?,
         var postType: Int,
         var originInfo: String?,
         var tags: String?,
@@ -56,3 +58,4 @@ object GetHotVidePage {
         companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
     }
 }
+

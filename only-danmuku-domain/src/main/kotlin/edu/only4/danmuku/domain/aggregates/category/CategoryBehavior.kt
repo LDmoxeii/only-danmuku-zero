@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.category
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryBasicInfoUpdatedDomainEvent
 import edu.only4.danmuku.domain.aggregates.category.events.CategoryCodeChangedDomainEvent
@@ -28,7 +30,7 @@ fun Category.updateBasicInfo(
     events().attach(this) { CategoryBasicInfoUpdatedDomainEvent(this) }
 }
 
-fun Category.changeParent(newParentId: Long, parentCategory: Category?): Pair<String, String> {
+fun Category.changeParent(newParentId: UUID, parentCategory: Category?): Pair<String, String> {
     val oldPath = nodePath
     parentId = newParentId
     updateNodePath(parentCategory?.nodePath.orEmpty())
@@ -41,11 +43,11 @@ fun Category.changeCode(newCode: String) {
     events().attach(this) { CategoryCodeChangedDomainEvent(this) }
 }
 
-fun Category.isParentChanged(newParentId: Long): Boolean = parentId != newParentId
+fun Category.isParentChanged(newParentId: UUID): Boolean = parentId != newParentId
 
 fun Category.isCodeChanged(newCode: String): Boolean = code != newCode
 
-fun Category.isMovingToSelf(newParentId: Long): Boolean = newParentId == id
+fun Category.isMovingToSelf(newParentId: UUID): Boolean = newParentId == id
 
 fun Category.isMovingToDescendant(parentCategory: Category): Boolean = parentCategory.nodePath.startsWith(nodePath)
 
@@ -62,16 +64,18 @@ fun Category.addSort(increment: Int) {
     sort += increment
 }
 
-fun Category.isRoot(): Boolean = parentId == 0L
+fun Category.isRoot(): Boolean = parentId == UUID(0L, 0L)
 
 fun Category.getLevel(): Int = nodePath.trim('/').split('/').size
 
-fun Category.getAncestorIds(): List<Long> =
-    nodePath.trim('/').split('/').dropLast(1).mapNotNull { it.toLongOrNull() }
+fun Category.getAncestorIds(): List<UUID> =
+    nodePath.trim('/').split('/').dropLast(1).mapNotNull { value ->
+        runCatching { UUID.fromString(value) }.getOrNull()
+    }
 
-fun Category.isDescendantOf(ancestorId: Long): Boolean = nodePath.contains("/$ancestorId/")
+fun Category.isDescendantOf(ancestorId: UUID): Boolean = nodePath.contains("/$ancestorId/")
 
-fun Category.isDirectChildOf(parentId: Long): Boolean = this.parentId == parentId
+fun Category.isDirectChildOf(parentId: UUID): Boolean = this.parentId == parentId
 
 fun Category.rebaseNodePath(oldPrefix: String, newPrefix: String) {
     if (nodePath.startsWith(oldPrefix)) {
@@ -83,3 +87,4 @@ fun Category.changeSort(targetSort: Int) {
     sort = targetSort
     events().attach(this) { CategorySortChangedDomainEvent(this) }
 }
+

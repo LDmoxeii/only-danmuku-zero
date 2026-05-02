@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.queries._share.model
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.enums.QualityAuthPolicy
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
@@ -10,7 +12,7 @@ import org.babyfish.jimmer.sql.Table
 interface VideoQualityPolicy : BaseEntity {
 
     @Column(name = "video_id")
-    val videoId: Long
+    val videoId: UUID
 
     @Column(name = "file_index")
     val fileIndex: Int
@@ -24,3 +26,4 @@ interface VideoQualityPolicy : BaseEntity {
     @Column(name = "remark")
     val remark: String?
 }
+

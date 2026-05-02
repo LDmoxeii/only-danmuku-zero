@@ -7,6 +7,7 @@ import edu.only4.danmuku.application.queries._share.model.sort
 import edu.only4.danmuku.application.queries.category.GetCategoryTreeQry
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * 获取分类树形结构
@@ -21,10 +22,11 @@ class GetCategoryTreeQryHandler(
             orderBy(table.sort)
             select(table)
         }.execute()
-        val childrenByParentId = categories.groupBy { it.parentId ?: 0L }
+        val rootId = UUID(0L, 0L)
+        val childrenByParentId = categories.groupBy { it.parentId ?: rootId }
 
         return GetCategoryTreeQry.Response(
-            items = childrenByParentId[0L]
+            items = childrenByParentId[rootId]
                 .orEmpty()
                 .sortedBy { it.sort }
                 .map { readModelToItem(it, childrenByParentId) }
@@ -33,13 +35,13 @@ class GetCategoryTreeQryHandler(
 
     private fun readModelToItem(
         dto: Category,
-        childrenByParentId: Map<Long, List<Category>>
+        childrenByParentId: Map<UUID, List<Category>>
     ): GetCategoryTreeQry.Response.CategoryItem {
         return GetCategoryTreeQry.Response.CategoryItem(
             categoryId = dto.id,
             code = dto.code,
             name = dto.name,
-            parentId = dto.parentId ?: 0,
+            parentId = dto.parentId ?: UUID(0L, 0L),
             icon = dto.icon,
             background = dto.background,
             sort = dto.sort,
@@ -52,13 +54,13 @@ class GetCategoryTreeQryHandler(
 
     private fun readModelToChild(
         dto: Category,
-        childrenByParentId: Map<Long, List<Category>>
+        childrenByParentId: Map<UUID, List<Category>>
     ): GetCategoryTreeQry.Response.Children {
         return GetCategoryTreeQry.Response.Children(
             categoryId = dto.id,
             code = dto.code,
             name = dto.name,
-            parentId = dto.parentId ?: 0,
+            parentId = dto.parentId ?: UUID(0L, 0L),
             icon = dto.icon,
             background = dto.background,
             sort = dto.sort,

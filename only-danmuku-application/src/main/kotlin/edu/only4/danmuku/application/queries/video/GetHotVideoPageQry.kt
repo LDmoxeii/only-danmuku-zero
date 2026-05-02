@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.video
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.PageRequest
 import com.only4.cap4k.ddd.core.share.PageData
@@ -19,14 +21,14 @@ object GetHotVideoPageQry {
         val page: PageData<VideoItem>
     ) {
         data class VideoItem(
-            val videoId: Long,
+            val videoId: UUID,
             val videoCover: String?,
             val videoName: String?,
-            val userId: Long?,
+            val userId: UUID?,
             val createTime: Long,
             val lastUpdateTime: Long?,
-            val parentCategoryId: Long,
-            val categoryId: Long?,
+            val parentCategoryId: UUID,
+            val categoryId: UUID?,
             val postType: PostType,
             val originInfo: String?,
             val tags: String?,
@@ -47,3 +49,4 @@ object GetHotVideoPageQry {
     }
 
 }
+

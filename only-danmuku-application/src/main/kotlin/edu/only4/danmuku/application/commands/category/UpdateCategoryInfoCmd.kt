@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.category
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -75,7 +77,7 @@ object UpdateCategoryInfoCmd {
                     throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "不能将分类移动到自身下")
                 }
 
-                val parentCategory: Category? = if (request.parentId != 0L) {
+                val parentCategory: Category? = if (request.parentId != UUID(0L, 0L)) {
                     Mediator.repositories.findFirst(
                         SCategory.predicateById(request.parentId),
                         persist = false
@@ -112,9 +114,9 @@ object UpdateCategoryInfoCmd {
     @UniqueCategoryCode
     data class Request(
         @field:CategoryMustExist
-        val categoryId: Long,
+        val categoryId: UUID,
         @field:CategoryMustExist
-        val parentId: Long = 0L,
+        val parentId: UUID = UUID(0L, 0L),
         val code: String,
         val name: String,
         val icon: String? = null,
@@ -123,3 +125,4 @@ object UpdateCategoryInfoCmd {
 
     data object Response
 }
+

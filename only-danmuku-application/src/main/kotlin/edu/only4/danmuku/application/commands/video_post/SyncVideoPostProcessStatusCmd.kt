@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_post
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -81,7 +83,7 @@ object SyncVideoPostProcessStatusCmd {
                 )
                 val variants = fileItem.variants.map { payload ->
                     VideoFilePostVariant(
-                        id = 0L,
+                        id = UUID(0L, 0L),
                         quality = payload.quality,
                         width = payload.width,
                         height = payload.height,
@@ -123,7 +125,7 @@ object SyncVideoPostProcessStatusCmd {
     }
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val targetStatus: VideoStatus,
         val duration: Int?,
         val failReason: String?,
@@ -157,3 +159,4 @@ object SyncVideoPostProcessStatusCmd {
         val segmentDuration: Int? = null,
     )
 }
+

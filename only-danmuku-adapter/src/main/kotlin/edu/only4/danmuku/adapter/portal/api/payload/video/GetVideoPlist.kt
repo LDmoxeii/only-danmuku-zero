@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.payload.video
 
+import java.util.UUID
+
 import edu.only4.danmuku.application.queries.video_file.GetVideoFilesByVideoIdQry
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
@@ -7,13 +9,13 @@ import org.mapstruct.factory.Mappers
 object GetVideoPList {
 
     data class Request(
-        var videoId: Long
+        var videoId: UUID
     )
 
     data class FileItem(
-        var fileId: Long,
-        var videoId: Long,
-        var userId: Long,
+        var fileId: UUID,
+        var videoId: UUID,
+        var userId: UUID,
         var fileIndex: Int,
         var fileName: String,
         var fileSize: Long,
@@ -30,3 +32,4 @@ object GetVideoPList {
         }
     }
 }
+

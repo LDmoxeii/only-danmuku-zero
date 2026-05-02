@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_hls_encrypt_key.factory
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
 import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
 import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
@@ -28,7 +30,7 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
 
     override fun create(payload: Payload): VideoHlsEncryptKey {
         return VideoHlsEncryptKey(
-            id = 0L,
+            id = UUID(0L, 0L),
             videoPostId = payload.videoPostId,
             videoId = payload.videoId,
             fileIndex = payload.fileIndex,
@@ -59,9 +61,9 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
         description = ""
     )
     data class Payload(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int,
-        val videoId: Long? = null,
+        val videoId: UUID? = null,
         val quality: String,
         val keyId: String,
         val keyCiphertext: String,
@@ -75,3 +77,4 @@ class VideoHlsEncryptKeyFactory : AggregateFactory<VideoHlsEncryptKeyFactory.Pay
     ) : AggregatePayload<VideoHlsEncryptKey>
 
 }
+

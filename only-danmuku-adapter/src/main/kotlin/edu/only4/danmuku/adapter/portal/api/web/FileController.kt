@@ -1,5 +1,9 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
+import java.util.UUID
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only.engine.web.annotation.IgnoreResultWrapper
@@ -48,8 +52,8 @@ class FileController {
      * 预上传视频
      */
     @PostMapping("/preUploadVideo")
-    fun preUploadVideo(@RequestBody @Validated request: PreUploadVideo.Request): Long {
-        val currentUserId = LoginHelper.getUserId()!!
+    fun preUploadVideo(@RequestBody @Validated request: PreUploadVideo.Request): UUID {
+        val currentUserId = CurrentUser.requiredId()
         val result = Mediator.commands.send(
             CreateUploadSessionCmd.Request(
                 customerId = currentUserId,
@@ -67,9 +71,9 @@ class FileController {
     fun uploadVideo(
         @RequestPart("chunkFile") chunkFile: MultipartFile,
         @RequestParam("chunkIndex") chunkIndex: Int,
-        @RequestParam("uploadId") uploadId: Long,
+        @RequestParam("uploadId") uploadId: UUID,
     ): UploadVideo.Response {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         val tempPath = Mediator.queries.send(
             GetUploadSessionTempPathQry.Request(uploadId = uploadId)
         ).tempPath
@@ -96,7 +100,7 @@ class FileController {
      */
     @PostMapping("/deleteUploadSession")
     fun deleteUploadSession(@RequestBody @Validated request: DeleteUploadSession.Request) {
-        val currentUserId = LoginHelper.getUserId()!!
+        val currentUserId = CurrentUser.requiredId()
         Mediator.commands.send(
             DeleteUploadSessionCmd.Request(
                 customerId = currentUserId,
@@ -118,3 +122,4 @@ class FileController {
             )
         ).resourceKey
 }
+

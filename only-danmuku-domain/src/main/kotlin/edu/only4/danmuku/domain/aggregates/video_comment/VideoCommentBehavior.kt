@@ -1,5 +1,7 @@
 package edu.only4.danmuku.domain.aggregates.video_comment
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.domain.event.DomainEventSupervisorSupport.events
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentToppedDomainEvent
 import edu.only4.danmuku.domain.aggregates.video_comment.events.CommentUntoppedDomainEvent
@@ -21,4 +23,5 @@ fun VideoComment.updateStatistics(likeChange: Int, hateChange: Int) {
     hateCount = ((hateCount ?: 0) + hateChange).coerceAtLeast(0)
 }
 
-fun VideoComment.isRootComment(): Boolean = parentId == 0L
+fun VideoComment.isRootComment(): Boolean = parentId == UUID(0L, 0L)
+

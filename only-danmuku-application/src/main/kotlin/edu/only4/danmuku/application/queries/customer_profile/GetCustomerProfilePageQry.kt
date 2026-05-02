@@ -1,6 +1,8 @@
 
 package edu.only4.danmuku.application.queries.customer_profile
 
+import java.util.UUID
+
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.query.PageRequest
 import com.only4.cap4k.ddd.core.share.PageData
@@ -18,7 +20,7 @@ object GetCustomerProfilePageQry {
         val page: PageData<UserItem>
     ) {
         data class UserItem(
-            var userId: Long,
+            var userId: UUID,
             var avatar: String?,
             var nickName: String?,
             var email: String?,
@@ -35,3 +37,4 @@ object GetCustomerProfilePageQry {
     }
 
 }
+

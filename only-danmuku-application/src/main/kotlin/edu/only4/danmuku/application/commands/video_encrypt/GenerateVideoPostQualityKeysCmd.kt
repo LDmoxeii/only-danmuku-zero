@@ -124,7 +124,7 @@ object GenerateVideoPostQualityKeysCmd {
         return ByteArray(length).also { SecureRandom().nextBytes(it) }
     }
 
-    private fun nextKeyVersion(videoPostId: Long, fileIndex: Int): Int {
+    private fun nextKeyVersion(videoPostId: UUID, fileIndex: Int): Int {
         val keys = Mediator.repositories.find(
             SVideoHlsEncryptKey.predicate { schema ->
                 schema.all(
@@ -147,7 +147,7 @@ object GenerateVideoPostQualityKeysCmd {
     )
 
     data class Request(
-        val videoPostId: Long,
+        val videoPostId: UUID,
         val fileIndex: Int,
         val qualities: List<String>,
         val method: String = "HLS_AES_128",
@@ -159,3 +159,4 @@ object GenerateVideoPostQualityKeysCmd {
         val keysJson: String
     )
 }
+

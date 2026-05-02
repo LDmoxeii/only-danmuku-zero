@@ -1,5 +1,7 @@
 package edu.only4.danmuku.application.commands.video_comment
 
+import java.util.UUID
+
 import edu.only4.danmuku.domain.aggregates.video_quality_policy.*
 
 import edu.only4.danmuku.domain.aggregates.video_post_processing.*
@@ -54,8 +56,9 @@ object ApplyCustomerUnlikedCommentCmd {
     }
 
     data class Request(
-        val commentId: Long,
+        val commentId: UUID,
     ) : RequestParam<Response>
 
     data object Response
 }
+

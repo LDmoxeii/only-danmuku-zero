@@ -1,5 +1,7 @@
 package edu.only4.danmuku.adapter.portal.api.web
 
+import edu.only4.danmuku.adapter.support.CurrentUser
+
 import cn.dev33.satoken.annotation.SaIgnore
 import com.only.engine.satoken.utils.LoginHelper
 import com.only4.cap4k.ddd.core.Mediator
@@ -64,7 +66,7 @@ class VideoController {
     @SaIgnore
     @PostMapping("/detail")
     fun detail(@RequestBody @Validated request: GetVideoDetail.Request): GetVideoDetail.Response {
-        val currentUserId = LoginHelper.getUserId()
+        val currentUserId = CurrentUser.id()
 
         // 调用查询获取视频详情
         val videoInfo = Mediator.queries.send(
