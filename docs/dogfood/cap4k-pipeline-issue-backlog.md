@@ -718,7 +718,9 @@ adapter/application/queries/category/UniqueCategoryCodeQryHandler.kt
 
 处理建议：
 
-优化 `aggregate unique` 生成能力后，再清理迁移进来的旧 Unique 手写文件。建议能力包括：默认把软删除字段作为 scope/filter 字段，不参与类型名；支持 DSL 或 source metadata 覆盖 unique family 名称；同时保证 query、query handler、validator 三个产物家族命名一致。
+优化 `aggregate unique` 生成能力后，再清理迁移进来的旧 Unique 手写文件。已确定的方向是使用 DDL 唯一键名称作为主入口，而不是 DSL 优先覆盖。支持 `uk` / `uk_v_<fragment>` / `<table>_uk` / `<table>_uk_v_<fragment>`，其中 `<table>_` 只作为 H2 等数据库物理约束名全局唯一要求下的可移植前缀，生成前归一化移除。软删除字段和乐观锁版本字段都作为 scope/control 字段，不参与 fallback 类型名和 request 字段。query、query handler、validator 三个产物必须共享同一个 resolved unique family name，最终类型名冲突必须 fail fast。
+
+正式设计见 `cap4k/docs/superpowers/specs/2026-05-03-cap4k-aggregate-unique-family-naming-contract-design.md`。
 
 ### [medium] [design-default-value-projection] IR / drawing-board 默认值投影不能稳定保留枚举常量和空集合表达式
 
@@ -777,6 +779,36 @@ import edu.only4.danmuku.domain.aggregates.video_post.*
 处理建议：
 
 先作为迁移清理项处理：格式化或手动清理旧迁移文件。只有在 fresh `cap4kGenerate` 后仍复现多余空行，才升级为 renderer/template bug。
+
+### [low] [migration-cleanup] 工厂 Payload 中保留了不必要的业务默认值
+
+复现文件：
+
+```text
+only-danmuku-domain/src/main/kotlin/edu/only4/danmuku/domain/aggregates/customer_action/factory/CustomerActionFactory.kt
+```
+
+实际结果：
+
+`CustomerActionFactory.Payload` 中多个业务必填字段带默认值：
+
+```kotlin
+var customerId: UUID = UUID(0L, 0L)
+var videoId: UUID = UUID(0L, 0L)
+var videoOwnerId: UUID = UUID(0L, 0L)
+var commentId: UUID = UUID(0L, 0L)
+var actionType: ActionType = ActionType.valueOfOrNull(0) ?: ActionType.UNKNOW
+```
+
+判断：
+
+实体 ID 字段使用 `UUID(0L, 0L)` 作为 application-side ID 的“未分配哨兵值”是框架机制，需要保留。但工厂 `Payload` 是业务输入，不是 JPA 实体状态。把业务必填字段默认成空 UUID 或 `UNKNOW` 会掩盖调用方漏传参数的问题，降低领域约束强度。
+
+这属于 only-danmuku-zero 迁移清理项，主要来自旧模板/批量 UUID 迁移后的惯性写法，不是当前 cap4k pipeline 的阻塞缺陷。
+
+处理建议：
+
+暂不释放资源处理这类无关紧要的清理项。后续如果进行领域层代码卫生清理，应把工厂 `Payload` 的业务必填字段改为无默认值，允许为空的字段改为真实 nullable，例如 `commentId: UUID? = null`；实体构造函数自身的 ID 哨兵默认值仍保留。
 
 ### [known-gap] [design-validator] 复杂业务 validator 暂不能由 designValidator 表达
 
