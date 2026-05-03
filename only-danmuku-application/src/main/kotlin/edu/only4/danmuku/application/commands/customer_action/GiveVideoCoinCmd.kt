@@ -46,7 +46,7 @@ import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
 import edu.only4.danmuku.application.validators.NotSelfCoin
 import edu.only4.danmuku.application.validators.SufficientCoinBalance
-import edu.only4.danmuku.application.validators.UniqueCustomerActionType
+import edu.only4.danmuku.application.validators.customer_action.unique.UniqueCustomerActionType
 import edu.only4.danmuku.application.validators.VideoExists
 import edu.only4.danmuku.domain._share.meta.video.SVideo
 import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
@@ -100,6 +100,7 @@ object GiveVideoCoinCmd {
         @field:Min(1, message = "投币数量至少为1")
         @field:Max(2, message = "投币数量最多为2")
         val coinCount: Int,
+        val commentId: UUID = UUID(0L, 0L),
         val actionType: ActionType = ActionType.COIN_VIDEO
     ) : RequestParam<Response>
 

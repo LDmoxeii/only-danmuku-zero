@@ -35,7 +35,7 @@ import edu.only4.danmuku.domain.aggregates.category.*
 import com.only4.cap4k.ddd.core.Mediator
 import com.only4.cap4k.ddd.core.application.RequestParam
 import com.only4.cap4k.ddd.core.application.command.Command
-import edu.only4.danmuku.application.validators.UniqueUserEmail
+import edu.only4.danmuku.application.validators.user.unique.UniqueUserEmail
 import edu.only4.danmuku.application.validators.UniqueUserNickname
 import edu.only4.danmuku.domain._share.enums.UserType
 import edu.only4.danmuku.domain.aggregates.user.factory.UserFactory
