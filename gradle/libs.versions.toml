@@ -85,6 +85,7 @@ mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.re
 
 druid = { module = "com.alibaba:druid-spring-boot-starter", version = "1.2.8" }
 mysql = { module = "com.mysql:mysql-connector-j", version = "8.1.0" }
+h2 = { module = "com.h2database:h2", version = "2.3.232" }
 
 # Testing
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
