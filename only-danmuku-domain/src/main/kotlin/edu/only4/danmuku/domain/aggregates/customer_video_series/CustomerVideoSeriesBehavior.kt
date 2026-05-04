@@ -20,6 +20,7 @@ fun CustomerVideoSeries.replaceVideos(
             CustomerVideoSeriesVideo(
                 id = UUID(0L, 0L),
                 customerId = ownerId,
+                seriesId = this.id,
                 videoId = videoId,
                 sort = index + 1,
                 createUserId = null,
