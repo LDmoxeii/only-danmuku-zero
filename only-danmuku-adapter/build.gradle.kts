@@ -3,6 +3,13 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
 }
 
+val engineVersion = extensions
+    .getByType<org.gradle.api.artifacts.VersionCatalogsExtension>()
+    .named("libs")
+    .findVersion("only-engine")
+    .get()
+    .requiredVersion
+
 dependencies {
     api(libs.spring.data)
     api(libs.spring.web)
@@ -13,6 +20,7 @@ dependencies {
     api(libs.jimmer.starter)
 
     api(libs.engine.captcha)
+    api("com.only4:engine-audit:$engineVersion")
     api(libs.engine.security)
     api(libs.engine.satoken)
     api(libs.engine.web)

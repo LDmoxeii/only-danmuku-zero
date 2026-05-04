@@ -23,6 +23,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation(libs.spring.boot.starter)
+    testRuntimeOnly(libs.h2)
 
     testImplementation(libs.engine.redis)
     testImplementation("com.baomidou:lock4j-core:2.2.7")

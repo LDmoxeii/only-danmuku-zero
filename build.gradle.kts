@@ -111,6 +111,21 @@ cap4k {
     generators {
         aggregate {
             enabled.set(true)
+            specialFields {
+                idDefaultStrategy.set("uuid7")
+                deletedDefaultColumn.set("deleted")
+                versionDefaultColumn.set("version")
+                managedDefaultColumns.set(
+                    listOf(
+                        "create_user_id",
+                        "create_by",
+                        "create_time",
+                        "update_user_id",
+                        "update_by",
+                        "update_time"
+                    )
+                )
+            }
             artifacts {
                 factory.set(true)
                 specification.set(true)
