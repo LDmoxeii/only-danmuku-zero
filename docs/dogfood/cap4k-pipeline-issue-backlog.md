@@ -859,6 +859,74 @@ import edu.only4.danmuku.domain.aggregates.video_post.*
 
 先作为迁移清理项处理：格式化或手动清理旧迁移文件。只有在 fresh `cap4kGenerate` 后仍复现多余空行，才升级为 renderer/template bug。
 
+### [medium] [drawing-board-json-escaping] drawing-board JSON 中泛型尖括号被写成 `\\u003c` / `\\u003e`
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-daemon --refresh-dependencies cap4kAnalysisGenerate
+```
+
+复现文件：
+
+```text
+design/drawing_board_api_payload.json
+```
+
+实际结果：
+
+例如 `children` 字段类型会输出成：
+
+```json
+"type": "List\u003cResponse\u003e"
+```
+
+而不是更直观的：
+
+```json
+"type": "List<Response>"
+```
+
+判断：
+
+这不是 drawing-board 语义错误，JSON 解析后值仍然等价；根因更像 renderer 层统一 `json` filter 使用了默认 `Gson()`，开启了 HTML escaping，因此 `<` / `>` 被写成 Unicode 转义。问题主要是产物可读性和 review 体验，不是当前 analysis contract 的阻断项。
+
+处理建议：
+
+后续在 `cap4k` renderer 层评估是否把 Pebble `json` filter 改成 `disableHtmlEscaping()`，并补 drawing-board golden/functional 覆盖，避免只在某一类 artifact 上局部处理。
+
+### [medium] [analysis-flow-command-handler-entity-method] analysis flow 缺少 `CommandHandlerToEntityMethod`，behavior 拆分后 handler -> entity method 链路断开
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-daemon --refresh-dependencies cap4kAnalysisGenerate
+```
+
+复现文件：
+
+```text
+flows/*.json
+only-danmuku-application/build/cap4k-code-analysis/nodes.json
+only-danmuku-domain/build/cap4k-code-analysis/rels.json
+```
+
+实际结果：
+
+- flow 产物里当前没有命中任何 `CommandHandlerToEntityMethod`
+- 但 `EntityMethodToDomainEvent` 仍大量存在，例如 `anonymous.json`
+- application command handler 里确实直接调用了聚合 behavior，例如：
+  - `CreateCategoryCmd.Handler -> Category.changeSort / updateNodePath`
+  - `PrepareVideoPostProcessingEncryptContextCmd.Handler -> VideoPostProcessing.prepareEncryptContext`
+
+判断：
+
+这不是 flow renderer 白名单问题，而是 analysis compiler 上游没有稳定产出这条边。当前 behavior 已从实体成员方法拆成顶层扩展函数 `*Behavior.kt`，怀疑 `CommandHandlerToEntityMethod` 的 IR 识别仍偏向成员方法/聚合类宿主调用，未完整覆盖扩展 behavior 调用。`EntityMethodToDomainEvent` 当前仍正常，因此问题主要集中在 handler -> entity method 绑定，而不是 domain-event 边整体失效。
+
+处理建议：
+
+后续在 `cap4k` 侧单开分析修复：针对顶层扩展 behavior 函数补 `CommandHandlerToEntityMethod` 识别回归测试，并复核是否需要同时校正 aggregate-to-entity-method / flow anonymous 聚合策略。当前先记录为排期项，不在本轮 dogfood 继续扩修。
+
 ### [low] [migration-cleanup] 工厂 Payload 中保留了不必要的业务默认值
 
 复现文件：

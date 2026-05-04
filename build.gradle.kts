@@ -107,6 +107,14 @@ cap4k {
             includeTables.set(emptyList())
             excludeTables.set(emptyList())
         }
+        irAnalysis {
+            enabled.set(true)
+            inputDirs.from(
+                "only-danmuku-domain/build/cap4k-code-analysis",
+                "only-danmuku-application/build/cap4k-code-analysis",
+                "only-danmuku-adapter/build/cap4k-code-analysis"
+            )
+        }
     }
     generators {
         aggregate {
@@ -159,6 +167,12 @@ cap4k {
             enabled.set(true)
         }
         designDomainEventHandler {
+            enabled.set(true)
+        }
+        flow {
+            enabled.set(true)
+        }
+        drawingBoard {
             enabled.set(true)
         }
     }
