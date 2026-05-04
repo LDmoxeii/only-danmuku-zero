@@ -728,6 +728,43 @@ only-danmuku-zero 从旧项目迁移 controller、payload、query handler 时，
 
 下一轮 zero dogfood 应优先修 `codegen/design/design.json` 或标准化脚本，再重新运行 `cap4kGenerate`。只有 generator 暂时不能表达的 controller 编排、MapStruct converter、translation 注解、前端兼容字段，才允许保留为手写迁移层。
 
+### [medium] [managed-write-surface] managed/special-field 已进入 plan 契约，但还没有稳定落到用户 create/update 生成面
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache cap4kPlan cap4kGenerate
+```
+
+实际结果：
+
+`build/cap4k/plan.json` 已能看到 `aggregateSpecialFieldResolvedPolicies[*].managedFields` 与 `writeSurface`，例如 `Category` 会把 `id`、`deleted`、`create_user_id`、`create_by`、`create_time`、`update_user_id`、`update_by`、`update_time` 识别成 managed。
+
+但生成实体仍然保留这些字段，例如：
+
+```kotlin
+class Category(
+    id: Long,
+    createUserId: Long?,
+    createBy: String?,
+    createTime: Long?,
+    updateUserId: Long?,
+    updateBy: String?,
+    updateTime: Long?,
+    deleted: Long
+)
+```
+
+当前还没有证据表明 application command / request DTO / client payload 等最终用户写入面已经稳定消费 `writeSurface.createAllowedFields` / `updateAllowedFields`。
+
+判断：
+
+这不是 special-field 解析失败。当前 `cap4k` 已经能解析 managed/special-field，并把 `writePolicy` / `writeSurface` 暴露到 canonical model 与 `cap4kPlan`。问题在于“用户不可写”目前主要还是契约层语义，尚未形成稳定的 generated write-surface enforcement。也就是说，系统已经知道哪些字段不该让用户写，但还没有在所有生成写入面上统一把它们裁掉或禁止。
+
+处理建议：
+
+后续应在 `cap4k` 侧补一条独立排期：优先让 command/request DTO、application write input、client payload 等 create/update surface 消费 `writeSurface`；实体字段是否需要额外的显式只读提示可后续再议，但不应先把 runtime 承载字段从实体里删掉。
+
 ### [medium] [aggregate-unique] 生成 Unique 家族命名无法表达业务命名，软删除字段进入类型名导致噪音
 
 复现命令：
