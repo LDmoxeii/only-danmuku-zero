@@ -18,6 +18,7 @@ fun VideoPostProcessing.appendFiles(fileList: List<VideoPostProcessingAppendFile
     val appended = fileList.filter { existing.add(it.fileIndex) }.map { spec ->
         VideoPostProcessingFile(
             id = UUID(0L, 0L),
+            parentId = this.id,
             fileIndex = spec.fileIndex,
             uploadId = spec.uploadId,
             transcodeStatus = ProcessStatus.PROCESSING,

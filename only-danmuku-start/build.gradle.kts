@@ -23,6 +23,8 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation(libs.spring.boot.starter)
+    testImplementation(libs.engine.common)
+    testImplementation(libs.engine.spi)
     testRuntimeOnly(libs.h2)
 
     testImplementation(libs.engine.redis)

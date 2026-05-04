@@ -84,6 +84,7 @@ object SyncVideoPostProcessStatusCmd {
                 val variants = fileItem.variants.map { payload ->
                     VideoFilePostVariant(
                         id = UUID(0L, 0L),
+                        filePostId = file.id,
                         quality = payload.quality,
                         width = payload.width,
                         height = payload.height,

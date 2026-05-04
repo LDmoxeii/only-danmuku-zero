@@ -116,6 +116,7 @@ object ApplyVideoPostProcessingTranscodeResultCmd {
         return payloads.map { payload ->
             VideoPostProcessingVariant(
                 id = UUID(0L, 0L),
+                parentId = UUID(0L, 0L),
                 quality = payload.quality,
                 width = payload.width,
                 height = payload.height,

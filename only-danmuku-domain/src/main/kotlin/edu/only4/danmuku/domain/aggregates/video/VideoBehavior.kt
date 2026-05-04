@@ -138,6 +138,7 @@ fun Video.syncFromBasics(
             fileArgs.variants.map { variant ->
                 VideoFileVariant(
                     id = UUID(0L, 0L),
+                    fileId = file.id,
                     quality = variant.quality,
                     width = variant.width,
                     height = variant.height,

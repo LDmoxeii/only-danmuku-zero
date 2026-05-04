@@ -55,6 +55,7 @@ hutool-http = { module = "cn.hutool:hutool-http", version.ref = "hutool" }
 hutool-captcha = { module = "cn.hutool:hutool-captcha", version.ref = "hutool" }
 
 engine-common = { module = "com.only4:engine-common", version.ref = "only-engine" }
+engine-spi = { module = "com.only4:engine-spi", version.ref = "only-engine" }
 engine-captcha = { module = "com.only4:engine-captcha", version.ref = "only-engine" }
 engine-security = { module = "com.only4:engine-security", version.ref = "only-engine" }
 engine-satoken = { module = "com.only4:engine-satoken", version.ref = "only-engine" }
