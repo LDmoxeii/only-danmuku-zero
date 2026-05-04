@@ -321,6 +321,48 @@ domain/_share/meta/customer_video_series/SCustomerVideoSeriesVideo.kt
 
 先在 cap4k 侧修 aggregate canonical/package routing：计算每张表的所属 aggregate root table，非 root 实体沿父链归入 root 包组；`repositories` 只来自 `aggregateRoot=true` 的实体；root-only artifact planner 只处理 root；schema/entity 等实体级 planner 保留生成但使用 root package group。
 
+### [blocker] [aggregate-inverse-navigation-owner] 父子双向关联把同一外键列同时生成成 owner，Hibernate 启动时出现 duplicated mapping
+
+复现命令：
+
+```powershell
+.\gradlew.bat --no-configuration-cache --no-build-cache :only-danmuku-start:test --tests "*EngineAuditSmokeTest*"
+```
+
+复现条件：
+
+放开真实 generated aggregate entity 扫描后，让 Hibernate/JPA 启动并装配 `video_file_post` / `video_file_post_variant`、`video_file` / `video_file_variant` 等父子实体。
+
+实际结果：
+
+Hibernate 启动失败。典型错误：
+
+```text
+Column 'file_post_id' is duplicated in mapping for entity 'edu.only4.danmuku.domain.aggregates.video_post.VideoFilePostVariant'
+```
+
+当前生成实体形态例如：
+
+```kotlin
+// parent
+@OneToMany(...)
+@JoinColumn(name = "file_post_id", nullable = false)
+val variants: MutableList<VideoFilePostVariant> = mutableListOf()
+
+// child
+@ManyToOne(fetch = FetchType.EAGER)
+@JoinColumn(name = "file_post_id", nullable = false)
+lateinit var filePost: VideoFilePost
+```
+
+判断：
+
+这不是单纯的 eager/lazy 选择问题，而是父子双向关联的 owner 归属生成错了。父侧 `@OneToMany` 和子侧 `@ManyToOne` 同时把同一条 FK 列声明成写入侧，导致 Hibernate 认为同一列被重复映射。当前更接近“反向导航/双向关联 owner-inverse side 合同缺失”，而不是 runtime audit 或 smoke test 本身的问题。
+
+处理建议：
+
+后续应沿 cap4k aggregate inverse-navigation 线修复 owner 归属合同。优先方向是：子侧 `@ManyToOne + @JoinColumn` 作为 owner，父侧 `@OneToMany(mappedBy = "...")` 作为 inverse side；如果当前框架阶段不准备稳定支持父侧反向导航，也可以先不生成父侧 collection，至少不要让两侧同时占有同一 FK 列。
+
 ### [info] [h2-material] H2 约束名需要全局唯一，转换材料已加表名前缀
 
 复现命令：

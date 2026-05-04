@@ -99,7 +99,7 @@ cap4k {
         db {
             enabled.set(true)
             url.set(
-                "jdbc:h2:mem:only_danmuku_zero_codegen;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM '$cap4kDogfoodH2Schema'"
+                "jdbc:h2:mem:only_danmuku_zero_codegen_v2;MODE=MySQL;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM '$cap4kDogfoodH2Schema'"
             )
             username.set("sa")
             password.set("secret")

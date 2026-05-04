@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS `category` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `category_uk_v_code` UNIQUE (`code`,`deleted`)
 );
-COMMENT ON TABLE `category` IS '分类信息;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `category` IS '分类信息;@DynamicInsert=true;@DynamicUpdate=true';
 
 CREATE TABLE IF NOT EXISTS `customer_action` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -37,11 +37,11 @@ CREATE TABLE IF NOT EXISTS `customer_action` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `customer_action_uk_v_type` UNIQUE (`video_id`,`comment_id`,`action_type`,`customer_id`,`deleted`)
 );
-COMMENT ON TABLE `customer_action` IS '用户行为 点赞、评论;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_action` IS '用户行为 点赞、评论';
 
 CREATE TABLE IF NOT EXISTS `customer_focus` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -53,10 +53,10 @@ CREATE TABLE IF NOT EXISTS `customer_focus` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `customer_focus` IS '用户关注;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_focus` IS '用户关注';
 
 CREATE TABLE IF NOT EXISTS `customer_message` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -72,10 +72,10 @@ CREATE TABLE IF NOT EXISTS `customer_message` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `customer_message` IS '用户消息表;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_message` IS '用户消息表';
 
 CREATE TABLE IF NOT EXISTS `customer_profile` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -98,13 +98,13 @@ CREATE TABLE IF NOT EXISTS `customer_profile` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `customer_profile_uk_v_email` UNIQUE (`email`,`deleted`),
   CONSTRAINT `customer_profile_uk_v_nick_name` UNIQUE (`nick_name`,`deleted`),
   CONSTRAINT `customer_profile_uk_v_phone` UNIQUE (`phone`,`deleted`)
 );
-COMMENT ON TABLE `customer_profile` IS '用户信息;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_profile` IS '用户信息';
 
 CREATE TABLE IF NOT EXISTS `customer_video_series` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -118,10 +118,10 @@ CREATE TABLE IF NOT EXISTS `customer_video_series` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `customer_video_series` IS '用户视频序列归档;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_video_series` IS '用户视频序列归档';
 
 CREATE TABLE IF NOT EXISTS `customer_video_series_video` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -135,10 +135,10 @@ CREATE TABLE IF NOT EXISTS `customer_video_series_video` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `customer_video_series_video` IS '用户视频序列视频关联;@P=customer_video_series;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `customer_video_series_video` IS '用户视频序列视频关联;@P=customer_video_series';
 
 CREATE TABLE IF NOT EXISTS `statistics` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -152,10 +152,10 @@ CREATE TABLE IF NOT EXISTS `statistics` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间（秒级时间戳）',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `statistics` IS '统计信息;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `statistics` IS '统计信息';
 
 CREATE TABLE IF NOT EXISTS `user` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -175,12 +175,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `user_uk_v_email` UNIQUE (`email`,`deleted`),
   CONSTRAINT `user_uk_v_phone` UNIQUE (`phone`,`deleted`)
 );
-COMMENT ON TABLE `user` IS '帐号;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `user` IS '帐号';
 
 CREATE TABLE IF NOT EXISTS `user_abnormal_operation_log` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -197,10 +197,10 @@ CREATE TABLE IF NOT EXISTS `user_abnormal_operation_log` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `user_abnormal_operation_log` IS '用户异常操作日志;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `user_abnormal_operation_log` IS '用户异常操作日志';
 
 CREATE TABLE IF NOT EXISTS `user_login_log` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -219,10 +219,10 @@ CREATE TABLE IF NOT EXISTS `user_login_log` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `user_login_log` IS '用户登录日志;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `user_login_log` IS '用户登录日志';
 
 CREATE TABLE IF NOT EXISTS `video` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -252,10 +252,10 @@ CREATE TABLE IF NOT EXISTS `video` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video` IS '视频信息;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video` IS '视频信息';
 
 CREATE TABLE IF NOT EXISTS `video_audit_trace` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -271,10 +271,10 @@ CREATE TABLE IF NOT EXISTS `video_audit_trace` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_audit_trace` IS '视频审核追溯记录;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_audit_trace` IS '视频审核追溯记录';
 
 CREATE TABLE IF NOT EXISTS `video_comment` (
 `id` uuid NOT NULL COMMENT '评论ID',
@@ -295,10 +295,10 @@ CREATE TABLE IF NOT EXISTS `video_comment` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_comment` IS '评论;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_comment` IS '评论';
 
 CREATE TABLE IF NOT EXISTS `video_danmuku` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -316,10 +316,10 @@ CREATE TABLE IF NOT EXISTS `video_danmuku` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_danmuku` IS '视频弹幕;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_danmuku` IS '视频弹幕';
 
 CREATE TABLE IF NOT EXISTS `video_file` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -337,10 +337,10 @@ CREATE TABLE IF NOT EXISTS `video_file` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_file` IS '视频文件信息;@P=video;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_file` IS '视频文件信息;@P=video';
 
 CREATE TABLE IF NOT EXISTS `video_file_post` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -363,12 +363,12 @@ CREATE TABLE IF NOT EXISTS `video_file_post` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_file_post_uk_v_upload_id` UNIQUE (`upload_id`,`customer_id`,`deleted`),
   CONSTRAINT `video_file_post_uk_i` UNIQUE (`video_post_id`,`file_index`,`deleted`)
 );
-COMMENT ON TABLE `video_file_post` IS '视频文件信息;@P=video_post;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_file_post` IS '视频文件信息;@P=video_post';
 
 CREATE TABLE IF NOT EXISTS `video_file_post_variant` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -388,11 +388,11 @@ CREATE TABLE IF NOT EXISTS `video_file_post_variant` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_file_post_variant_uk_i` UNIQUE (`file_post_id`,`quality`,`deleted`)
 );
-COMMENT ON TABLE `video_file_post_variant` IS '视频稿件文件分辨率档位;@P=video_file_post;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_file_post_variant` IS '视频稿件文件分辨率档位;@P=video_file_post';
 
 CREATE TABLE IF NOT EXISTS `video_file_upload_session` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -411,10 +411,10 @@ CREATE TABLE IF NOT EXISTS `video_file_upload_session` (
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
 `expires_at` bigint DEFAULT NULL COMMENT '过期时间（秒时间戳）',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_file_upload_session` IS '视频分片上传会话; 用于跟踪预上传与分片进度;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_file_upload_session` IS '视频分片上传会话; 用于跟踪预上传与分片进度';
 
 CREATE TABLE IF NOT EXISTS `video_file_variant` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -434,11 +434,11 @@ CREATE TABLE IF NOT EXISTS `video_file_variant` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_file_variant_uk_i` UNIQUE (`file_id`,`quality`,`deleted`)
 );
-COMMENT ON TABLE `video_file_variant` IS '视频文件分辨率档位;@P=video_file;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_file_variant` IS '视频文件分辨率档位;@P=video_file';
 
 CREATE TABLE IF NOT EXISTS `video_hls_encrypt_key` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -461,11 +461,11 @@ CREATE TABLE IF NOT EXISTS `video_hls_encrypt_key` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_hls_encrypt_key_uk_i` UNIQUE (`video_post_id`,`file_index`,`key_id`,`key_version`,`quality`,`deleted`)
 );
-COMMENT ON TABLE `video_hls_encrypt_key` IS '视频 HLS 加密密钥;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_hls_encrypt_key` IS '视频 HLS 加密密钥';
 
 CREATE TABLE IF NOT EXISTS `video_hls_key_token` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -487,11 +487,11 @@ CREATE TABLE IF NOT EXISTS `video_hls_key_token` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_hls_key_token_uk_i` UNIQUE (`token_hash`,`deleted`)
 );
-COMMENT ON TABLE `video_hls_key_token` IS 'HLS 加密播放 token;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_hls_key_token` IS 'HLS 加密播放 token';
 
 CREATE TABLE IF NOT EXISTS `video_play_history` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -504,10 +504,10 @@ CREATE TABLE IF NOT EXISTS `video_play_history` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_play_history` IS '视频播放历史;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_play_history` IS '视频播放历史';
 
 CREATE TABLE IF NOT EXISTS `video_post` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -529,10 +529,10 @@ CREATE TABLE IF NOT EXISTS `video_post` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`)
 );
-COMMENT ON TABLE `video_post` IS '视频信息;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_post` IS '视频信息';
 
 CREATE TABLE IF NOT EXISTS `video_post_processing` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -550,11 +550,11 @@ CREATE TABLE IF NOT EXISTS `video_post_processing` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_post_processing_uk_i` UNIQUE (`video_post_id`,`deleted`)
 );
-COMMENT ON TABLE `video_post_processing` IS '视频稿件处理聚合;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_post_processing` IS '视频稿件处理聚合';
 
 CREATE TABLE IF NOT EXISTS `video_post_processing_file` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -579,11 +579,11 @@ CREATE TABLE IF NOT EXISTS `video_post_processing_file` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_post_processing_file_uk_i` UNIQUE (`parent_id`,`file_index`,`deleted`)
 );
-COMMENT ON TABLE `video_post_processing_file` IS '视频稿件处理文件状态;@P=video_post_processing;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_post_processing_file` IS '视频稿件处理文件状态;@P=video_post_processing';
 
 CREATE TABLE IF NOT EXISTS `video_post_processing_variant` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -606,11 +606,11 @@ CREATE TABLE IF NOT EXISTS `video_post_processing_variant` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_post_processing_variant_uk_i` UNIQUE (`parent_id`,`quality`,`deleted`)
 );
-COMMENT ON TABLE `video_post_processing_variant` IS '视频稿件处理分辨率档位;@P=video_post_processing_file;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_post_processing_variant` IS '视频稿件处理分辨率档位;@P=video_post_processing_file';
 
 CREATE TABLE IF NOT EXISTS `video_quality_policy` (
 `id` uuid NOT NULL COMMENT 'ID',
@@ -625,9 +625,10 @@ CREATE TABLE IF NOT EXISTS `video_quality_policy` (
 `update_user_id` uuid DEFAULT NULL COMMENT '更新人ID',
 `update_by` varchar(32) DEFAULT NULL COMMENT '更新人名称',
 `update_time` bigint DEFAULT NULL COMMENT '更新时间',
-`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除',
+`deleted` bigint NOT NULL DEFAULT '0' COMMENT '删除标识 0：未删除 id：已删除;@Deleted',
 PRIMARY KEY (`id`),
   CONSTRAINT `video_quality_policy_uk_i` UNIQUE (`video_id`,`file_index`,`quality`,`deleted`)
 );
-COMMENT ON TABLE `video_quality_policy` IS '视频清晰度策略;@SoftDeleteColumn=deleted';
+COMMENT ON TABLE `video_quality_policy` IS '视频清晰度策略';
+
 
