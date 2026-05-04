@@ -1,0 +1,15 @@
+package edu.only4.danmuku.adapter.portal.api.payload.u_home
+
+import java.util.UUID
+
+/**
+ * 获取用户信息接口载荷
+ */
+object CancelFocus {
+
+    data class Request(
+        /** 用户ID */
+        val focusUserId: UUID
+    )
+}
+

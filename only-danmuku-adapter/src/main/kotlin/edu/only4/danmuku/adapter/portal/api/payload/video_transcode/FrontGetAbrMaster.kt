@@ -1,0 +1,33 @@
+package edu.only4.danmuku.adapter.portal.api.payload.video_transcode
+
+import java.util.UUID
+
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
+
+/**
+ * 前台：获取 ABR master 路径（自动播放）
+ *
+ * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/25
+ */
+object FrontGetAbrMaster {
+
+    data class Request(
+        val fileId: UUID
+    )
+
+    data class Response(
+        val status: String,
+        val masterPath: String?
+    )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
+}
+

@@ -1,0 +1,66 @@
+package edu.only4.danmuku.domain.aggregates.customer_action.factory
+
+import java.util.UUID
+
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregateFactory
+import com.only4.cap4k.ddd.core.domain.aggregate.AggregatePayload
+import com.only4.cap4k.ddd.core.domain.aggregate.annotation.Aggregate
+import edu.only4.danmuku.domain.aggregates.customer_action.CustomerAction
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
+import org.springframework.stereotype.Service
+
+/**
+ * 用户行为 点赞、评论;
+ *
+ * 本文件由[cap4k-ddd-codegen-gradle-plugin]生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/10/15
+ */
+@Service
+@Aggregate(
+    aggregate = "CustomerAction",
+    name = "CustomerActionFactory",
+    type = Aggregate.TYPE_FACTORY,
+    description = ""
+)
+class CustomerActionFactory : AggregateFactory<CustomerActionFactory.Payload, CustomerAction> {
+
+    override fun create(entityPayload: Payload): CustomerAction {
+        val entity = CustomerAction(
+            id = UUID(0L, 0L),
+            customerId = entityPayload.customerId,
+            videoId = entityPayload.videoId,
+            videoOwnerId = entityPayload.videoOwnerId,
+            commentId = entityPayload.commentId,
+            actionType = entityPayload.actionType,
+            actionCount = entityPayload.actionCount,
+            actionTime = System.currentTimeMillis() / 1000,
+            createUserId = null,
+            createBy = null,
+            createTime = null,
+            updateUserId = null,
+            updateBy = null,
+            updateTime = null,
+            deleted = 0L
+        )
+        return entity
+    }
+
+     @Aggregate(
+        aggregate = "CustomerAction",
+        name = "CustomerActionPayload",
+        type = Aggregate.TYPE_FACTORY_PAYLOAD,
+        description = ""
+    )
+    data class Payload(
+         var customerId: UUID = UUID(0L, 0L),
+         var videoId: UUID = UUID(0L, 0L),
+         var videoOwnerId: UUID = UUID(0L, 0L),
+         var commentId: UUID = UUID(0L, 0L),
+         var actionType: ActionType = (ActionType.valueOfOrNull(0) ?: ActionType.UNKNOW),
+         var actionCount: Int = 0,
+    ) : AggregatePayload<CustomerAction>
+
+}
+
+

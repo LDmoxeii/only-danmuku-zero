@@ -1,0 +1,34 @@
+package edu.only4.danmuku.adapter.portal.api.payload.video_transcode
+
+import java.util.UUID
+
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
+
+/**
+ * 后台：获取指定档位 ts 路径（稿件态）
+ *
+ * 该文件由 [cap4k-ddd-codegen-gradle-plugin] 生成
+ * @author cap4k-ddd-codegen
+ * @date 2025/11/25
+ */
+object AdminGetAbrSegment {
+
+    data class Request(
+        val fileId: UUID,
+        val quality: String,
+        val ts: String
+    )
+
+    data class Response(
+        val segmentPath: String
+    )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        companion object {
+            val INSTANCE: Converter = Mappers.getMapper(Converter::class.java)
+        }
+    }
+}
+

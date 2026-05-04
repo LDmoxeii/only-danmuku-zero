@@ -1,0 +1,51 @@
+package edu.only4.danmuku.adapter.portal.api.payload.user_message
+
+import java.util.UUID
+
+import com.only.engine.translation.annotation.Translation
+import com.only.engine.translation.translation.AnyToJsonStringTranslation
+import com.only4.cap4k.ddd.core.share.PageParam
+import edu.only4.danmuku.application.queries.message.GetMessagePageQry
+import edu.only4.danmuku.domain.aggregates.customer_message.extend.UserMessageExtend
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
+
+/**
+ * 加载消息列表接口载荷
+ */
+object GetMessagePage {
+
+    data class Request(
+        val messageType: Int?,
+    ): PageParam()
+
+    data class Response(
+        val messageId: UUID,
+        val messageType: Int,
+        val readType: Int,
+        @get:Translation(type = AnyToJsonStringTranslation.TYPE)
+        val extendDto: UserMessageExtend?,
+        val createTime: Long,
+        // 扩展显示字段
+        val videoPostId: UUID?,
+        val videoId: UUID?,
+        val videoName: String?,
+        val videoCover: String?,
+        val sendUserId: UUID?,
+        val sendUserName: String?,
+        val sendUserAvatar: String?,
+    )
+
+    @Mapper(componentModel = "default")
+    interface Converter {
+        fun toQry(req: Request): GetMessagePageQry.Request
+
+        @Mapping(source = "extendJson", target = "extendDto")
+        @Mapping(source = "id", target = "messageId")
+        fun fromQry(resp: GetMessagePageQry.Response.MessageItem): Response
+
+        companion object { val INSTANCE: Converter = Mappers.getMapper(Converter::class.java) }
+    }
+}
+

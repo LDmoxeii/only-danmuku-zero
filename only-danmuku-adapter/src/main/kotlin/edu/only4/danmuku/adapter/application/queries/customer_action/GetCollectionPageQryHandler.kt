@@ -1,0 +1,66 @@
+package edu.only4.danmuku.adapter.application.queries.customer_action
+
+import com.only4.cap4k.ddd.core.application.query.Query
+import com.only4.cap4k.ddd.core.share.PageData
+import edu.only4.danmuku.application.queries._share.model.CustomerAction
+import edu.only4.danmuku.application.queries._share.model.actionType
+import edu.only4.danmuku.application.queries._share.model.customerId
+import edu.only4.danmuku.application.queries._share.model.fetchBy
+import edu.only4.danmuku.application.queries.customer_action.GetCollectionPageQry
+import edu.only4.danmuku.domain.aggregates.customer_action.enums.ActionType
+import org.babyfish.jimmer.sql.kt.KSqlClient
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.springframework.stereotype.Service
+
+/**
+ * 用户收藏的视频ID列表
+ */
+@Service
+class GetCollectionPageQryHandler(
+    private val sqlClient: KSqlClient,
+) : Query<GetCollectionPageQry.Request, GetCollectionPageQry.Response> {
+
+    override fun exec(request: GetCollectionPageQry.Request): GetCollectionPageQry.Response {
+        val pageResult = sqlClient.createQuery(CustomerAction::class) {
+            where(table.customerId eq request.customerId)
+            where(table.actionType eq ActionType.FAVORITE_VIDEO)
+            select(table.fetchBy {
+                actionType()
+                actionCount()
+                actionTime()
+                customer {
+                }
+                videoOwner {
+                }
+                comment {
+                }
+                video {
+                    videoName()
+                    videoCover()
+                }
+            })
+        }.fetchPage(request.pageNum - 1, request.pageSize)
+
+        return GetCollectionPageQry.Response(
+            page = PageData.create(
+                pageNum = request.pageNum,
+                pageSize = request.pageSize,
+                list = pageResult.rows.map { action ->
+                    GetCollectionPageQry.Response.ActionItem(
+                        actionId = action.id,
+                        videoId = action.video?.id,
+                        videoUserId = action.videoOwner.id,
+                        commentId = action.comment?.id,
+                        actionType = action.actionType,
+                        actionCount = action.actionCount,
+                        userId = action.customer.id,
+                        actionTime = action.actionTime,
+                        videoName = action.video?.videoName,
+                        videoCover = action.video?.videoCover,
+                    )
+                },
+                totalCount = pageResult.totalRowCount
+            )
+        )
+    }
+}

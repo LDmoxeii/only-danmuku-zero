@@ -1,0 +1,21 @@
+package edu.only4.danmuku.domain.aggregates.video
+
+import java.util.UUID
+
+import com.only4.cap4k.ddd.core.domain.aggregate.Aggregate
+import edu.only4.danmuku.domain.aggregates.video.Video
+import edu.only4.danmuku.domain.aggregates.video.factory.VideoFactory
+
+/**
+ * Video aggregate wrapper
+ * 视频信息
+ */
+class AggVideo(
+    payload: VideoFactory.Payload? = null,
+) : Aggregate.Default<Video>(payload) {
+
+    val id by lazy { root.id }
+
+    class Id(key: UUID) : com.only4.cap4k.ddd.core.domain.aggregate.Id.Default<AggVideo, UUID>(key)
+}
+
