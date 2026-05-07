@@ -61,6 +61,7 @@ object UpdateCategorySortOrderCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val parentId = request.parentId ?: UUID(0L, 0L)
             val categories = Mediator.repositories.find(
                 SCategory.predicateByIds(request.categoryIds)
             )
@@ -69,7 +70,7 @@ object UpdateCategorySortOrderCmd {
                 throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "存在无效的分类ID，无法完成排序")
             }
 
-            val invalidParent = categories.any { !it.isDirectChildOf(request.parentId) }
+            val invalidParent = categories.any { !it.isDirectChildOf(parentId) }
             if (invalidParent) {
                 throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "仅允许调整同一父分类下的子分类顺序")
             }
@@ -93,7 +94,7 @@ object UpdateCategorySortOrderCmd {
 
     data class Request(
         @field:CategoryMustExist
-        val parentId: UUID = UUID(0L, 0L),
+        val parentId: UUID? = null,
         @field:NotEmpty(message = "分类ID列表不能为空")
         val categoryIds: List<UUID>,
     ) : RequestParam<Response>

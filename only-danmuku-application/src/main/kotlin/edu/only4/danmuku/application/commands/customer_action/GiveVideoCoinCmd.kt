@@ -66,6 +66,7 @@ object GiveVideoCoinCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val commentId = request.commentId ?: UUID(0L, 0L)
             // 查询视频信息
             val video = Mediator.repositories.findOne(
                 SVideo.predicateById(request.videoId),
@@ -78,7 +79,7 @@ object GiveVideoCoinCmd {
                     customerId = request.customerId,
                     videoId = request.videoId,
                     videoOwnerId = video.customerId,
-                    commentId = UUID(0L, 0L),
+                    commentId = commentId,
                     actionType = ActionType.COIN_VIDEO,
                     actionCount = request.coinCount
                 )
@@ -100,7 +101,7 @@ object GiveVideoCoinCmd {
         @field:Min(1, message = "投币数量至少为1")
         @field:Max(2, message = "投币数量最多为2")
         val coinCount: Int,
-        val commentId: UUID = UUID(0L, 0L),
+        val commentId: UUID? = null,
         val actionType: ActionType = ActionType.COIN_VIDEO
     ) : RequestParam<Response>
 

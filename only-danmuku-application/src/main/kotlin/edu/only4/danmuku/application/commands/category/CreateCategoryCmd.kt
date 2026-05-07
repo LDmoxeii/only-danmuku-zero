@@ -26,19 +26,20 @@ object CreateCategoryCmd {
         override fun exec(request: Request): Response {
             val categoryId = idAllocator.next("uuid7", UUID::class)
             val initialSort: Byte = request.sort ?: 0
+            val parentId = request.parentId ?: UUID(0L, 0L)
             val related = Mediator.repositories.find(
                 SCategory.predicate(
                     { schema ->
                         schema.any(
-                            schema.id eq request.parentId,
-                            schema.parentId eq request.parentId,
+                            schema.id eq parentId,
+                            schema.parentId eq parentId,
                         )
                     },
                     { schema -> schema.sort.asc() },
                 )
             )
-            val parent = related.find { it.id == request.parentId }
-            val siblings = related.filter { it.parentId == request.parentId }
+            val parent = related.find { it.id == parentId }
+            val siblings = related.filter { it.parentId == parentId }
             val targetSort: Int = if (initialSort.toInt() == 0) {
                 if (siblings.isEmpty()) 1 else siblings.maxOf { it.sort } + 1
             } else {
@@ -50,7 +51,7 @@ object CreateCategoryCmd {
             val category = Mediator.factories.create(
                 CategoryFactory.Payload(
                     id = categoryId,
-                    parentId = request.parentId,
+                    parentId = parentId,
                     code = request.code,
                     name = request.name,
                     icon = request.icon,
@@ -69,7 +70,7 @@ object CreateCategoryCmd {
     @UniqueCategoryCode
     data class Request(
         @field:CategoryMustExist
-        val parentId: UUID = UUID(0L, 0L),
+        val parentId: UUID? = null,
         val code: String,
         val name: String,
         val icon: String? = null,

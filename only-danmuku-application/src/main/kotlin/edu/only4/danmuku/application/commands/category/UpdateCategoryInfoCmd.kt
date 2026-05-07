@@ -62,6 +62,7 @@ object UpdateCategoryInfoCmd {
     @Service
     class Handler : Command<Request, Response> {
         override fun exec(request: Request): Response {
+            val parentId = request.parentId ?: UUID(0L, 0L)
             val category = Mediator.repositories.findFirst(
                 SCategory.predicateById(request.categoryId)
             ) ?: error("Category not found: ${request.categoryId}")
@@ -72,16 +73,16 @@ object UpdateCategoryInfoCmd {
                 newBackground = request.background
             )
 
-            if (category.isParentChanged(request.parentId)) {
-                if (category.isMovingToSelf(request.parentId)) {
+            if (category.isParentChanged(parentId)) {
+                if (category.isMovingToSelf(parentId)) {
                     throw BusinessException(DanmukuBusinessErrors.STATE_INVALID, "不能将分类移动到自身下")
                 }
 
-                val parentCategory: Category? = if (request.parentId != UUID(0L, 0L)) {
+                val parentCategory: Category? = if (parentId != UUID(0L, 0L)) {
                     Mediator.repositories.findFirst(
-                        SCategory.predicateById(request.parentId),
+                        SCategory.predicateById(parentId),
                         persist = false
-                    ) ?: error("Parent category not found: ${request.parentId}")
+                    ) ?: error("Parent category not found: ${parentId}")
                 } else null
 
                 if (parentCategory != null && category.isMovingToDescendant(parentCategory)) {
@@ -89,7 +90,7 @@ object UpdateCategoryInfoCmd {
                 }
 
                 val (oldPath, newPath) = category.changeParent(
-                    newParentId = request.parentId,
+                    newParentId = parentId,
                     parentCategory = parentCategory
                 )
 
@@ -116,7 +117,7 @@ object UpdateCategoryInfoCmd {
         @field:CategoryMustExist
         val categoryId: UUID,
         @field:CategoryMustExist
-        val parentId: UUID = UUID(0L, 0L),
+        val parentId: UUID? = null,
         val code: String,
         val name: String,
         val icon: String? = null,
